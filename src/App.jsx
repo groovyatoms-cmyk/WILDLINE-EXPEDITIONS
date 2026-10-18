@@ -2,9 +2,12 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { bigLines, chapters, film, site } from './data/site.js'
 import { useProgress, useScrollProgress } from './hooks/useScrollProgress.js'
 import { loadShot } from './lib/frames.js'
+import About from './components/About.jsx'
 import BigLine from './components/BigLine.jsx'
+import CookieBanner from './components/CookieBanner.jsx'
 import Coordinates from './components/Coordinates.jsx'
 import CornerTitle from './components/CornerTitle.jsx'
+import Careers from './components/Careers.jsx'
 import Crew from './components/Crew.jsx'
 import Expeditions from './components/Expeditions.jsx'
 import Footer from './components/Footer.jsx'
@@ -14,11 +17,15 @@ import Join from './components/Join.jsx'
 import Menu from './components/Menu.jsx'
 import Preloader from './components/Preloader.jsx'
 import Stats from './components/Stats.jsx'
+import Team from './components/Team.jsx'
 
 const top = (id) => document.getElementById(id)?.getBoundingClientRect().top ?? Infinity
 
 function chapterFor(p) {
   if (top('join') < innerHeight * 0.5) return chapters.join
+  if (top('careers') < innerHeight * 0.5) return chapters.careers
+  if (top('team') < innerHeight * 0.5) return chapters.team
+  if (top('about') < innerHeight * 0.5) return chapters.about
   if (top('expeditions') < innerHeight * 0.5) return chapters.expeditions
   if (p < 0.03) return chapters.start
   if (p < film.shot1End) return chapters.run
@@ -76,10 +83,14 @@ export default function App() {
           </div>
         </section>
         <Expeditions />
+        <About />
         <Crew />
+        <Team />
+        <Careers />
         <Join />
       </main>
       <Footer />
+      {ready && <CookieBanner />}
     </>
   )
 }

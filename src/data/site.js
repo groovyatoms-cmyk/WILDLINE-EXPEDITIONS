@@ -23,6 +23,9 @@ export const chapters = {
   valley: 'INTO THE VALLEY',
   basin: 'ROUTE SPITI',
   expeditions: 'EXPEDITIONS',
+  about: 'ABOUT US',
+  team: 'OUR CORE TEAM',
+  careers: 'CAREERS',
   join: 'JOIN',
 }
 
@@ -80,6 +83,49 @@ export const crew = {
   ],
 }
 
+export const about = {
+  headline: 'ABOUT US',
+  body: [
+    'WILDLINE runs small, guided 4x4 convoy expeditions through the roads most people only see on a map: the high passes of Ladakh and Spiti, the dunes of Rajasthan, the forests of the North East.',
+    'We cap every convoy at eight vehicles, travel at the pace of the slowest car, and carry the recovery gear, comms and medical support to get everyone back. Far roads. Good company.',
+    'Every route is scouted by our own crew before the season opens. We know which bridge is out, which pass closes by noon, and which village has the best chai. That local knowledge is what turns a drive into an expedition.',
+    'Our guests are drivers, photographers, first-timers and families. You do not need to be an expert behind the wheel. You need to be curious, ready for long days, and happy to share a campfire.',
+    'We travel light on the land: no littering, no off-track driving, local stays and local guides wherever we go, so the places we love are still there for the next convoy.',
+  ],
+  highlights: [
+    ['2016', 'FIRST CONVOY'],
+    ['48,000+', 'KM DRIVEN'],
+    ['120+', 'CONVOYS LED'],
+    ['10', 'STATES COVERED'],
+  ],
+}
+
+// Placeholder people: replace names, roles and bios with the real crew.
+// Add `photo: 'team/name.webp'` (file in public/) to a member to replace the grey placeholder box.
+export const team = {
+  headline: 'OUR CORE TEAM',
+  members: [
+    { name: 'Team Member 01', role: 'FOUNDER + LEAD GUIDE', bio: 'Short bio goes here. Add a line or two about experience and what this person does on the road.' },
+    { name: 'Team Member 02', role: 'HEAD OF RECOVERY', bio: 'Short bio goes here. Add a line or two about experience and what this person does on the road.' },
+    { name: 'Team Member 03', role: 'MEDICAL LEAD', bio: 'Short bio goes here. Add a line or two about experience and what this person does on the road.' },
+    { name: 'Team Member 04', role: 'ROUTES + PERMITS', bio: 'Short bio goes here. Add a line or two about experience and what this person does on the road.' },
+  ],
+}
+
+// Placeholder roles: replace with real openings.
+export const careers = {
+  headline: 'CAREERS',
+  intro: 'Love the mountains, machines and good company? Join the crew that gets convoys there and back. Send your CV and a few lines about yourself.',
+  roles: [
+    { icon: 'wheel', title: 'LEAD DRIVER-GUIDE', type: 'Seasonal · Leh / Manali', desc: '5+ years of high-altitude 4x4 driving. Leads a convoy, makes the safety calls, keeps guests calm and moving.' },
+    { icon: 'wrench', title: 'RECOVERY + MECHANIC', type: 'Seasonal · Sweep vehicle', desc: 'Winching, recovery and field repairs. Keeps every car running and the sweep vehicle stocked.' },
+    { icon: 'clipboard', title: 'TRIP OPERATIONS EXECUTIVE', type: 'Full-time · Office', desc: 'Permits, stays, vehicles and guest briefings. Makes sure everything is booked before the convoy rolls.' },
+    { icon: 'camera', title: 'CONTENT + PHOTOGRAPHER', type: 'Seasonal / Freelance', desc: 'Shoots photo and video on the road for our channels and guests. Drone licence is a plus.' },
+  ],
+  cta: 'APPLY BY EMAIL',
+  subject: 'Application: ',
+}
+
 export const join = {
   headline: 'JOIN THE NEXT CONVOY.',
   dates: [
@@ -96,7 +142,9 @@ export const join = {
 
 export const menuLinks = [
   { label: 'Expeditions', href: '#expeditions' },
-  { label: 'The Crew', href: '#crew' },
+  { label: 'About Us', href: '#about' },
+  { label: 'Our Core Team', href: '#team' },
+  { label: 'Careers', href: '#careers' },
   { label: 'Join', href: '#join' },
   { label: 'Contact', href: '#contact' },
 ]
