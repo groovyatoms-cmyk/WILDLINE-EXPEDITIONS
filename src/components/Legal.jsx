@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { legal } from '../data/legal.js'
 
 export default function Legal() {
@@ -10,8 +11,9 @@ export default function Legal() {
       {Object.entries(legal).map(([k, d]) => (
         <button key={k} className="mono legal-link" onClick={() => setKey(k)} aria-haspopup="dialog">{d.title}</button>
       ))}
-      <div className={`panel-scrim${doc ? ' open' : ''}`} onClick={() => setKey(null)} />
-      <aside className={`panel legal-panel${doc ? ' open' : ''}`} role="dialog" aria-label={doc?.title} aria-hidden={!doc} {...(doc ? {} : { inert: '' })}>
+      <motion.div className={`panel-scrim${doc ? ' open' : ''}`} onClick={() => setKey(null)} initial={false} animate={{ opacity: doc ? 1 : 0 }} />
+      <motion.aside className="panel legal-panel" role="dialog" aria-label={doc?.title} aria-hidden={!doc} {...(doc ? {} : { inert: '' })}
+        initial={false} animate={{ x: doc ? 0 : '110%' }} transition={{ duration: 0.6, ease: [0.7, 0, 0.2, 1] }}>
         <button className="mono panel-close" onClick={() => setKey(null)}>CLOSE ✕</button>
         {doc && (
           <article>
@@ -21,7 +23,7 @@ export default function Legal() {
             ))}
           </article>
         )}
-      </aside>
+      </motion.aside>
     </>
   )
 }

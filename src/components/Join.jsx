@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { join, site, trips } from '../data/site.js'
 
 const wa = (text = '') => `https://wa.me/${site.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ''}`
@@ -36,8 +37,9 @@ export default function Join() {
         <button className="pill pill-line" onClick={() => setOpen(true)} aria-haspopup="dialog">ENQUIRE</button>
       </div>
 
-      <div className={`panel-scrim${open ? ' open' : ''}`} onClick={() => setOpen(false)} />
-      <aside className={`panel${open ? ' open' : ''}`} role="dialog" aria-label="Enquire" aria-hidden={!open} {...(open ? {} : { inert: '' })}>
+      <motion.div className={`panel-scrim${open ? ' open' : ''}`} onClick={() => setOpen(false)} initial={false} animate={{ opacity: open ? 1 : 0 }} />
+      <motion.aside className="panel" role="dialog" aria-label="Enquire" aria-hidden={!open} {...(open ? {} : { inert: '' })}
+        initial={false} animate={{ x: open ? 0 : '110%' }} transition={{ duration: 0.6, ease: [0.7, 0, 0.2, 1] }}>
         <button className="mono panel-close" onClick={() => setOpen(false)}>CLOSE ✕</button>
         <form onSubmit={submit}>
           <h3 className="display">ENQUIRE</h3>
@@ -49,7 +51,7 @@ export default function Join() {
           <label className="mono">GROUP SIZE<input name="size" type="number" min="1" max="24" defaultValue="2" required /></label>
           <button className="pill pill-rust" type="submit">SEND VIA WHATSAPP</button>
         </form>
-      </aside>
+      </motion.aside>
     </section>
   )
 }
