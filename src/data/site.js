@@ -17,10 +17,10 @@ export const frames = { count: 200, mobileCount: 100, w: 1920, mw: 1080 }
 export const film = { heightVh: 1200, shot1End: 0.45, shot2Start: 0.55, shot2End: 0.9 }
 
 export const chapters = {
-  start: 'WILDLINE',
+  start: 'THE WIDELINE',
   run: 'THE RUN',
   valley: 'INTO THE VALLEY',
-  basin: 'MIGHTY SPITI ROUTE',
+  basin: 'ROUTE SPITI',
   expeditions: 'EXPEDITIONS',
   join: 'JOIN',
 }
