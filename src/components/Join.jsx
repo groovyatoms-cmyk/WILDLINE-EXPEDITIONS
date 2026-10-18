@@ -18,10 +18,19 @@ export default function Join() {
     <section id="join" className="section join" aria-labelledby="join-h">
       <h2 id="join-h" className="display join-head">{join.headline}</h2>
       <ul className="dates mono">
-        {join.dates.map((d) => (
-          <li key={d.date}><span>{d.date}</span><span>{d.trip}</span><span>LIMITED SEATS AVAILABLE</span></li>
-        ))}
+        {join.dates.map((d) => {
+          const t = trips.find((x) => x.name === d.trip)
+          return (
+            <li key={d.date}>
+              <span>{d.date}</span><span>{d.trip}</span>
+              {t && <span>{t.days} days · from {t.price}</span>}
+              <span>{d.seats} SEATS LEFT · LIMITED SEATS</span>
+            </li>
+          )
+        })}
       </ul>
+      <p className="mono join-includes">INCLUDED: {join.includes.join(' · ')}</p>
+      <p className="mono join-note">{join.note}</p>
       <div className="cta">
         <a className="pill pill-rust" href={wa()} target="_blank" rel="noopener noreferrer">WHATSAPP US</a>
         <button className="pill pill-line" onClick={() => setOpen(true)} aria-haspopup="dialog">ENQUIRE</button>

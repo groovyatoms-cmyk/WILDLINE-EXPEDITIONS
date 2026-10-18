@@ -1,6 +1,6 @@
 :root {
   --bg: #0b0d10;
-  --sand: #ecede8; /* headline colour; was dust sand #c9a877 */
+  --sand: #ff7a1a; /* headline colour; was #ecede8, dust sand #c9a877 */
   --rust: #c2502a;
   --white: #ecede8;
   --stone: #5e6052;
@@ -406,8 +406,18 @@ p {
   padding: 1rem 0;
   border-top: 1px solid var(--stone);
 }
+.dates li {
+  flex-wrap: wrap;
+}
 .dates li span:last-child {
   color: var(--rust);
+}
+.join-includes,
+.join-note {
+  margin: 0 0 1rem;
+}
+.join-note {
+  color: var(--stone);
 }
 .cta {
   display: flex;
@@ -500,6 +510,31 @@ p {
   color: var(--stone);
 }
 .footer-links a:hover {
+  color: var(--white);
+}
+.legal-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+}
+.legal-link:hover {
+  color: var(--white);
+}
+.legal-panel {
+  overflow-y: auto;
+}
+.legal-panel h3 {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+.legal-panel h4 {
+  color: var(--rust);
+  margin: 1.5rem 0 0.3rem;
+}
+.legal-panel p {
+  margin: 0;
   color: var(--white);
 }
 .wordmark {
