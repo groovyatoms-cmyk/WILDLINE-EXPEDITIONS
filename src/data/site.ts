@@ -61,7 +61,13 @@ export const route = {
   to: { lat: 33.75, lon: 78.6667, alt: 4350 },
 }
 
-export const trips = [
+type Trip = { name: string; slug?: string; days: number; alt: string; season: string; price: string; still: string; alt_text: string }
+
+export const trips: Trip[] = [
+  { name: 'WINTER FROZEN SPITI EXPEDITION', slug: 'winter-spiti', days: 9, alt: '4,400 m', season: 'Jan–Mar', price: '₹1,45,000', still: 'frames/shot1/0030.webp', alt_text: 'Convoy driving a snow-covered road through the frozen Spiti valley' },
+  { name: 'ADI KAILASH EXPEDITION', slug: 'adi-kailash', days: 9, alt: '4,572 m', season: 'May–Jun, Sep–Oct', price: '₹1,25,000', still: 'frames/shot2/0020.webp', alt_text: 'Convoy on the high road toward Adi Kailash in the Kumaon Himalaya' },
+  { name: 'NEPAL EXPEDITION', days: 10, alt: '3,800 m', season: 'Mar–May, Sep–Nov', price: '₹1,50,000', still: 'frames/shot1/0120.webp', alt_text: 'Convoy on a mountain road above a Himalayan valley in Nepal' },
+  { name: 'EXPLORE ZANSKAR EXPEDITION', slug: 'zanskar', days: 9, alt: '4,401 m', season: 'Jun–Sep', price: '₹1,20,000', still: 'frames/shot2/0140.webp', alt_text: 'Convoy on the high road to Zanskar over Pensi La' },
   { name: 'LADAKH EXPEDITION', days: 12, alt: '5,359 m', season: 'Jun–Sep', price: '₹1,65,000', still: 'frames/shot2/0060.webp', alt_text: 'Convoy crossing a high pass in Ladakh' },
   { name: 'SPITI EXPEDITION', days: 9, alt: '4,590 m', season: 'May–Oct', price: '₹1,05,000', still: 'frames/shot1/0060.webp', alt_text: 'Convoy climbing a switchback road above the Spiti valley' },
   { name: 'ARUNACHAL EXPEDITION', days: 11, alt: '4,170 m', season: 'Apr–Jun, Oct–Nov', price: '₹1,35,000', still: 'frames/shot1/0150.webp', alt_text: 'Convoy on a mountain road through Arunachal forest toward Sela Pass' },
@@ -153,6 +159,10 @@ export const join = {
     { date: '05 OCT 2026', trip: 'SIKKIM EXPEDITION', seats: 6 },
     { date: '11 NOV 2026', trip: 'RAJASTHAN EXPEDITION', seats: 6 },
     { date: '06 DEC 2026', trip: 'KUTCH EXPEDITION', seats: 7 },
+    { date: '16 JAN 2027', trip: 'WINTER FROZEN SPITI EXPEDITION', seats: 4 },
+    { date: '12 JUL 2027', trip: 'EXPLORE ZANSKAR EXPEDITION', seats: 6 },
+    { date: '14 MAR 2027', trip: 'NEPAL EXPEDITION', seats: 6 },
+    { date: '06 JUN 2027', trip: 'ADI KAILASH EXPEDITION', seats: 5 },
   ],
   includes: ['4x4 + driver-guide', 'Permits', 'Stays + meals', 'Recovery crew', 'Oxygen + first aid'],
   excludes: ['Flights and train fares to the start point', 'Personal insurance', 'Fuel for personal vehicles on self-drive trips', 'Alcohol and personal expenses'],
@@ -191,14 +201,14 @@ export const contact = {
   ],
 }
 
-export const tripSlug = (t: { name: string }) => t.name.split(' ')[0].toLowerCase()
+export const tripSlug = (t: { name: string; slug?: string }) => t.slug ?? t.name.split(' ')[0].toLowerCase()
 
 // Placeholder detail copy per expedition (key = first word of the trip name, lowercase): verify routes and stops with the crew.
-type TripDetail = { level: string; route: string[]; overview: string; highlights: string[] }
+type TripDetail = { level: string; route: string[]; stops?: string[][]; overview: string; highlights: string[] }
 
 export const tripDetails: Record<string, TripDetail | undefined> = {
   ladakh: { level: 'HARD', route: ['Leh', 'Khardung La', 'Nubra Valley', 'Pangong Tso', 'Tso Moriri', 'Leh'], overview: 'Our flagship run across the highest motorable passes in the world. Long days, thin air and landscapes that do not look real.', highlights: ['Khardung La and Chang La crossings', 'Camp by Pangong Tso', 'Nubra dunes and double-humped camels', 'Monasteries of Hemis and Thiksey'] },
-  spiti: { level: 'HARD', route: ['Shimla', 'Kalpa', 'Kaza', 'Chandratal', 'Manali'], overview: 'The cold desert circuit: cliff-edge roads, ancient monasteries and a night beside a high-altitude lake.', highlights: ['Key and Kibber villages', 'Chandratal lake camp', 'Kunzum Pass', 'Dhankar and Tabo monasteries'] },
+  spiti: { level: 'HARD', route: ['Shimla', 'Kalpa', 'Nako', 'Tabo', 'Kaza', 'Langza', 'Hikkim', 'Key', 'Kaza', 'Shimla'], stops: [['Shimla', '2,276 m'], ['Kalpa', '2,960 m'], ['Nako', '3,662 m'], ['Tabo', '3,280 m'], ['Kaza', '3,800 m'], ['Langza', '4,400 m'], ['Hikkim', '4,400 m'], ['Key', '4,166 m']], overview: 'The cold desert circuit: Kinnaur apple valleys, cliff-edge roads, ancient monasteries and the highest villages in Spiti, with Kaza as the base.', highlights: ['Nako lake and village', 'Tabo monastery, a thousand years old', 'Langza fossils and the giant Buddha statue', 'Hikkim, the highest post office in the world', 'Key monastery on its hilltop'] },
   arunachal: { level: 'MODERATE', route: ['Guwahati', 'Bomdila', 'Sela Pass', 'Tawang', 'Dirang', 'Guwahati'], overview: 'Forest roads, rope bridges and the road to Tawang over Sela Pass, through the least-travelled corner of the Himalaya.', highlights: ['Sela Pass crossing', 'Tawang Monastery', 'Madhuri Lake', 'Homestays with local families'] },
   sikkim: { level: 'MODERATE', route: ['Gangtok', 'Tsomgo Lake', 'Nathu La', 'Lachen', 'Gurudongmar', 'Gangtok'], overview: 'Steep green valleys, border passes and a push to one of the highest lakes in the world.', highlights: ['Nathu La border pass', 'Gurudongmar Lake', 'Tsomgo Lake', 'Yumthang Valley'] },
   kashmir: { level: 'MODERATE', route: ['Srinagar', 'Sonamarg', 'Zojila', 'Kargil', 'Srinagar'], overview: 'Alpine meadows, the Zojila road and the long climb out of the valley into the high desert.', highlights: ['Zojila Pass', 'Dal Lake and Srinagar old city', 'Sonamarg meadows', 'Drass, the second-coldest inhabited place'] },
@@ -207,6 +217,10 @@ export const tripDetails: Record<string, TripDetail | undefined> = {
   kutch: { level: 'EASY', route: ['Bhuj', 'Dholavira', 'White Rann', 'Khavda', 'Bhuj'], overview: 'A flat white horizon, craft villages and an open-sky camp on the salt desert.', highlights: ['White Rann at sunset', 'Dholavira Harappan site', 'Craft villages of Khavda', 'Full-moon salt desert drive'] },
   meghalaya: { level: 'EASY', route: ['Guwahati', 'Shillong', 'Cherrapunji', 'Dawki', 'Guwahati'], overview: 'Wet forest roads, living root bridges and crystal rivers in the abode of the clouds.', highlights: ['Living root bridges', 'Dawki river', 'Cherrapunji waterfalls', 'Mawlynnong village'] },
   western: { level: 'EASY', route: ['Mumbai', 'Mahabaleshwar', 'Coorg', 'Munnar', 'Kochi'], overview: 'Misty ghat roads, tea estates and forest tracks down the length of the Western Ghats.', highlights: ['Misty ghat sections', 'Tea and coffee estates', 'Forest tracks in Coorg', 'Munnar hills'] },
+  'winter-spiti': { level: 'EXTREME', route: ['Shimla', 'Narkanda', 'Kalpa', 'Nako', 'Tabo', 'Kaza', 'Langza', 'Hikkim', 'Key', 'Kaza', 'Shimla'], overview: 'Spiti in deep winter: temperatures near minus 25, a frozen river and empty snow roads. Access is only via Kinnaur, with winter-fitted vehicles, extra rest days and a crew that knows ice.', highlights: ['Frozen Spiti river and snow-covered monasteries', 'Winter-fitted 4x4s with chains and heated stays', 'Langza, Hikkim and Key under snow', 'A chance to spot the snow leopard around Kibber'] },
+  zanskar: { level: 'HARD', route: ['Kargil', 'Sankoo', 'Parkachik', 'Rangdum', 'Pensi La', 'Padum', 'Karsha', 'Zangla', 'Padum', 'Kargil'], stops: [['Kargil', '2,676 m'], ['Parkachik', '3,700 m'], ['Rangdum', '3,800 m'], ['Pensi La', '4,401 m'], ['Padum', '3,657 m'], ['Karsha', '3,700 m'], ['Zangla', '3,700 m']], overview: 'The remote valley behind the Great Himalaya: the Suru valley, Pensi La and the old kingdom of Padum. Long gravel days, big skies and some of the quietest roads in the Himalaya.', highlights: ['Pensi La, the gateway to Zanskar', 'Rangdum monastery and the Suru valley', 'Karsha, the largest monastery in Zanskar', 'Zangla royal palace and village stays'] },
+  nepal: { level: 'MODERATE', route: ['Kathmandu', 'Pokhara', 'Jomsom', 'Kagbeni', 'Muktinath', 'Tatopani', 'Pokhara', 'Kathmandu'], stops: [['Kathmandu', '1,400 m'], ['Pokhara', '820 m'], ['Jomsom', '2,720 m'], ['Kagbeni', '2,810 m'], ['Muktinath', '3,800 m'], ['Tatopani', '1,190 m']], overview: 'Overland through the heart of Nepal: Kathmandu valley, the lakes of Pokhara and the Kali Gandaki gorge, the deepest in the world, up to the sacred temple of Muktinath.', highlights: ['Kali Gandaki gorge drive to Jomsom', 'Muktinath temple and Kagbeni village', 'Pokhara lakeside and Annapurna views', 'Hot springs at Tatopani'] },
+  'adi-kailash': { level: 'HARD', route: ['Dharchula', 'Gunji', 'Kuti', 'Jolingkong', 'Om Parvat viewpoint', 'Gunji', 'Dharchula'], stops: [['Dharchula', '950 m'], ['Gunji', '3,200 m'], ['Kuti', '3,800 m'], ['Jolingkong', '4,572 m'], ['Om Parvat viewpoint', '4,200 m']], overview: 'Pilgrimage and expedition in one: the Kumaon road along the Kali river to the Adi Kailash peak, Parvati Sarovar and the Om Parvat. Inner Line permits are handled by us.', highlights: ['Adi Kailash peak and Parvati Sarovar lake', 'Om Parvat, with the Om formed in snow', 'Gunji and the villages of the Vyas valley', 'The Kali river gorge road from Dharchula'] },
 }
 
 // Placeholder day-by-day plans (key = tripSlug): [day range, title, what happens]. Verify with the crew.
@@ -221,10 +235,11 @@ export const tripItinerary: Record<string, string[][] | undefined> = {
   ],
   spiti: [
     ['DAY 1', 'SHIMLA TO KALPA', 'Foothills to the Kinnaur apple belt. Views of Kinner Kailash.'],
-    ['DAY 2–3', 'KALPA TO KAZA', 'Cliff-edge roads past Nako lake and Tabo monastery into the cold desert.'],
-    ['DAY 4–5', 'KAZA LOOP', 'Key, Kibber, Langza and Hikkim. Highest post office and fossil village.'],
-    ['DAY 6', 'KAZA TO CHANDRATAL', 'Over Kunzum Pass (4,590 m). Camp beside the lake.'],
-    ['DAY 7–9', 'CHANDRATAL TO MANALI', 'Batal, Rohtang and Atal Tunnel. Farewell dinner in Manali.'],
+    ['DAY 2', 'KALPA TO NAKO', 'Cliff-edge Hindustan-Tibet road into Spiti, ending at Nako lake.'],
+    ['DAY 3', 'NAKO TO TABO', 'Cold desert valley and Tabo monastery, over a thousand years old.'],
+    ['DAY 4', 'TABO TO KAZA', 'Drive to Kaza, the Spiti base. Acclimatise at 3,800 m.'],
+    ['DAY 5–6', 'LANGZA, HIKKIM AND KEY', 'Fossil village Langza and its Buddha statue, Hikkim with the highest post office, then Key monastery. Back to Kaza, with a buffer day for weather.'],
+    ['DAY 7–9', 'KAZA TO SHIMLA', 'Return the way we came, overnight en route, farewell dinner in Shimla.'],
   ],
   arunachal: [
     ['DAY 1', 'GUWAHATI TO BOMDILA', 'Cross into Arunachal, permit checks, drive up through forest.'],
@@ -281,6 +296,44 @@ export const tripItinerary: Record<string, string[][] | undefined> = {
     ['DAY 4–5', 'COORG TO MUNNAR', 'Wayanad ghat sections, spice plantations.'],
     ['DAY 6', 'MUNNAR', 'Tea estates, Eravikulam park, sunrise at Top Station.'],
     ['DAY 7', 'MUNNAR TO KOCHI', 'Descend to the coast, farewell dinner.'],
+  ],
+  'winter-spiti': [
+    ['DAY 1', 'SHIMLA TO KALPA', 'Winter briefing, chains and gear check. Drive up the Kinnaur road with snow on the peaks.'],
+    ['DAY 2', 'KALPA TO NAKO', 'Icy hairpins on the Hindustan-Tibet road to a frozen Nako lake.'],
+    ['DAY 3', 'NAKO TO TABO', 'Snow desert valley and Tabo monastery in winter silence.'],
+    ['DAY 4', 'TABO TO KAZA', 'Short drive to Kaza. Slow acclimatisation at 3,800 m.'],
+    ['DAY 5–6', 'LANGZA, HIKKIM AND KEY', 'Snow-covered villages and monasteries, with a rest day for the cold and a chance to look for the snow leopard.'],
+    ['DAY 7–9', 'KAZA TO SHIMLA', 'Return through Kinnaur with buffer for snow and road closures, farewell dinner in Shimla.'],
+  ],
+  zanskar: [
+    ['DAY 1', 'ARRIVE KARGIL', 'Briefing, vehicle check and permits. Rest at 2,676 m.'],
+    ['DAY 2', 'KARGIL TO PARKACHIK', 'Up the Suru valley past Sankoo, with first views of Nun and Kun.'],
+    ['DAY 3', 'PARKACHIK TO RANGDUM', 'Open green valley and Rangdum monastery on its ridge.'],
+    ['DAY 4', 'RANGDUM TO PADUM', 'Over Pensi La (4,401 m) and down into Zanskar to the old capital, Padum.'],
+    ['DAY 5', 'PADUM AND KARSHA', 'Rest day: Padum town and the hillside monastery of Karsha.'],
+    ['DAY 6', 'STONGDE AND ZANGLA', 'Stongde monastery and the royal village of Zangla.'],
+    ['DAY 7', 'PADUM TO RANGDUM', 'Back over Pensi La with time at the Drang Drung glacier viewpoint.'],
+    ['DAY 8', 'RANGDUM TO KARGIL', 'Down the Suru valley, farewell dinner in Kargil.'],
+    ['DAY 9', 'RESERVE DAY', 'Buffer for weather and road conditions, departure.'],
+  ],
+  nepal: [
+    ['DAY 1', 'ARRIVE KATHMANDU', 'Briefing, border and vehicle paperwork, old-town walk.'],
+    ['DAY 2', 'KATHMANDU TO POKHARA', 'Trishuli river road through terraced hills to the lakeside city.'],
+    ['DAY 3', 'POKHARA', 'Rest day: Phewa lake and a sunrise viewpoint over Annapurna.'],
+    ['DAY 4–5', 'POKHARA TO JOMSOM', 'Up the Kali Gandaki gorge on rough mountain track, with a night in the apple town of Marpha.'],
+    ['DAY 6', 'KAGBENI AND MUKTINATH', 'Medieval Kagbeni and the temple of Muktinath at 3,800 m.'],
+    ['DAY 7', 'JOMSOM TO TATOPANI', 'Down the gorge to the hot springs.'],
+    ['DAY 8', 'TATOPANI TO POKHARA', 'Forest roads back to the lakes.'],
+    ['DAY 9–10', 'POKHARA TO KATHMANDU', 'Highway back, farewell dinner, with a buffer day for landslides and weather.'],
+  ],
+  'adi-kailash': [
+    ['DAY 1', 'ARRIVE DHARCHULA', 'Briefing, Inner Line permit checks and vehicle check.'],
+    ['DAY 2', 'DHARCHULA TO GUNJI', 'Along the Kali river on the old Lipulekh trade route into the Vyas valley.'],
+    ['DAY 3', 'GUNJI TO KUTI', 'Village stay at 3,800 m. Acclimatise.'],
+    ['DAY 4', 'KUTI TO JOLINGKONG', 'High road to the Adi Kailash viewpoint at 4,572 m and Parvati Sarovar.'],
+    ['DAY 5', 'OM PARVAT', 'Drive to the Om Parvat viewpoint and return to Gunji.'],
+    ['DAY 6–7', 'GUNJI TO DHARCHULA', 'Back down the valley with buffer days for landslides and weather.'],
+    ['DAY 8–9', 'DHARCHULA TO DEPARTURE', 'Farewell dinner and drive out to the railhead.'],
   ],
 }
 

@@ -23,6 +23,14 @@ export default function ExpeditionDetail({ slug }: { slug: string }) {
         <>
           <p className="mono label">ROUTE</p>
           <p className="mono">{d.route.join(' → ')}</p>
+          {d.stops && (
+            <>
+              <p className="mono label">STOPS AND ALTITUDES</p>
+              <ol className="detail-stops mono">
+                {d.stops.map(([name, alt], i) => <li key={name}><span>{String(i + 1).padStart(2, '0')}</span><span>{name}</span><span>{alt}</span></li>)}
+              </ol>
+            </>
+          )}
           <p className="mono label">HIGHLIGHTS</p>
           <ul className="detail-list mono">{d.highlights.map((h) => <li key={h}>{h}</li>)}</ul>
         </>
