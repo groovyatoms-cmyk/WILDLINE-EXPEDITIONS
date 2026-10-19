@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { MotionConfig, motion } from 'framer-motion'
 import { chapters, film, site } from '@/data/site.js'
 import { useProgress, useScrollProgress } from '@/hooks/useScrollProgress.js'
 import { loadShot } from '@/lib/frames.js'
@@ -7,7 +8,7 @@ import Coordinates from '@/components/film/Coordinates.jsx'
 import Preloader from '@/components/ui/Preloader.jsx'
 import PublicLayout from '@/layout/PublicLayout.jsx'
 import Home from '@/pages/Home.jsx'
-import { pages } from '@/pages/index.js'
+import { pages } from '@/pages/index.jsx'
 
 const top = (id) => document.getElementById(id)?.getBoundingClientRect().top ?? Infinity
 
@@ -76,7 +77,7 @@ export default function App() {
   const done = useCallback(() => setReady(true), [])
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       {!ready && <Preloader progress={progress} onDone={done} />}
       <PublicLayout
         ready={ready}
@@ -90,8 +91,10 @@ export default function App() {
           )}
       >
         <h1 className="sr-only">{site.fullName} —{site.tagline}</h1>
-        {Page ? <Page /> : <Home store={store} shots={shots} filmRef={filmRef} tagRef={tagRef} />}
+        <motion.div key={page} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.45 }}>
+          {Page ? <Page /> : <Home store={store} shots={shots} filmRef={filmRef} tagRef={tagRef} />}
+        </motion.div>
       </PublicLayout>
-    </>
+    </MotionConfig>
   )
 }

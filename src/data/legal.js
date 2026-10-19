@@ -1,6 +1,7 @@
 // Draft policy copy. Placeholder terms: have them reviewed by a lawyer before launch.
 export const legal = {
   privacy: {
+    path: '/privacy',
     title: 'PRIVACY POLICY',
     sections: [
       ['What we collect', 'Name, phone number, email, trip choice and group size when you enquire or book. Medical or dietary details only if you choose to share them for trip safety.'],
@@ -11,6 +12,7 @@ export const legal = {
     ],
   },
   terms: {
+    path: '/terms',
     title: 'TERMS & CONDITIONS',
     sections: [
       ['Booking', 'A seat is confirmed once the deposit is received and acknowledged in writing. Prices are per person and exclude flights, personal insurance and items not listed as included.'],
@@ -23,6 +25,7 @@ export const legal = {
     ],
   },
   refund: {
+    path: '/refund',
     title: 'REFUND POLICY',
     sections: [
       ['Cancelled by you', '30 days or more before departure: 90% refund. 15–29 days: 50% refund. Under 15 days or no-show: no refund.'],
@@ -30,6 +33,17 @@ export const legal = {
       ['Cancelled by us', 'If we cancel a departure, you get a full refund or a seat on another date of your choice.'],
       ['Safety and force majeure', 'If the trip is shortened or altered by weather, closures or safety calls on the road, unused services are not refundable, but we will try to offer a reasonable alternative.'],
       ['How refunds are paid', 'To the original payment method within 7–10 working days of approval. Payment gateway fees are non-refundable.'],
+    ],
+  },
+  cookies: {
+    path: '/cookies',
+    title: 'COOKIES POLICY',
+    sections: [
+      ['What are cookies', 'Small files a website stores in your browser. Similar technologies, such as local storage, work the same way.'],
+      ['What we use today', 'Only what the site needs to work: your cookie choice and your light or dark theme, both kept in your browser. They are not sent to us or to any third party.'],
+      ['Analytics and marketing', 'We do not run analytics or advertising cookies today. If we add them later, they will only load after you accept them in the cookie banner.'],
+      ['Third-party content', 'Fonts load from Google Fonts. Links to Facebook, Instagram, YouTube and WhatsApp open on those services, which set their own cookies under their own policies.'],
+      ['Your choices', 'Accept or decline in the cookie banner. You can also clear site data in your browser settings at any time, and the banner will ask again.'],
     ],
   },
 }

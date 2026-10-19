@@ -404,6 +404,41 @@ p {
 .menu.open a {
   transform: translateX(0);
 }
+.menu-legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem 1.8rem;
+  padding: 0 4vw 2rem;
+  color: var(--stone);
+}
+.menu .menu-legal a {
+  /* small policy links: undo the big menu-link look */
+  display: inline;
+  padding: 0;
+  font: 0.8rem/1.4 var(--mono);
+  color: inherit;
+  letter-spacing: 0.08em;
+}
+.menu .menu-legal a:hover {
+  color: var(--white);
+}
+.legal .section-head {
+  font-size: 6vw;
+}
+.legal-block {
+  max-width: 48rem;
+  margin-bottom: 1.8rem;
+}
+.legal-block h3 {
+  color: var(--sand);
+  margin-bottom: 0.4rem;
+}
+@media (max-width: 768px) {
+  .legal .section-head {
+    font-size: 12vw;
+  }
+}
 .menu a:hover {
   color: var(--white);
 }
@@ -413,7 +448,7 @@ p {
   position: relative;
   z-index: 2;
   background: var(--bg);
-  padding: 22vh 4vw 10vh;
+  padding: 3.5rem 4vw 3rem;
 }
 .label {
   color: var(--sand);
@@ -584,19 +619,35 @@ p {
   z-index: 1; /* above the oversized wordmark that overlaps the links */
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem 2.5rem;
+  align-items: center;
+  gap: 1.2rem 1.6rem;
   color: var(--stone);
+}
+.footer-links a {
+  display: inline-flex;
+  padding: 0.3rem;
+}
+.footer-links a {
+  transition: color 0.2s, transform 0.2s;
 }
 .footer-links a:hover {
   color: var(--white);
+  transform: translateY(-3px);
+}
+.footer-links .mono {
+  margin-left: auto; /* copyright to the far right */
+}
+@media (max-width: 768px) {
+  .footer-links .mono {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
 }
 .about {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem 6vw;
   align-items: start;
-  padding-top: 12vh;
-  padding-bottom: 6vh;
 }
 .about-body {
   display: grid;
@@ -644,6 +695,7 @@ p {
     display: flex;
     gap: 1rem;
     overflow-x: auto;
+    overflow-y: hidden; /* otherwise overflow-x makes this row a vertical scroller too */
     scroll-snap-type: x mandatory;
     margin-inline: -4vw;
     padding: 0 4vw 1rem;
@@ -711,6 +763,7 @@ p {
   margin-top: 0.6rem;
 }
 .page {
+  padding-top: 72px; /* clears the fixed header; sections add their own spacing */
   min-height: 100vh;
 }
 .topbar {
@@ -798,6 +851,10 @@ p {
   border: 1px solid var(--stone);
   border-left: 2px solid var(--rust);
 }
+.cookie p a {
+  color: var(--sand);
+  text-decoration: underline;
+}
 .cookie p {
   flex: 1 1 24rem;
   text-transform: none;
@@ -805,31 +862,6 @@ p {
 .cookie-actions {
   display: flex;
   gap: 0.8rem;
-}
-.legal-link {
-  background: none;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-  color: inherit;
-}
-.legal-link:hover {
-  color: var(--white);
-}
-.legal-panel {
-  overflow-y: auto;
-}
-.legal-panel h3 {
-  font-size: 3rem;
-  margin-bottom: 1.5rem;
-}
-.legal-panel h4 {
-  color: var(--sand);
-  margin: 1.5rem 0 0.3rem;
-}
-.legal-panel p {
-  margin: 0;
-  color: var(--white);
 }
 .wordmark {
   font-size: 27.5vw;

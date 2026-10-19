@@ -1,7 +1,7 @@
 import { X } from 'lucide-react'
 import { motion } from 'framer-motion'
 
-// Slide-in side panel with a dimmed backdrop. Used by the enquiry form and the legal pages.
+// Slide-in side panel with a dimmed backdrop. Used by the enquiry form.
 export default function Panel({ open, onClose, label, className = '', children }) {
   return (
     <>

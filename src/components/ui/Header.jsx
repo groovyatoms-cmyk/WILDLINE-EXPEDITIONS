@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { menuLinks } from '@/data/site.js'
+import { legal } from '@/data/legal.js'
 import { openEnquire } from '@/lib/enquire.js'
 import Button from './Button.jsx'
 import ThemeToggle from './ThemeToggle.jsx'
@@ -30,6 +31,11 @@ export default function Header() {
             </li>
           ))}
         </ul>
+        <nav className="mono menu-legal" aria-label="Policies">
+          {Object.values(legal).map((d) => (
+            <a key={d.path} href={d.path} onClick={() => setOpen(false)}>{d.title}</a>
+          ))}
+        </nav>
       </div>
     </>
   )

@@ -1,5 +1,6 @@
 import { about } from '@/data/site.js'
 import Section from '@/components/ui/Section.jsx'
+import Reveal from '@/components/ui/Reveal.jsx'
 
 export default function About({ to }) {
   return (
@@ -8,8 +9,8 @@ export default function About({ to }) {
         {(to ? about.body.slice(0, 1) : about.body).map((p) => <p key={p}>{p}</p>)}
       </div>
       {!to && <dl className="about-stats">
-        {about.highlights.map(([v, k]) => (
-          <div key={k}><dd className="display">{v}</dd><dt className="mono">{k}</dt></div>
+        {about.highlights.map(([v, k], i) => (
+          <Reveal key={k} index={i}><dd className="display">{v}</dd><dt className="mono">{k}</dt></Reveal>
         ))}
       </dl>}
     </Section>

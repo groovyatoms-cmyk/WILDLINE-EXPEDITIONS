@@ -26,7 +26,7 @@ export default function CookieBanner() {
           exit={{ y: '120%' }}
           transition={{ duration: 0.5, ease: [0.7, 0, 0.2, 1] }}
         >
-          <p className="mono">We use cookies to keep the site working and understand how it is used. See our Privacy Policy in the footer.</p>
+          <p className="mono">We use cookies to keep the site working and understand how it is used. See our <a href="/cookies">Cookies Policy</a>.</p>
           <div className="cookie-actions">
             <Button onClick={() => pick('declined')}>DECLINE</Button>
             <Button variant="rust" onClick={() => pick('accepted')}>ACCEPT</Button>

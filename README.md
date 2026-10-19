@@ -88,18 +88,18 @@ src/
   main.jsx                 entry
   App.jsx                  routing, loading, header title logic
   styles/index.css         all styles, colour tokens in :root
-  data/                    site.js (all copy and settings), legal.js
+  data/                    site.js (all copy and settings), legal.js (policy pages: /privacy, /terms, /refund, /cookies)
   hooks/                   useScrollProgress
   lib/                     frames (loading), timeline, enquire (WhatsApp + openEnquire)
   layout/                  PublicLayout: header, page body, footer, overlays
   pages/                   Home (film + previews), one file per page, index.js route map
   components/
-    ui/                    reusable building blocks: Header, Footer, TopBar, Button, Panel,
+    ui/                    reusable building blocks: Header, Footer, TopBar, Reveal, Button, Panel,
                            Section, Preloader, FrameCounter
     sections/              content sections: Expeditions, About, Crew, Team, Careers, Join
     film/                  scroll-film pieces: FrameCanvas, BigLine, Stats,
                            CornerTitle, Coordinates
-    overlays/              site-wide popups: Enquire, Legal, CookieBanner
+    overlays/              site-wide popups: Enquire, CookieBanner
 public/frames/
   shot1/  shot2/           desktop frames  0001.webp ... 0200.webp
   shot1m/ shot2m/          mobile frames   0001.webp ... 0100.webp
