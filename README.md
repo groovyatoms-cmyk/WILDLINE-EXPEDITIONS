@@ -8,7 +8,7 @@ Stack: Next.js 16 (App Router) + TypeScript, React 18, plain CSS, Framer Motion 
 
 ```bash
 npm install
-npm run dev       # http://localhost:3000
+npm run dev       # http://localhost:5176
 npm run build     # output in .next/
 npm run start     # serve the production build
 ```

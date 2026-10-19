@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 5176",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 5176",
     "test": "jest"
   },
   "dependencies": {

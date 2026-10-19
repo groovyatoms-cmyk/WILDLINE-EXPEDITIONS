@@ -31,7 +31,7 @@ export default function Header() {
         <Button variant="rust" className="nav-book" onClick={() => { setOpen(false); openEnquire() }}>BOOK NOW</Button>
         <ThemeToggle />
       </nav>
-      <div id="menu" className={`menu${open ? ' open' : ''}`} {...(open ? {} : ({ inert: '' } as object))}>
+      <div id="menu" className={`menu${open ? ' open' : ''}`} inert={!open}>
         <ul>
           {menuLinks.map((l, i) => (
             <li key={l.label} style={{ '--i': i } as React.CSSProperties}>
