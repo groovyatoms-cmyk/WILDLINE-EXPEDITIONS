@@ -43,27 +43,67 @@ async function decode(shot: 1 | 2, i: number, total: number, mobile: boolean) {
   }
 }
 
-// Decodes a shot in small parallel batches into the caller-owned `out` array (filled as it goes).
-const idle = () => new Promise<void>((r) => ('requestIdleCallback' in window ? requestIdleCallback(() => r(), { timeout: 40 }) : setTimeout(r, 0)))
+// Windowed frame cache for one shot. Decoded bitmaps are big (a 1440px frame is ~4.7 MB in memory), so only a
+// window around the playhead stays decoded, plus sparse "anchor" frames that give a picture while scrubbing fast.
+// `out` is the caller-owned sparse array the canvas draws from.
+const BEHIND = 12
+const AHEAD = 48
+const ANCHOR = 30
+const CONCURRENCY = 4
 
-// The first `eagerShare` of the frames load flat out (the preloader waits for them); the rest trickle in 8 at a time
-// whenever the browser is idle (waiting at most 40 ms), so decoding never blocks scrolling or input.
-export async function loadShot(shot: 1 | 2, out: ImageBitmap[], onProgress: (done: number) => void = () => {}, eagerShare = 0) {
+export function createLoader(shot: 1 | 2, out: ImageBitmap[], onLoaded: (i: number) => void = () => {}) {
   const mobile = isMobile()
   const total = mobile ? cfg[shot].mobileCount : cfg[shot].count
   out.length = total
-  let done = 0
-  const eager = Math.ceil(total * eagerShare)
-  for (let s = 0; s < total; ) {
-    const batch = s < eager ? 16 : 8
-    if (s >= eager) await idle()
-    await Promise.all(
-      Array.from({ length: Math.min(batch, total - s) }, async (_, k) => {
-        out[s + k] = await decode(shot, s + k, total, mobile)
-        onProgress(++done / total)
-      }),
-    )
-    s += batch
+  const inflight = new Set<number>()
+  const queue: number[] = []
+  let center = -1
+  let anchors = false
+  let active = 0
+
+  const inWindow = (i: number) => i >= center - BEHIND && i <= center + AHEAD
+  const keep = (i: number) => inWindow(i) || (anchors && i % ANCHOR === 0)
+  const want = (i: number) => i >= 0 && i < total && !out[i] && !inflight.has(i)
+
+  const pump = () => {
+    while (active < CONCURRENCY && queue.length) {
+      const i = queue.shift()!
+      if (!want(i) || !keep(i)) continue
+      active++
+      inflight.add(i)
+      decode(shot, i, total, mobile).then((b) => {
+        inflight.delete(i)
+        active--
+        if (keep(i)) { out[i] = b; onLoaded(i) } else b.close() // the playhead moved on while it loaded
+        pump()
+      })
+    }
   }
-  return out
+
+  const plan = () => {
+    for (let i = 0; i < total; i++) if (out[i] && !keep(i)) { out[i].close(); delete out[i] }
+    queue.length = 0
+    for (let d = 0; d <= AHEAD; d++) {
+      if (want(center + d)) queue.push(center + d)
+      if (d <= BEHIND && d > 0 && want(center - d)) queue.push(center - d)
+    }
+    if (anchors) for (let i = 0; i < total; i += ANCHOR) if (want(i)) queue.push(i)
+    pump()
+  }
+
+  return {
+    // Call with the playhead's frame position (fractional is fine).
+    update(pos: number) {
+      const c = Math.round(pos)
+      if (c === center) return
+      center = c
+      plan()
+    },
+    // Also keep every 30th frame decoded for the whole shot.
+    loadAnchors() {
+      if (anchors) return
+      anchors = true
+      if (center >= 0) plan()
+    },
+  }
 }

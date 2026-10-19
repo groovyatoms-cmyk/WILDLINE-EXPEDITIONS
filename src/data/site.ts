@@ -15,7 +15,7 @@ export const site = {
 // Per shot: shot 1 is 23 s of footage so it gets ~26 fps worth of frames; shot 2 is 10 s at ~20 fps.
 // w / mw = widest decoded frame (desktop / mobile) and must match the exported files.
 export const frames = {
-  1: { count: 600, mobileCount: 300, w: 1280, mw: 720 },
+  1: { count: 600, mobileCount: 300, w: 1920, mw: 1080 },
   2: { count: 200, mobileCount: 100, w: 1920, mw: 1080 },
 }
 

@@ -867,7 +867,7 @@ p {
   }
   .frame-counter {
     top: auto;
-    bottom: 28px;
+    bottom: 62px;
     right: 20px;
   }
   .nav {
@@ -1096,3 +1096,29 @@ p {
 }
 .autoplay:hover { color: var(--sand); transform: translateY(-50%) scale(1.15); }
 @media (max-width: 768px) { .autoplay { right: 14px; } }
+
+/* camera-style REC badge, bottom right of the hero film */
+.rec {
+  position: absolute;
+  right: 40px;
+  bottom: 34px;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  color: #ecede8;
+  letter-spacing: 0.08em;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+.rec-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff2a2a;
+  box-shadow: 0 0 8px #ff2a2a;
+  animation: rec-blink 1.4s steps(1) infinite;
+}
+@keyframes rec-blink { 50% { opacity: 0.15; } }
+@media (prefers-reduced-motion: reduce) { .rec-dot { animation: none; } }
+@media (max-width: 768px) { .rec { right: 28px; bottom: 30px; } }

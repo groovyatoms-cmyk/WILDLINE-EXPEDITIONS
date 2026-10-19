@@ -5,7 +5,8 @@ import { usePathname, useRouter } from 'next/navigation'
 import { MotionConfig, motion } from 'framer-motion'
 import { chapters, film, site } from '@/data/site'
 import { useProgress, useScrollProgress } from '@/hooks/useScrollProgress'
-import { loadShot, type Shots } from '@/lib/frames'
+import { createLoader, type Shots } from '@/lib/frames'
+import { frameTotal, timeline } from '@/lib/timeline'
 import CornerTitle from '@/components/film/CornerTitle'
 import Coordinates from '@/components/film/Coordinates'
 import Preloader from '@/components/ui/Preloader'
@@ -37,9 +38,7 @@ const afterFirstPaint = () => new Promise<void>((resolve) => {
   } catch { clearTimeout(timer); resolve() }
 })
 
-// The preloader only waits for the first slice of shot 1; the rest of the frames decode behind the page
-// (the film picks the nearest decoded frame, so an early scroll still shows a picture).
-const PRELOAD_SHARE = 0.1
+const PRELOAD_FRAMES = 16
 
 // Client shell for every route: preloader, header, footer, overlays. The home route
 // (pathname "/") is drawn here because the scroll film shares state with the header.
@@ -76,19 +75,32 @@ export default function Shell({ children }: { children: React.ReactNode }) {
     return () => ro.disconnect()
   }, [isHome])
 
-  // The preloader waits for the first slice of shot one; the rest decodes quietly in the background.
+  // Frames stream in a window around the playhead (see createLoader). The preloader only waits for the
+  // first PRELOAD_FRAMES of shot 1; shot 2 starts loading once the visitor is a third of the way through shot 1.
   useEffect(() => {
     history.scrollRestoration = 'manual'
     scrollTo(0, 0)
-    afterFirstPaint().then(() => loadShot(1, shots.current[1], (p) => { progress.current = Math.min(1, p / PRELOAD_SHARE) }, PRELOAD_SHARE))
-    // Shot two is only needed past ~half the film, so it starts once the visitor begins scrolling.
-    const wake = (p: number) => {
-      if (p < 0.05) return
-      store.subs.delete(wake)
-      loadShot(2, shots.current[2])
+    let l1: ReturnType<typeof createLoader> | undefined
+    let l2: ReturnType<typeof createLoader> | undefined
+    let preloaded = 0
+    const sync = (p: number) => {
+      const { f1, f2 } = timeline(p)
+      l1?.update(f1 * (frameTotal(1) - 1))
+      if (p > 0.15) {
+        l2 ??= createLoader(2, shots.current[2])
+        l2.update(f2 * (frameTotal(2) - 1))
+        l2.loadAnchors()
+      }
     }
-    store.subs.add(wake)
-    return () => { store.subs.delete(wake) }
+    afterFirstPaint().then(() => {
+      l1 = createLoader(1, shots.current[1], (i) => {
+        if (i < PRELOAD_FRAMES) progress.current = ++preloaded / PRELOAD_FRAMES
+      })
+      sync(store.p)
+      l1.loadAnchors()
+    })
+    store.subs.add(sync)
+    return () => { store.subs.delete(sync) }
   }, [store])
 
   useEffect(() => {
@@ -125,7 +137,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
       >
         {isHome && <h1 className="sr-only">{site.fullName} — {site.tagline}</h1>}
         <motion.div key={pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.45 }}>
-          {isHome ? <Home store={store} shots={shots} filmRef={filmRef} tagRef={tagRef} ready={ready} /> : children}
+          {isHome ? <Home store={store} shots={shots} filmRef={filmRef} tagRef={tagRef} /> : children}
         </motion.div>
       </PublicLayout>
     </MotionConfig>

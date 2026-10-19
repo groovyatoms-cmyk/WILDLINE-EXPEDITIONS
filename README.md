@@ -109,16 +109,18 @@ Colours are the tokens at the top of `src/styles/index.css`. The `--sand` token 
 
 ## Adding footage
 
-Frames are numbered WebP files, `0001.webp` upward, and each shot has its own frame count (see `frames` in `src/data/site.ts`). Shot 1 (23 s of footage): 600 desktop frames at 1280px wide and 300 mobile frames at 720px. Shot 2 (10 s): 200 desktop frames at 1920px and 100 mobile at 1080px. Export with ffmpeg, which is not bundled and must be installed.
+Frames are numbered WebP files, `0001.webp` upward, and each shot has its own frame count (see `frames` in `src/data/site.ts`). Shot 1 (23 s of footage): 600 desktop frames and 300 mobile frames. Shot 2 (10 s): 200 desktop and 100 mobile. Desktop frames are 1920px wide, mobile 1080px. Export with ffmpeg, which is not bundled and must be installed.
 
-Pick the clip range, then set `fps` to `frames ÷ seconds`. Shot 1, a 23 s range:
+Pick the clip range, then set `fps` to `frames ÷ seconds`. Lanczos scaling and the `photo` preset keep the footage sharp:
 
 ```bash
-ffmpeg -ss 00:00:25 -to 00:00:48 -i DJI_0203.MOV -vf "fps=600/23,scale=1280:-2" -c:v libwebp -quality 52 public/frames/shot1/%04d.webp
-ffmpeg -ss 00:00:25 -to 00:00:48 -i DJI_0203.MOV -vf "fps=300/23,scale=720:-2" -c:v libwebp -quality 62 public/frames/shot1m/%04d.webp
+ffmpeg -ss 00:00:25 -to 00:00:48 -i DJI_0203.MOV -vf "fps=600/23,scale=1920:-2:flags=lanczos" -c:v libwebp -quality 60 -compression_level 6 -preset photo public/frames/shot1/%04d.webp
+ffmpeg -ss 00:00:25 -to 00:00:48 -i DJI_0203.MOV -vf "fps=300/23,scale=1080:-2:flags=lanczos" -c:v libwebp -quality 65 -compression_level 6 -preset photo public/frames/shot1m/%04d.webp
+ffmpeg -ss 00:00:10 -to 00:00:20 -i DJI_0199.MOV -vf "fps=200/10,scale=1920:-2:flags=lanczos" -c:v libwebp -quality 65 -compression_level 6 -preset photo public/frames/shot2/%04d.webp
+ffmpeg -ss 00:00:10 -to 00:00:20 -i DJI_0199.MOV -vf "fps=100/10,scale=1080:-2:flags=lanczos" -c:v libwebp -quality 70 -compression_level 6 -preset photo public/frames/shot2m/%04d.webp
 ```
 
-Repeat for shot 2 with `shot2` and `shot2m` and its own counts. Aim for 20 to 30 frames per second of footage: fewer looks like a slideshow. If you change a frame count or width, update `frames` in `src/data/site.ts` to match.
+Aim for 20 to 30 frames per second of footage: fewer looks like a slideshow. If you change a frame count or width, update `frames` in `src/data/site.ts` to match.
 
 The autoplay pace is set in `PLAN` in `src/components/film/AutoPlay.tsx` (seconds per stretch of the film).
 

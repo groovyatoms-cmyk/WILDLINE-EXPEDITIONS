@@ -11,24 +11,24 @@ function pick(arr: ImageBitmap[], i: number) {
   return null
 }
 
-function cover(ctx: CanvasRenderingContext2D, img: ImageBitmap, W: number, H: number) {
-  const s = Math.max(W / img.width, H / img.height)
+function cover(ctx: CanvasRenderingContext2D, img: ImageBitmap, W: number, H: number, zoom = 1) {
+  const s = Math.max(W / img.width, H / img.height) * zoom
   ctx.drawImage(img, (W - img.width * s) / 2, (H - img.height * s) / 2, img.width * s, img.height * s)
 }
 
 // Draws the frame at fractional position `pos`: the frame below it, then the next one faded in by the
 // fraction. The footage has only ~6 frames per second of scroll, so this dissolve is what makes autoplay look smooth.
-function drawBlend(ctx: CanvasRenderingContext2D, arr: ImageBitmap[], pos: number, W: number, H: number, alpha = 1) {
+function drawBlend(ctx: CanvasRenderingContext2D, arr: ImageBitmap[], pos: number, W: number, H: number, alpha = 1, zoom = 1) {
   const i = Math.floor(pos)
   const f = pos - i
   const a = pick(arr, i)
   if (!a) return
   ctx.globalAlpha = alpha
-  cover(ctx, a, W, H)
+  cover(ctx, a, W, H, zoom)
   const b = f > 0.03 ? pick(arr, Math.min(i + 1, arr.length - 1)) : null
   if (b && b !== a) {
     ctx.globalAlpha = alpha * f
-    cover(ctx, b, W, H)
+    cover(ctx, b, W, H, zoom)
   }
   ctx.globalAlpha = 1
 }
@@ -40,7 +40,7 @@ export default function FrameCanvas({ store, shots }: { store: Store; shots: Ref
   useEffect(() => {
     const fit = () => {
       if (!ref.current) return
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5) // capped: past 1.5x the extra pixels cost frame time but the footage has no extra detail
+      const dpr = Math.min(window.devicePixelRatio || 1, 2) // capped: past 2x the extra pixels cost frame time with no visible gain
       size.current = { w: innerWidth * dpr, h: innerHeight * dpr, dpr }
       ref.current.width = size.current.w
       ref.current.height = size.current.h
@@ -62,13 +62,16 @@ export default function FrameCanvas({ store, shots }: { store: Store; shots: Ref
     const pos1 = still ? Math.floor(n1 / 2) : f1 * (n1 - 1)
     const pos2 = still ? Math.floor(n2 / 2) : f2 * (n2 - 1)
     // Blur peaks mid-transition and is gone at both ends (CSS filter: works in Safari too).
-    const blur = still ? 0 : Math.sin(Math.PI * t) * 18
+    const blur = still ? 0 : Math.sin(Math.PI * t) * 7
     canvas.style.filter = blur > 0.1 ? `blur(${blur.toFixed(1)}px)` : ''
-    ctx.imageSmoothingQuality = 'medium'
+    ctx.imageSmoothingQuality = 'high'
     ctx.fillStyle = '#0B0D10'
     ctx.fillRect(0, 0, W, H)
-    drawBlend(ctx, shots.current![1], pos1, W, H)
-    if (t > 0) drawBlend(ctx, shots.current![2], pos2, W, H, t) // crossfade, blurred by the CSS filter above
+    // Shot 1 to shot 2 is one move, not a cut: shot 1 keeps pushing in while it dissolves, shot 2 arrives from the
+    // same push and settles, and the blur above peaks in the middle so the two read as one continuous camera move.
+    const e = t * t * (3 - 2 * t) // smoothstep
+    drawBlend(ctx, shots.current![1], pos1, W, H, 1, 1 + 0.4 * e)
+    if (t > 0) drawBlend(ctx, shots.current![2], pos2, W, H, e, 1.4 - 0.4 * e)
   })
 
   return <canvas ref={ref} className="frame-canvas" role="img" aria-label="Aerial drone footage: a convoy of 4x4s running a Himalayan road, then a high-altitude lake basin with a parked camp" />
