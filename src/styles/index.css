@@ -867,7 +867,8 @@ p {
   font-size: 27.5vw;
   line-height: 1;
   color: var(--sand);
-  margin: 4vh 0 -6vw;
+  margin: 4vh 0 2vh; /* full word visible, not cropped by the footer */
+  opacity: 0.35;
   text-align: center;
   white-space: nowrap;
 }

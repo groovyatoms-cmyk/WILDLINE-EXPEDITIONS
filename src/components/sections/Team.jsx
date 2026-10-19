@@ -6,7 +6,7 @@ export default function Team({ to }) {
   return (
     <Section id="team" className="team" title={team.headline} to={to}>
       <ul className="members">
-        {(to ? team.members.slice(0, 3) : team.members).map((m, i) => (
+        {(to ? team.members.slice(0, 4) : team.members).map((m, i) => (
           <Reveal as="li" key={m.name} index={i}>
             {m.photo
               ? <img className="member-photo" src={`${import.meta.env.BASE_URL}${m.photo}`} alt={m.name} loading="lazy" />
