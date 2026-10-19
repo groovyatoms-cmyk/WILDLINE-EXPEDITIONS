@@ -1,4 +1,4 @@
-import { frames as cfg } from '../data/site.js'
+import { frames as cfg } from '@/data/site.js'
 
 export const isMobile = () => window.matchMedia('(max-width: 768px)').matches
 export const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches

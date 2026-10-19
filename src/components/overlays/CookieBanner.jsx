@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import Button from '@/components/ui/Button.jsx'
 
 const KEY = 'cookie-consent'
 const read = () => { try { return localStorage.getItem(KEY) } catch { return null } }
@@ -27,8 +28,8 @@ export default function CookieBanner() {
         >
           <p className="mono">We use cookies to keep the site working and understand how it is used. See our Privacy Policy in the footer.</p>
           <div className="cookie-actions">
-            <button className="pill pill-line" onClick={() => pick('declined')}>DECLINE</button>
-            <button className="pill pill-rust" onClick={() => pick('accepted')}>ACCEPT</button>
+            <Button onClick={() => pick('declined')}>DECLINE</Button>
+            <Button variant="rust" onClick={() => pick('accepted')}>ACCEPT</Button>
           </div>
         </motion.div>
       )}

@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
-import { menuLinks } from '../data/site.js'
-import { openEnquire } from './Enquire.jsx'
+import { menuLinks } from '@/data/site.js'
+import { openEnquire } from '@/lib/enquire.js'
+import Button from './Button.jsx'
+import ThemeToggle from './ThemeToggle.jsx'
 
-export default function Menu() {
+export default function Header() {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -13,10 +15,12 @@ export default function Menu() {
 
   return (
     <>
+      <div className="header-bar" aria-hidden="true" />
       <nav className="nav" aria-label="Primary">
         <a className="mono nav-menu" href="/" onClick={() => setOpen(false)}>HOME</a>
         <button className="mono nav-menu" aria-expanded={open} aria-controls="menu" onClick={() => setOpen(!open)}>{open ? 'CLOSE' : 'MENU'}</button>
-        <button className="pill pill-rust nav-book" onClick={() => { setOpen(false); openEnquire() }}>BOOK NOW</button>
+        <Button variant="rust" className="nav-book" onClick={() => { setOpen(false); openEnquire() }}>BOOK NOW</Button>
+        <ThemeToggle />
       </nav>
       <div id="menu" className={`menu${open ? ' open' : ''}`} {...(open ? {} : { inert: '' })}>
         <ul>

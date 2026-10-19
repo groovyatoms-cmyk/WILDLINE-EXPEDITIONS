@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { reduced } from '../lib/frames.js'
+import { reduced } from '@/lib/frames.js'
 
 const GLYPHS = [...'ཀཁགངཙཞཨॐकखगघधनपमरलश▲◆≋°']
 const STAGGER = 35 // ms between letters
 const STEP = 50 // ms per glyph flicker
 const rand = (n) => Math.floor(Math.random() * n)
 
-export default function CornerTitle({ text, children }) {
+export default function CornerTitle({ text, compact, hidden, children }) {
   const [shown, setShown] = useState(text)
   const last = useRef(text)
 
@@ -35,7 +35,7 @@ export default function CornerTitle({ text, children }) {
   }, [text])
 
   return (
-    <div className="corner-title">
+    <div className={`corner-title${compact ? ' compact' : ''}${hidden ? ' hidden' : ''}`} aria-hidden={hidden || undefined}>
       <h2 className="display">
         <span className="sr-only">{text}</span>
         <span aria-hidden="true">{shown}</span>

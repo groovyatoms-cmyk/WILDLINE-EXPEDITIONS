@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
-import { site, trips } from '../data/site.js'
-
-export const wa = (text = '') => `https://wa.me/${site.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ''}`
-export const openEnquire = () => dispatchEvent(new Event('open-enquire'))
+import { trips } from '@/data/site.js'
+import { wa } from '@/lib/enquire.js'
+import Button from '@/components/ui/Button.jsx'
+import Panel from '@/components/ui/Panel.jsx'
 
 // Mounted once in App so BOOK NOW and ENQUIRE work from every page.
 export default function Enquire() {
@@ -25,10 +24,7 @@ export default function Enquire() {
 
   return (
     <>
-      <motion.div className={`panel-scrim${open ? ' open' : ''}`} onClick={() => setOpen(false)} initial={false} animate={{ opacity: open ? 1 : 0 }} />
-      <motion.aside className="panel" role="dialog" aria-label="Enquire" aria-hidden={!open} {...(open ? {} : { inert: '' })}
-        initial={false} animate={{ x: open ? 0 : '110%' }} transition={{ duration: 0.6, ease: [0.7, 0, 0.2, 1] }}>
-        <button className="mono panel-close" onClick={() => setOpen(false)}>CLOSE ✕</button>
+      <Panel open={open} onClose={() => setOpen(false)} label="Enquire">
         <form onSubmit={submit}>
           <h3 className="display">ENQUIRE</h3>
           <label className="mono">NAME<input name="name" required autoComplete="name" /></label>
@@ -37,9 +33,9 @@ export default function Enquire() {
             <select name="trip">{trips.map((t) => <option key={t.name}>{t.name}</option>)}</select>
           </label>
           <label className="mono">GROUP SIZE<input name="size" type="number" min="1" max="24" defaultValue="2" required /></label>
-          <button className="pill pill-rust" type="submit">SEND VIA WHATSAPP</button>
+          <Button variant="rust" type="submit">SEND VIA WHATSAPP</Button>
         </form>
-      </motion.aside>
+      </Panel>
     </>
   )
 }

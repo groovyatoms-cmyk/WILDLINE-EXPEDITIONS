@@ -1,8 +1,8 @@
 # WILDLINE EXPEDITIONS
 
-Cinematic, scroll-driven landing page for a guided 4x4 convoy company. Two drone shots are played on the scrollbar, with big type over them, a blurred crossfade between the shots and a corner title that re-types itself through mountain-script glyphs. After the shots come normal sections: Expeditions, The Crew, Join and a footer.
+Cinematic, scroll-driven landing page for a guided 4x4 convoy company. Two drone shots are played on the scrollbar, with big type over them, a blurred crossfade between the shots and a corner title that re-types itself through mountain-script glyphs. After the shots come short previews of the main sections (Expeditions, About Us, Crew, Core Team, Join), each with a VIEW MORE button to its own page, then the footer.
 
-Stack: React 18 + Vite 5, plain CSS, one full-screen `<canvas>`. No animation libraries.
+Stack: React 18 + Vite 5, plain CSS, Framer Motion for UI animation, Lucide icons, a dark/light theme (`useTheme`), one full-screen `<canvas>` for the film.
 
 ## Quick start
 
@@ -13,7 +13,7 @@ npm run build     # output in dist/
 npm run preview   # serve the production build
 ```
 
-Node 18+ is required. `dist/` is a static site, so any static host works (Vercel, Netlify, S3, GitHub Pages). If it is served from a sub-path, set `base` in `vite.config.js`. Frame URLs already use `import.meta.env.BASE_URL`.
+Node 18+ is required. `dist/` is a static site, but pages use real paths (`/about`, `/team`, ...), so the host must serve `index.html` for every path. `vercel.json` already does this for Vercel; Netlify and others need an equivalent rewrite. The router assumes the site is served from the root, so a sub-path deploy would need changes in `src/App.jsx` as well as `base` in `vite.config.js`.
 
 ## Editing content
 
@@ -24,18 +24,19 @@ Everything editable lives in [src/data/site.js](src/data/site.js). Components co
 | `site`      | Brand name, full name, tagline, WhatsApp number (digits with country code), email, social links, copyright |
 | `frames`    | Frames per shot (`count`, `mobileCount`) and decode widths (`w`, `mw`)                                     |
 | `film`      | Scroll layout: pinned height in `vh` and where each shot starts and ends (0–1)                             |
-| `chapters`  | The corner-title names                                                                                     |
+| `chapters`  | The corner-title names while the film plays                                                                |
 | `bigLines`  | Large overlay lines and the scroll point (`at`, 0–1) where each appears                                    |
 | `stats`     | The count-up stats row and its scroll point                                                                |
 | `route`     | Start and end coordinates and altitude shown under the corner title                                        |
 | `trips`     | Expedition rows: name, days, max altitude, season, price, hover still, alt text                            |
 | `crew`      | Crew headline and spec list                                                                                |
-| `join`      | Join headline and upcoming dates                                                                           |
+| `about`, `team`, `careers` | About Us text and stats, core team members, open roles                                      |
+| `join`      | Join headline, upcoming dates, inclusions and booking note                                                 |
 | `menuLinks` | Links in the full-screen menu                                                                              |
 
 Several values in `site.js` are placeholders and must be replaced before launch: the WhatsApp number (`919000000000`), the email and social handles, trip days, altitudes, seasons and prices, and the convoy dates.
 
-`join.dates[].seats` is stored but not displayed. The Join section shows "LIMITED SEATS AVAILABLE" instead.
+Legal copy (privacy, terms, refund) lives in [src/data/legal.js](src/data/legal.js). It is placeholder text and needs a lawyer's review before launch.
 
 ## How it works
 
@@ -60,42 +61,51 @@ Overlay timings (`bigLines`, `stats`) use the same 0–1 scale.
 
 ### Rendering
 
-[FrameCanvas.jsx](src/components/FrameCanvas.jsx) draws the current frame of each shot with cover-fit and `devicePixelRatio` scaling. During the transition it draws shot 2 on top of shot 1 with `globalAlpha` equal to the transition progress. A CSS `blur()` filter on the canvas peaks mid-transition (18px) and is removed at both ends. The transition depends only on scroll position, so scrolling back reverses it exactly.
+[FrameCanvas.jsx](src/components/film/FrameCanvas.jsx) draws the current frame of each shot with cover-fit and `devicePixelRatio` scaling. During the transition it draws shot 2 on top of shot 1 with `globalAlpha` equal to the transition progress. A CSS `blur()` filter on the canvas peaks mid-transition (18px) and is removed at both ends. The transition depends only on scroll position, so scrolling back reverses it exactly.
 
 ### Loading
 
 [src/lib/frames.js](src/lib/frames.js) decodes frames with `createImageBitmap`, 8 at a time, resized to the screen. Shot 1 decodes first and blocks the preloader. Shot 2 then decodes in the background while the visitor scrolls shot 1. If shot 2 frames have not arrived yet, the nearest decoded frame is drawn.
 
-The preloader counter ([Preloader.jsx](src/components/Preloader.jsx)) rises at a steady speed but never passes the real decode progress. At 100 the preloader wipes away with a diagonal slice and scrolling unlocks.
+The preloader counter ([Preloader.jsx](src/components/ui/Preloader.jsx)) glides to the real decode progress with Framer Motion and never passes it. At 100 the preloader wipes away with a diagonal slice and scrolling unlocks.
 
 ### Corner title
 
-[CornerTitle.jsx](src/components/CornerTitle.jsx) is fixed top-left and shows the current chapter. Chapter order is WILDLINE, THE RUN, INTO THE VALLEY, MIGHTY SPITI ROUTE, EXPEDITIONS, JOIN. It is chosen from film progress, then switched to EXPEDITIONS or JOIN once those sections reach the middle of the screen. On every change each letter flickers through 4–6 random glyphs (Tibetan, Devanagari and topo marks) before settling, left to right with a 35 ms stagger. [Coordinates.jsx](src/components/Coordinates.jsx) shows position and altitude interpolated between `route.from` and `route.to`.
+[CornerTitle.jsx](src/components/film/CornerTitle.jsx) is fixed top-left and shows the current chapter. Chapter order follows the film: see `chapters` in `site.js`. Once the Expeditions section reaches the middle of the screen the title shrinks to the logo name. Pages other than Home always show the small logo name. On every change each letter flickers through 4–6 random glyphs (Tibetan, Devanagari and topo marks) before settling, left to right with a 35 ms stagger. [Coordinates.jsx](src/components/film/Coordinates.jsx) shows position and altitude interpolated between `route.from` and `route.to`.
 
 ### Enquiry form
 
-The Join section's enquiry panel has no backend. Submitting opens WhatsApp with a prefilled message built from name, phone, trip and group size. To send enquiries somewhere else, change `submit` in [Join.jsx](src/components/Join.jsx).
+The enquiry panel ([Enquire.jsx](src/components/overlays/Enquire.jsx)) is mounted once in the layout and opened from anywhere with `openEnquire()` ([src/lib/enquire.js](src/lib/enquire.js)). It has no backend: submitting opens WhatsApp with a prefilled message built from name, phone, trip and group size. To send enquiries somewhere else, change `submit` in `Enquire.jsx`.
 
 ## Project layout
 
 ```
 index.html                 meta + OG tags, fonts
+vercel.json                SPA rewrite so every path serves index.html
+vite.config.js             React plugin + "@" alias for src/
+jsconfig.json              same alias for the editor
 src/
-  App.jsx                  page structure, loading, chapter logic
-  styles.css               all styles, colour tokens in :root
-  data/site.js             all copy and settings
-  hooks/useScrollProgress.js
-  lib/frames.js            frame loading, placeholders, device checks
-  lib/timeline.js          progress -> frame mapping
-  components/              Preloader, FrameCanvas, CornerTitle, Coordinates,
-                           FrameCounter, BigLine, Stats, Expeditions, Crew,
-                           Join, Footer, Menu
+  main.jsx                 entry
+  App.jsx                  routing, loading, header title logic
+  styles/index.css         all styles, colour tokens in :root
+  data/                    site.js (all copy and settings), legal.js
+  hooks/                   useScrollProgress
+  lib/                     frames (loading), timeline, enquire (WhatsApp + openEnquire)
+  layout/                  PublicLayout: header, page body, footer, overlays
+  pages/                   Home (film + previews), one file per page, index.js route map
+  components/
+    ui/                    reusable building blocks: Header, Footer, TopBar, Button, Panel,
+                           Section, Preloader, FrameCounter
+    sections/              content sections: Expeditions, About, Crew, Team, Careers, Join
+    film/                  scroll-film pieces: FrameCanvas, BigLine, Stats,
+                           CornerTitle, Coordinates
+    overlays/              site-wide popups: Enquire, Legal, CookieBanner
 public/frames/
   shot1/  shot2/           desktop frames  0001.webp ... 0200.webp
   shot1m/ shot2m/          mobile frames   0001.webp ... 0100.webp
 ```
 
-Colours are the tokens at the top of `styles.css`. The `--sand` token now holds glacier white (`#ECEDE8`) because all headlines are white. Its old value was `#c9a877`.
+Colours are the tokens at the top of `src/styles/index.css`. The `--sand` token holds the headline orange (`#ff7a1a`).
 
 ## Adding footage
 

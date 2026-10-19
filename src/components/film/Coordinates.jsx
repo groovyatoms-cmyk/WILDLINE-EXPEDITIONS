@@ -1,6 +1,6 @@
 import { useRef } from 'react'
-import { useProgress } from '../hooks/useScrollProgress.js'
-import { route } from '../data/site.js'
+import { useProgress } from '@/hooks/useScrollProgress.js'
+import { route } from '@/data/site.js'
 
 const dm = (v, pos, neg) => {
   const d = Math.floor(Math.abs(v)), m = Math.round((Math.abs(v) - d) * 60)

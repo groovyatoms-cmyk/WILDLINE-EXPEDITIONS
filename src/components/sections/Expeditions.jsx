@@ -1,9 +1,10 @@
-import { trips } from '../data/site.js'
+import { trips } from '@/data/site.js'
+import Section from '@/components/ui/Section.jsx'
 
 export default function Expeditions({ to }) {
   return (
-    <section id="expeditions" className="section expeditions" aria-labelledby="exp-h">
-      <h2 id="exp-h" className="mono label">EXPEDITIONS — 2026 SEASON</h2>
+    <Section id="expeditions" className="expeditions" title="EXPEDITIONS" to={to}>
+      <p className="mono label">2026 SEASON</p>
       <ul>
         {(to ? trips.slice(0, 3) : trips).map((t) => (
           <li key={t.name}>
@@ -17,7 +18,6 @@ export default function Expeditions({ to }) {
           </li>
         ))}
       </ul>
-      {to && <a className="pill pill-line section-more" href={to}>VIEW MORE →</a>}
-    </section>
+    </Section>
   )
 }

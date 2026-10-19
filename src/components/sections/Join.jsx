@@ -1,10 +1,11 @@
-import { join, trips } from '../data/site.js'
-import { openEnquire, wa } from './Enquire.jsx'
+import { join, trips } from '@/data/site.js'
+import { openEnquire, wa } from '@/lib/enquire.js'
+import Section from '@/components/ui/Section.jsx'
+import Button from '@/components/ui/Button.jsx'
 
 export default function Join({ to }) {
   return (
-    <section id="join" className="section join" aria-labelledby="join-h">
-      <h2 id="join-h" className="display join-head">{join.headline}</h2>
+    <Section id="join" className="join" title={join.headline} to={to}>
       <ul className="dates mono">
         {(to ? join.dates.slice(0, 3) : join.dates).map((d) => {
           const t = trips.find((x) => x.name === d.trip)
@@ -20,10 +21,9 @@ export default function Join({ to }) {
       {!to && <p className="mono join-includes">INCLUDED: {join.includes.join(' · ')}</p>}
       {!to && <p className="mono join-note">{join.note}</p>}
       <div className="cta">
-        <a className="pill pill-rust" href={wa()} target="_blank" rel="noopener noreferrer">WHATSAPP US</a>
-        <button className="pill pill-line" onClick={openEnquire} aria-haspopup="dialog">ENQUIRE</button>
+        <Button variant="rust" href={wa()} target="_blank">WHATSAPP US</Button>
+        <Button onClick={openEnquire} aria-haspopup="dialog">ENQUIRE</Button>
       </div>
-      {to && <a className="pill pill-line section-more" href={to}>VIEW MORE →</a>}
-    </section>
+    </Section>
   )
 }

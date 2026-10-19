@@ -1,5 +1,5 @@
-import { site } from '../data/site.js'
-import Legal from './Legal.jsx'
+import { site } from '@/data/site.js'
+import Legal from '@/components/overlays/Legal.jsx'
 
 export default function Footer() {
   return (

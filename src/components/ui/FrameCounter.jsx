@@ -1,6 +1,6 @@
 import { useRef } from 'react'
-import { useProgress } from '../hooks/useScrollProgress.js'
-import { timeline, frameNo, frameTotal } from '../lib/timeline.js'
+import { useProgress } from '@/hooks/useScrollProgress.js'
+import { timeline, frameNo, frameTotal } from '@/lib/timeline.js'
 
 const pad = (n) => String(n).padStart(3, '0')
 

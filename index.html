@@ -6,6 +6,16 @@
     <title>WILDLINE EXPEDITIONS — Far roads. Good company.</title>
     <meta name="description" content="WILDLINE EXPEDITIONS runs guided 4x4 convoy expeditions through Ladakh, Spiti and the Thar Desert.." />
     <meta name="theme-color" content="#0B0D10" />
+    <script>
+      // Apply the saved theme before first paint to avoid a dark/light flash.
+      try {
+        var t = localStorage.getItem('theme')
+        if (t === 'light') {
+          document.documentElement.dataset.theme = t
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#F4F1EA')
+        }
+      } catch (e) {}
+    </script>
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="WILDLINE EXPEDITIONS" />
     <meta property="og:title" content="WILDLINE EXPEDITIONS — Far roads. Good company." />

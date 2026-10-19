@@ -22,11 +22,6 @@ export const chapters = {
   run: 'THE RUN',
   valley: 'INTO THE VALLEY',
   basin: 'ROUTE SPITI',
-  expeditions: 'EXPEDITIONS',
-  about: 'ABOUT US',
-  team: 'OUR CORE TEAM',
-  careers: 'CAREERS',
-  join: 'JOIN',
 }
 
 export const bigLines = [
@@ -117,7 +112,7 @@ export const careers = {
   headline: 'CAREERS',
   intro: 'Love the mountains, machines and good company? Join the crew that gets convoys there and back. Send your CV and a few lines about yourself.',
   roles: [
-    { icon: 'wheel', title: 'LEAD DRIVER-GUIDE', type: 'Seasonal · Leh / Manali', desc: '5+ years of high-altitude 4x4 driving. Leads a convoy, makes the safety calls, keeps guests calm and moving.' },
+    { icon: 'car', title: 'LEAD DRIVER-GUIDE', type: 'Seasonal · Leh / Manali', desc: '5+ years of high-altitude 4x4 driving. Leads a convoy, makes the safety calls, keeps guests calm and moving.' },
     { icon: 'wrench', title: 'RECOVERY + MECHANIC', type: 'Seasonal · Sweep vehicle', desc: 'Winching, recovery and field repairs. Keeps every car running and the sweep vehicle stocked.' },
     { icon: 'clipboard', title: 'TRIP OPERATIONS EXECUTIVE', type: 'Full-time · Office', desc: 'Permits, stays, vehicles and guest briefings. Makes sure everything is booked before the convoy rolls.' },
     { icon: 'camera', title: 'CONTENT + PHOTOGRAPHER', type: 'Seasonal / Freelance', desc: 'Shoots photo and video on the road for our channels and guests. Drone licence is a plus.' },

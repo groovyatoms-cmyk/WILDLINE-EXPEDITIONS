@@ -1,9 +1,9 @@
-import { team } from '../data/site.js'
+import { team } from '@/data/site.js'
+import Section from '@/components/ui/Section.jsx'
 
 export default function Team({ to }) {
   return (
-    <section id="team" className="section team" aria-labelledby="team-h">
-      <h2 id="team-h" className="display team-head">{team.headline}</h2>
+    <Section id="team" className="team" title={team.headline} to={to}>
       <ul className="members">
         {(to ? team.members.slice(0, 3) : team.members).map((m) => (
           <li key={m.name}>
@@ -16,7 +16,6 @@ export default function Team({ to }) {
           </li>
         ))}
       </ul>
-      {to && <a className="pill pill-line section-more" href={to}>VIEW MORE →</a>}
-    </section>
+    </Section>
   )
 }

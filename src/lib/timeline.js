@@ -1,5 +1,5 @@
-import { film, frames } from '../data/site.js'
-import { clamp01 } from '../hooks/useScrollProgress.js'
+import { film, frames } from '@/data/site.js'
+import { clamp01 } from '@/hooks/useScrollProgress.js'
 import { isMobile } from './frames.js'
 
 export const frameTotal = () => (isMobile() ? frames.mobileCount : frames.count)

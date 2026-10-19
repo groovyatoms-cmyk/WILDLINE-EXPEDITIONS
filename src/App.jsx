@@ -1,29 +1,20 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { bigLines, chapters, film, site } from './data/site.js'
-import { useProgress, useScrollProgress } from './hooks/useScrollProgress.js'
-import { loadShot } from './lib/frames.js'
-import About from './components/About.jsx'
-import BigLine from './components/BigLine.jsx'
-import CookieBanner from './components/CookieBanner.jsx'
-import Coordinates from './components/Coordinates.jsx'
-import CornerTitle from './components/CornerTitle.jsx'
-import Careers from './components/Careers.jsx'
-import Crew from './components/Crew.jsx'
-import Enquire from './components/Enquire.jsx'
-import Expeditions from './components/Expeditions.jsx'
-import Footer from './components/Footer.jsx'
-import FrameCanvas from './components/FrameCanvas.jsx'
-import FrameCounter from './components/FrameCounter.jsx'
-import Join from './components/Join.jsx'
-import Menu from './components/Menu.jsx'
-import Preloader from './components/Preloader.jsx'
-import Stats from './components/Stats.jsx'
-import Team from './components/Team.jsx'
+import { chapters, film, site } from '@/data/site.js'
+import { useProgress, useScrollProgress } from '@/hooks/useScrollProgress.js'
+import { loadShot } from '@/lib/frames.js'
+import CornerTitle from '@/components/film/CornerTitle.jsx'
+import Coordinates from '@/components/film/Coordinates.jsx'
+import Preloader from '@/components/ui/Preloader.jsx'
+import PublicLayout from '@/layout/PublicLayout.jsx'
+import Home from '@/pages/Home.jsx'
+import { pages } from '@/pages/index.js'
 
 const top = (id) => document.getElementById(id)?.getBoundingClientRect().top ?? Infinity
 
+const pastFilm = () => top('expeditions') < innerHeight * 0.5
+
 function chapterFor(p) {
-  for (const id of ['join', 'careers', 'team', 'about', 'expeditions']) if (top(id) < innerHeight * 0.5) return chapters[id]
+  if (pastFilm()) return site.name // below the film the header is just the logo name
   if (p < 0.03) return chapters.start
   if (p < film.shot1End) return chapters.run
   if (p < film.shot2Start) return chapters.valley
@@ -32,13 +23,6 @@ function chapterFor(p) {
 
 // Real paths (/about) via the History API. Needs a host fallback to index.html (see vercel.json).
 const readPage = () => location.pathname.replace(/^\/|\/$/g, '')
-const pages = {
-  expeditions: <Expeditions />,
-  about: <><About /><Crew /></>,
-  team: <Team />,
-  careers: <Careers />,
-  join: <Join />,
-}
 
 export default function App() {
   const filmRef = useRef()
@@ -47,8 +31,10 @@ export default function App() {
   const [progress, setProgress] = useState(0)
   const [ready, setReady] = useState(false)
   const [chapter, setChapter] = useState(chapters.start)
+  const [compact, setCompact] = useState(false)
   const store = useScrollProgress(filmRef)
   const [page, setPage] = useState(readPage)
+  const Page = Object.hasOwn(pages, page) ? pages[page] : null
 
   useEffect(() => {
     const go = () => { setPage(readPage()); scrollTo(0, 0) }
@@ -76,8 +62,14 @@ export default function App() {
     document.documentElement.style.overflow = ready ? '' : 'hidden'
   }, [ready])
 
+  // Lets the CSS keep the header light while it sits over the dark drone film.
+  useEffect(() => {
+    document.body.classList.toggle('on-film', !Page && !compact)
+  }, [Page, compact])
+
   useProgress(store, (p) => {
     setChapter(chapterFor(p))
+    setCompact(pastFilm())
     if (tagRef.current) tagRef.current.style.opacity = 1 - Math.min(1, p / 0.06)
   })
 
@@ -86,43 +78,20 @@ export default function App() {
   return (
     <>
       {!ready && <Preloader progress={progress} onDone={done} />}
-      <Menu />
-      {!pages[page] && (
-        <CornerTitle text={chapter}>
-          <Coordinates store={store} />
-        </CornerTitle>
-      )}
-
-      <main>
+      <PublicLayout
+        ready={ready}
+        routeKey={page}
+        header={Page
+          ? <CornerTitle text={site.name} compact />
+          : (
+            <CornerTitle text={chapter} compact={compact} hidden={compact}>
+              <Coordinates store={store} />
+            </CornerTitle>
+          )}
+      >
         <h1 className="sr-only">{site.fullName} —{site.tagline}</h1>
-        {pages[page] ? <div className="page">{pages[page]}</div> : (
-          <section ref={filmRef} className="film" style={{ height: `${film.heightVh}vh` }} aria-label="Drone shots: The Run and The Basin">
-            <div className="stage">
-              <FrameCanvas store={store} shots={shots} />
-              <div className="vignette" />
-              <div className="grain" />
-              <i className="vf tl" /><i className="vf tr" /><i className="vf bl" /><i className="vf br" />
-              <FrameCounter store={store} />
-              <p ref={tagRef} className="mono tagline">{site.tagline.toUpperCase()} — {site.fullName}</p>
-              {bigLines.map((l) => <BigLine key={l.text} store={store} {...l} />)}
-              <Stats store={store} />
-            </div>
-          </section>
-        )}
-        {!pages[page] && (
-          <>
-            <Expeditions to="/expeditions" />
-            <About to="/about" />
-            <Crew to="/about" />
-            <Team to="/team" />
-            <Careers to="/careers" />
-            <Join to="/join" />
-          </>
-        )}
-      </main>
-      <Footer />
-      <Enquire />
-      {ready && <CookieBanner />}
+        {Page ? <Page /> : <Home store={store} shots={shots} filmRef={filmRef} tagRef={tagRef} />}
+      </PublicLayout>
     </>
   )
 }

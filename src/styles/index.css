@@ -1,12 +1,34 @@
 :root {
   --bg: #0b0d10;
-  --sand: #ff7a1a; /* headline colour; was #ecede8, dust sand #c9a877 */
+  --surface: #14171b; /* panels, cookie banner, placeholders */
+  --surface-2: #1a1e23;
+  --sand: #ff7a1a; /* headline colour */
   --rust: #c2502a;
-  --white: #ecede8;
-  --stone: #5e6052;
+  --white: #ecede8; /* body text */
+  --stone: #5e6052; /* muted text and rules */
+  --on-accent: #0b0d10; /* text on orange blocks */
+  --scrim: rgba(0, 0, 0, 0.6);
   --display: "Anton", "Bebas Neue", Impact, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, monospace;
   --slant: -14deg;
+  color-scheme: dark;
+}
+:root[data-theme='light'] {
+  --bg: #f4f1ea;
+  --surface: #e8e4da;
+  --surface-2: #dfdbd0;
+  --sand: #d9540a;
+  --white: #14171b;
+  --stone: #6b6d5f;
+  --scrim: rgba(0, 0, 0, 0.4);
+  color-scheme: light;
+}
+/* The drone film and the title over it stay on a dark photo in both themes. */
+.stage,
+.on-film .corner-title,
+.on-film .nav {
+  --sand: #ff7a1a;
+  --white: #ecede8;
 }
 *,
 *::before,
@@ -89,7 +111,7 @@ p {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: #000;
+  background: var(--bg);
   display: grid;
   place-content: center;
   gap: 1rem;
@@ -233,6 +255,7 @@ p {
 
 /* corner title + nav (fixed) */
 .corner-title {
+  transition: opacity 0.3s;
   position: fixed;
   top: 18px;
   left: 4vw;
@@ -245,21 +268,78 @@ p {
   color: var(--sand);
   white-space: nowrap;
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
+  transition: font-size 0.4s;
+}
+.corner-title.hidden {
+  opacity: 0; /* home sections below the film carry their own headings */
+}
+.corner-title.compact h2 {
+  font-size: 1.8rem;
+  text-shadow: none;
+}
+.corner-title.compact .coords {
+  display: none;
 }
 .coords {
   margin-top: 0.6rem;
   color: var(--white);
 }
-.nav {
+/* Solid strip behind the header so page content never shows through it.
+   Hidden over the film, where the header floats on the photo. */
+.header-bar {
   position: fixed;
-  top: 18px;
+  inset: 0 0 auto 0;
+  height: 72px;
+  z-index: 19; /* under the logo (20) and nav (30), over page content */
+  background: var(--bg);
+  border-bottom: 1px solid var(--surface-2);
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.on-film .header-bar {
+  opacity: 0;
+}
+.nav {
+  color: var(--white);
+  position: fixed;
+  top: 36px; /* vertical centre of the 72px header bar, shared with the logo */
+  transform: translateY(-50%);
   right: 28px;
   z-index: 30;
   display: flex;
   align-items: center;
   gap: 1rem;
 }
+/* Phones and tablets: below the film the solid header shows the logo on the left,
+   so the nav sits on the right instead of floating on its own. */
+@media (max-width: 1024px) {
+  .corner-title.hidden {
+    opacity: 1;
+  }
+  .corner-title.compact {
+    top: 36px; /* centred on the 72px header bar, level with the nav */
+    transform: translateY(-50%);
+    right: auto;
+  }
+  .corner-title.compact h2 {
+    font-size: 1.6rem;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 768px) {
+  .corner-title.compact h2 {
+    font-size: 1.4rem;
+  }
+}
+@media (max-width: 380px) {
+  /* narrow phones: drop the HOME text link so the nav never meets the logo */
+  .nav a.nav-menu {
+    display: none;
+  }
+}
 .nav-menu {
+  display: inline-flex;
+  align-items: center;
   background: none;
   border: 0;
   cursor: pointer;
@@ -280,7 +360,7 @@ p {
 }
 .pill-rust {
   background: var(--rust);
-  color: var(--white);
+  color: #fff;
 }
 .pill-line {
   background: none;
@@ -383,10 +463,6 @@ p {
   gap: 6vw;
   align-items: start;
 }
-.crew-head {
-  font-size: 7.5vw;
-  color: var(--sand);
-}
 .specs div {
   display: grid;
   grid-template-columns: 9rem 1fr;
@@ -400,22 +476,16 @@ p {
 .specs dd {
   text-transform: none;
 }
-.join-head {
-  font-size: 12vw;
-  color: var(--sand);
-}
 .dates {
   margin: 3rem 0;
 }
 .dates li {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 0;
   border-top: 1px solid var(--stone);
-}
-.dates li {
-  flex-wrap: wrap;
 }
 .dates li span:last-child {
   color: var(--rust);
@@ -436,7 +506,7 @@ p {
   position: fixed;
   inset: 0;
   z-index: 40;
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--scrim);
   opacity: 0;
   pointer-events: none;
 }
@@ -451,13 +521,16 @@ p {
   bottom: 0;
   z-index: 41;
   width: min(520px, 100vw);
-  background: #14171b;
+  background: var(--surface);
   padding: 6rem 3rem 3rem 6rem;
   clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%);
   transform: translateX(110%); /* initial state; framer-motion drives x */
   border-left: 2px solid var(--rust);
 }
 .panel-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   position: absolute;
   top: 1.5rem;
   right: 2rem;
@@ -492,7 +565,7 @@ p {
   border-radius: 0;
 }
 .panel select option {
-  background: #14171b;
+  background: var(--surface);
 }
 .panel .pill {
   justify-self: start;
@@ -525,14 +598,6 @@ p {
   padding-top: 12vh;
   padding-bottom: 6vh;
 }
-.about-head,
-.team-head {
-  font-size: 7.5vw;
-  margin-bottom: 2rem;
-}
-.about-head {
-  margin: 0;
-}
 .about-body {
   display: grid;
   gap: 1.4rem;
@@ -563,9 +628,6 @@ p {
   .about {
     grid-template-columns: 1fr;
   }
-  .about-head {
-    font-size: 15vw;
-  }
 }
 .members {
   display: grid;
@@ -575,6 +637,23 @@ p {
 .members li {
   border-top: 1px solid var(--stone);
   padding-top: 1rem;
+}
+@media (max-width: 768px) {
+  /* phones: swipeable row of cards instead of a tall stack */
+  .members {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin-inline: -4vw;
+    padding: 0 4vw 1rem;
+    scroll-padding-inline: 4vw;
+    -webkit-overflow-scrolling: touch;
+  }
+  .members li {
+    flex: 0 0 78%;
+    scroll-snap-align: start;
+  }
 }
 .member-photo {
   display: block;
@@ -586,7 +665,7 @@ p {
 .member-ph {
   display: grid;
   place-items: center;
-  background: repeating-linear-gradient(135deg, #14171b 0 12px, #1a1e23 12px 24px);
+  background: repeating-linear-gradient(135deg, var(--surface) 0 12px, var(--surface-2) 12px 24px);
   border: 1px dashed var(--stone);
   color: var(--stone);
   font-size: 4rem;
@@ -598,10 +677,6 @@ p {
 .member-role {
   color: var(--stone);
   margin: 0.3rem 0 0.8rem;
-}
-.careers-head {
-  font-size: 7.5vw;
-  margin-bottom: 1.5rem;
 }
 .careers-intro {
   max-width: 44rem;
@@ -638,16 +713,31 @@ p {
 .page {
   min-height: 100vh;
 }
+.topbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  z-index: 90; /* above the nav, below the preloader */
+  background: var(--sand);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+.topbar-load {
+  background: var(--rust);
+  box-shadow: 0 0 8px var(--rust);
+}
 .section-more {
-  position: absolute; /* top-right corner of the section, above its content */
-  top: calc(22vh - 3rem);
-  right: 4vw;
+  /* sits right under the section heading, left-aligned with it */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 2rem; /* gap above comes from the heading's own bottom margin */
   /* theme: slanted orange block like the panels and menu, display type */
   border: 0;
   border-radius: 0;
   padding: 0.9rem 2.2rem;
   background: var(--sand);
-  color: var(--bg);
+  color: var(--on-accent);
   font: 400 1.1rem/1 var(--display);
   letter-spacing: 0.06em;
   clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
@@ -656,17 +746,40 @@ p {
 .section-more:hover {
   background: var(--white);
 }
-.about .section-more {
-  top: calc(12vh - 3rem);
+/* two-column sections: heading + button stack in column 1, content spans both rows of column 2 */
+.about .section-more,
+.crew .section-more {
+  grid-column: 1;
+  grid-row: 2;
+  justify-self: start;
+  margin: 1.5rem 0 0;
+}
+.about,
+.crew {
+  grid-template-rows: auto 1fr; /* row 2 absorbs the tall content so the button stays under the heading */
+  row-gap: 0;
+}
+.about-body,
+.specs {
+  grid-column: 2;
+  grid-row: 1 / span 2;
 }
 @media (max-width: 768px) {
-  /* phone: the fixed corner title owns the top, so the button goes below the content */
-  .section-more,
-  .about .section-more {
-    position: static;
-    grid-column: 1 / -1;
-    justify-self: start;
-    margin-top: 2rem;
+  .about .section-more,
+  .crew .section-more,
+  .about-body,
+  .specs {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .section-more {
+    margin: 0 0 1.8rem;
+    padding: 0.75rem 1.7rem;
+    font-size: 1rem;
+  }
+  .about .section-more,
+  .crew .section-more {
+    margin: 1.5rem 0 1.8rem; /* these headings have no bottom margin, so the gap lives here */
   }
 }
 .cookie {
@@ -681,7 +794,7 @@ p {
   justify-content: space-between;
   gap: 1rem 2rem;
   padding: 1.2rem 1.5rem;
-  background: #14171b;
+  background: var(--surface);
   border: 1px solid var(--stone);
   border-left: 2px solid var(--rust);
 }
@@ -760,6 +873,9 @@ p {
     right: 16px;
     gap: 0.4rem;
   }
+  .nav .nav-menu {
+    padding: 0.5rem 0.3rem;
+  }
   .nav .pill {
     padding: 0.6rem 1rem;
   }
@@ -777,12 +893,6 @@ p {
   .crew {
     grid-template-columns: 1fr;
   }
-  .crew-head {
-    font-size: 13vw;
-  }
-  .join-head {
-    font-size: 18vw;
-  }
   .specs div {
     grid-template-columns: 1fr;
     gap: 0.2rem;
@@ -799,16 +909,23 @@ p {
   .grain {
     animation: none;
   }
-  .preloader {
-    transition: opacity 0.5s;
-  }
-  .preloader.wipe {
-    clip-path: none;
-    opacity: 0;
-  }
   .menu a,
-  .panel,
   .trip img {
     transition: none;
+  }
+}
+
+/* one heading size for every section */
+.section-head {
+  font-size: 7.5vw;
+  margin-bottom: 1.5rem;
+}
+.about .section-head,
+.crew .section-head {
+  margin-bottom: 0; /* grid sections space the button with its own margin */
+}
+@media (max-width: 768px) {
+  .section-head {
+    font-size: 15vw;
   }
 }

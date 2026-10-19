@@ -1,6 +1,6 @@
 import { useRef } from 'react'
-import { useProgress, clamp01 } from '../hooks/useScrollProgress.js'
-import { stats } from '../data/site.js'
+import { useProgress, clamp01 } from '@/hooks/useScrollProgress.js'
+import { stats } from '@/data/site.js'
 
 export default function Stats({ store }) {
   const root = useRef()

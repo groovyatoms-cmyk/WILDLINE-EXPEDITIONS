@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { useProgress } from '../hooks/useScrollProgress.js'
-import { timeline, frameTotal } from '../lib/timeline.js'
-import { reduced } from '../lib/frames.js'
+import { useProgress } from '@/hooks/useScrollProgress.js'
+import { timeline, frameTotal } from '@/lib/timeline.js'
+import { reduced } from '@/lib/frames.js'
 
 // Nearest decoded frame around index i (shot 2 may still be decoding).
 function pick(arr, i) {

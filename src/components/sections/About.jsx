@@ -1,9 +1,9 @@
-import { about } from '../data/site.js'
+import { about } from '@/data/site.js'
+import Section from '@/components/ui/Section.jsx'
 
 export default function About({ to }) {
   return (
-    <section id="about" className="section about" aria-labelledby="about-h">
-      <h2 id="about-h" className="display about-head">{about.headline}</h2>
+    <Section id="about" className="about" title={about.headline} to={to}>
       <div className="about-body">
         {(to ? about.body.slice(0, 1) : about.body).map((p) => <p key={p}>{p}</p>)}
       </div>
@@ -12,7 +12,6 @@ export default function About({ to }) {
           <div key={k}><dd className="display">{v}</dd><dt className="mono">{k}</dt></div>
         ))}
       </dl>}
-      {to && <a className="pill pill-line section-more" href={to}>VIEW MORE →</a>}
-    </section>
+    </Section>
   )
 }

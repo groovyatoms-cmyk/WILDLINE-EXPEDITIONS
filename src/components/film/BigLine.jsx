@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { useProgress, clamp01 } from '../hooks/useScrollProgress.js'
+import { useProgress, clamp01 } from '@/hooks/useScrollProgress.js'
 
 // Slides up 40px + fades in at `at`, holds, then drifts up and out.
 export default function BigLine({ store, at, text }) {

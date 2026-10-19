@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { legal } from '../data/legal.js'
+import { legal } from '@/data/legal.js'
+import Panel from '@/components/ui/Panel.jsx'
 
 export default function Legal() {
   const [key, setKey] = useState(null)
@@ -11,10 +11,7 @@ export default function Legal() {
       {Object.entries(legal).map(([k, d]) => (
         <button key={k} className="mono legal-link" onClick={() => setKey(k)} aria-haspopup="dialog">{d.title}</button>
       ))}
-      <motion.div className={`panel-scrim${doc ? ' open' : ''}`} onClick={() => setKey(null)} initial={false} animate={{ opacity: doc ? 1 : 0 }} />
-      <motion.aside className="panel legal-panel" role="dialog" aria-label={doc?.title} aria-hidden={!doc} {...(doc ? {} : { inert: '' })}
-        initial={false} animate={{ x: doc ? 0 : '110%' }} transition={{ duration: 0.6, ease: [0.7, 0, 0.2, 1] }}>
-        <button className="mono panel-close" onClick={() => setKey(null)}>CLOSE ✕</button>
+      <Panel open={!!doc} onClose={() => setKey(null)} label={doc?.title} className="legal-panel">
         {doc && (
           <article>
             <h3 className="display">{doc.title}</h3>
@@ -23,7 +20,7 @@ export default function Legal() {
             ))}
           </article>
         )}
-      </motion.aside>
+      </Panel>
     </>
   )
 }
