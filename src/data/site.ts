@@ -12,7 +12,12 @@ export const site = {
 }
 
 // Frames per shot. Mobile set = every 2nd frame, 1080px wide (see README).
-export const frames = { count: 200, mobileCount: 100, w: 1920, mw: 1080 }
+// Per shot: shot 1 is 23 s of footage so it gets ~26 fps worth of frames; shot 2 is 10 s at ~20 fps.
+// w / mw = widest decoded frame (desktop / mobile) and must match the exported files.
+export const frames = {
+  1: { count: 600, mobileCount: 300, w: 1280, mw: 720 },
+  2: { count: 200, mobileCount: 100, w: 1920, mw: 1080 },
+}
 
 // Film layout: fractions of the pinned scroll film (0–1).
 export const film = { heightVh: 1200, shot1End: 0.45, shot2Start: 0.55, shot2End: 0.9 }
@@ -64,20 +69,20 @@ export const route = {
 type Trip = { name: string; slug?: string; days: number; alt: string; season: string; price: string; still: string; alt_text: string }
 
 export const trips: Trip[] = [
-  { name: 'WINTER FROZEN SPITI EXPEDITION', slug: 'winter-spiti', days: 9, alt: '4,400 m', season: 'Jan–Mar', price: '₹1,45,000', still: 'frames/shot1/0030.webp', alt_text: 'Convoy driving a snow-covered road through the frozen Spiti valley' },
+  { name: 'WINTER FROZEN SPITI EXPEDITION', slug: 'winter-spiti', days: 9, alt: '4,400 m', season: 'Jan–Mar', price: '₹1,45,000', still: 'frames/shot1/0088.webp', alt_text: 'Convoy driving a snow-covered road through the frozen Spiti valley' },
   { name: 'ADI KAILASH EXPEDITION', slug: 'adi-kailash', days: 9, alt: '4,572 m', season: 'May–Jun, Sep–Oct', price: '₹1,25,000', still: 'frames/shot2/0020.webp', alt_text: 'Convoy on the high road toward Adi Kailash in the Kumaon Himalaya' },
-  { name: 'NEPAL EXPEDITION', days: 10, alt: '3,800 m', season: 'Mar–May, Sep–Nov', price: '₹1,50,000', still: 'frames/shot1/0120.webp', alt_text: 'Convoy on a mountain road above a Himalayan valley in Nepal' },
+  { name: 'NEPAL EXPEDITION', days: 10, alt: '3,800 m', season: 'Mar–May, Sep–Nov', price: '₹1,50,000', still: 'frames/shot1/0359.webp', alt_text: 'Convoy on a mountain road above a Himalayan valley in Nepal' },
   { name: 'EXPLORE ZANSKAR EXPEDITION', slug: 'zanskar', days: 9, alt: '4,401 m', season: 'Jun–Sep', price: '₹1,20,000', still: 'frames/shot2/0140.webp', alt_text: 'Convoy on the high road to Zanskar over Pensi La' },
   { name: 'LADAKH EXPEDITION', days: 12, alt: '5,359 m', season: 'Jun–Sep', price: '₹1,65,000', still: 'frames/shot2/0060.webp', alt_text: 'Convoy crossing a high pass in Ladakh' },
-  { name: 'SPITI EXPEDITION', days: 9, alt: '4,590 m', season: 'May–Oct', price: '₹1,05,000', still: 'frames/shot1/0060.webp', alt_text: 'Convoy climbing a switchback road above the Spiti valley' },
-  { name: 'ARUNACHAL EXPEDITION', days: 11, alt: '4,170 m', season: 'Apr–Jun, Oct–Nov', price: '₹1,35,000', still: 'frames/shot1/0150.webp', alt_text: 'Convoy on a mountain road through Arunachal forest toward Sela Pass' },
-  { name: 'SIKKIM EXPEDITION', days: 8, alt: '5,100 m', season: 'Apr–Jun, Sep–Nov', price: '₹95,000', still: 'frames/shot1/0100.webp', alt_text: 'Convoy on a mountain road toward Nathu La, Sikkim' },
+  { name: 'SPITI EXPEDITION', days: 9, alt: '4,590 m', season: 'May–Oct', price: '₹1,05,000', still: 'frames/shot1/0179.webp', alt_text: 'Convoy climbing a switchback road above the Spiti valley' },
+  { name: 'ARUNACHAL EXPEDITION', days: 11, alt: '4,170 m', season: 'Apr–Jun, Oct–Nov', price: '₹1,35,000', still: 'frames/shot1/0449.webp', alt_text: 'Convoy on a mountain road through Arunachal forest toward Sela Pass' },
+  { name: 'SIKKIM EXPEDITION', days: 8, alt: '5,100 m', season: 'Apr–Jun, Sep–Nov', price: '₹95,000', still: 'frames/shot1/0299.webp', alt_text: 'Convoy on a mountain road toward Nathu La, Sikkim' },
   { name: 'KASHMIR EXPEDITION', days: 9, alt: '3,530 m', season: 'May–Sep', price: '₹1,10,000', still: 'frames/shot2/0100.webp', alt_text: 'Convoy on the Zojila road above Kashmir valleys' },
-  { name: 'UTTARAKHAND EXPEDITION', days: 7, alt: '4,500 m', season: 'May–Jun, Sep–Oct', price: '₹78,000', still: 'frames/shot1/0060.webp', alt_text: 'Convoy climbing through Himalayan foothills in Uttarakhand' },
+  { name: 'UTTARAKHAND EXPEDITION', days: 7, alt: '4,500 m', season: 'May–Jun, Sep–Oct', price: '₹78,000', still: 'frames/shot1/0179.webp', alt_text: 'Convoy climbing through Himalayan foothills in Uttarakhand' },
   { name: 'RAJASTHAN EXPEDITION', days: 6, alt: '250 m', season: 'Nov–Feb', price: '₹62,000', still: 'frames/shot2/0180.webp', alt_text: 'Dune camp with a small fire at golden hour in Rajasthan' },
   { name: 'KUTCH EXPEDITION', days: 5, alt: '50 m', season: 'Nov–Feb', price: '₹55,000', still: 'frames/shot2/0180.webp', alt_text: 'Convoy crossing the white salt desert of Kutch' },
-  { name: 'MEGHALAYA EXPEDITION', days: 6, alt: '1,960 m', season: 'Oct–Apr', price: '₹68,000', still: 'frames/shot1/0150.webp', alt_text: 'Convoy on a forest road in the Meghalaya hills' },
-  { name: 'WESTERN GHATS EXPEDITION', days: 7, alt: '1,800 m', season: 'Oct–Feb', price: '₹70,000', still: 'frames/shot1/0100.webp', alt_text: 'Convoy on a misty ghat road in the Western Ghats' },
+  { name: 'MEGHALAYA EXPEDITION', days: 6, alt: '1,960 m', season: 'Oct–Apr', price: '₹68,000', still: 'frames/shot1/0449.webp', alt_text: 'Convoy on a forest road in the Meghalaya hills' },
+  { name: 'WESTERN GHATS EXPEDITION', days: 7, alt: '1,800 m', season: 'Oct–Feb', price: '₹70,000', still: 'frames/shot1/0299.webp', alt_text: 'Convoy on a misty ghat road in the Western Ghats' },
 ]
 
 export const crew = {

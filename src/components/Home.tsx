@@ -3,6 +3,7 @@ import type { Store } from '@/hooks/useScrollProgress'
 import type { Shots } from '@/lib/frames'
 import { bigLines, film, site } from '@/data/site'
 import About from '@/components/sections/About'
+import AutoPlay from '@/components/film/AutoPlay'
 import BigLine from '@/components/film/BigLine'
 import Crew from '@/components/sections/Crew'
 import Expeditions from '@/components/sections/Expeditions'
@@ -18,9 +19,10 @@ type HomeProps = {
   shots: RefObject<Shots>
   filmRef: RefObject<HTMLElement>
   tagRef: RefObject<HTMLParagraphElement>
+  ready: boolean
 }
 
-export default function Home({ store, shots, filmRef, tagRef }: HomeProps) {
+export default function Home({ store, shots, filmRef, tagRef, ready }: HomeProps) {
   return (
     <>
       <section ref={filmRef} className="film" style={{ height: `${film.heightVh}vh` }} aria-label="Drone shots: The Run and The Basin">
@@ -33,6 +35,7 @@ export default function Home({ store, shots, filmRef, tagRef }: HomeProps) {
           <p ref={tagRef} className="mono tagline">{site.tagline.toUpperCase()} — {site.fullName}</p>
           {bigLines.map((l) => <BigLine key={l.text} store={store} {...l} />)}
           <Stats store={store} />
+          <AutoPlay ready={ready} filmRef={filmRef} shots={shots} />
         </div>
       </section>
       <Expeditions to="/expeditions" />

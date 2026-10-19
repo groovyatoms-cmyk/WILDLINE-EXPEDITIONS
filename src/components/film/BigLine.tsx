@@ -10,9 +10,12 @@ export default function BigLine({ store, at, text }: { store: Store; at: number;
   useProgress(store, (p) => {
     const i = clamp01((p - (at - 0.015)) / 0.015)
     const o = clamp01((p - (at + 0.035)) / 0.015)
-    if (!ref.current) return
-    ref.current.style.opacity = String(i * (1 - o))
-    ref.current.style.transform = `translateY(${(1 - i) * 40 - o * 40}px)`
+    const el = ref.current
+    if (!el) return
+    const opacity = String(i * (1 - o))
+    if (el.style.opacity === opacity) return // off-screen lines stay untouched: no style recalc per frame
+    el.style.opacity = opacity
+    el.style.transform = `translateY(${(1 - i) * 40 - o * 40}px)`
   })
   return <p ref={ref} className="display big-line" style={{ opacity: 0 }}>{text}</p>
 }

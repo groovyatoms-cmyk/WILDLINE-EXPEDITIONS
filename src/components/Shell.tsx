@@ -39,7 +39,7 @@ const afterFirstPaint = () => new Promise<void>((resolve) => {
 
 // The preloader only waits for the first slice of shot 1; the rest of the frames decode behind the page
 // (the film picks the nearest decoded frame, so an early scroll still shows a picture).
-const PRELOAD_SHARE = 0.25
+const PRELOAD_SHARE = 0.1
 
 // Client shell for every route: preloader, header, footer, overlays. The home route
 // (pathname "/") is drawn here because the scroll film shares state with the header.
@@ -125,7 +125,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
       >
         {isHome && <h1 className="sr-only">{site.fullName} — {site.tagline}</h1>}
         <motion.div key={pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.45 }}>
-          {isHome ? <Home store={store} shots={shots} filmRef={filmRef} tagRef={tagRef} /> : children}
+          {isHome ? <Home store={store} shots={shots} filmRef={filmRef} tagRef={tagRef} ready={ready} /> : children}
         </motion.div>
       </PublicLayout>
     </MotionConfig>

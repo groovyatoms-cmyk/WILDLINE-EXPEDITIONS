@@ -2,7 +2,7 @@ import { film, frames } from '@/data/site'
 import { clamp01 } from '@/hooks/useScrollProgress'
 import { isMobile } from './frames'
 
-export const frameTotal = () => (isMobile() ? frames.mobileCount : frames.count)
+export const frameTotal = (shot: 1 | 2) => (isMobile() ? frames[shot].mobileCount : frames[shot].count)
 
 // Film progress -> frame position (0–1) in each shot, plus slice progress `t` (0–1).
 export function timeline(p: number) {
@@ -14,4 +14,4 @@ export function timeline(p: number) {
   }
 }
 
-export const frameNo = (f: number) => Math.round(f * (frameTotal() - 1)) + 1
+export const frameNo = (f: number, shot: 1 | 2) => Math.round(f * (frameTotal(shot) - 1)) + 1

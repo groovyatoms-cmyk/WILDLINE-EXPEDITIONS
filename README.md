@@ -109,20 +109,18 @@ Colours are the tokens at the top of `src/styles/index.css`. The `--sand` token 
 
 ## Adding footage
 
-Frames are numbered WebP files, `0001.webp` upward. The desktop set is 200 frames at 1920px wide. The mobile set is 100 frames (every second frame) at 1080px wide. Export with ffmpeg, which is not bundled and must be installed.
+Frames are numbered WebP files, `0001.webp` upward, and each shot has its own frame count (see `frames` in `src/data/site.ts`). Shot 1 (23 s of footage): 600 desktop frames at 1280px wide and 300 mobile frames at 720px. Shot 2 (10 s): 200 desktop frames at 1920px and 100 mobile at 1080px. Export with ffmpeg, which is not bundled and must be installed.
 
-Pick the clip range, then set `fps` to `frames ÷ seconds`. For a range of S seconds that is `200/S` for desktop and `100/S` for mobile. A 23 s range:
+Pick the clip range, then set `fps` to `frames ÷ seconds`. Shot 1, a 23 s range:
 
 ```bash
-ffmpeg -ss 00:00:25 -to 00:00:48 -i shot1.mp4 -vf "fps=200/23,scale=1920:-2" -c:v libwebp -quality 75 public/frames/shot1/%04d.webp
-ffmpeg -ss 00:00:25 -to 00:00:48 -i shot1.mp4 -vf "fps=100/23,scale=1080:-2" -c:v libwebp -quality 75 public/frames/shot1m/%04d.webp
+ffmpeg -ss 00:00:25 -to 00:00:48 -i DJI_0203.MOV -vf "fps=600/23,scale=1280:-2" -c:v libwebp -quality 52 public/frames/shot1/%04d.webp
+ffmpeg -ss 00:00:25 -to 00:00:48 -i DJI_0203.MOV -vf "fps=300/23,scale=720:-2" -c:v libwebp -quality 62 public/frames/shot1m/%04d.webp
 ```
 
-Repeat for shot 2 with `shot2` and `shot2m`. For a simple 30 fps export of a whole short clip, use `fps=30` for desktop and `fps=15` for mobile.
+Repeat for shot 2 with `shot2` and `shot2m` and its own counts. Aim for 20 to 30 frames per second of footage: fewer looks like a slideshow. If you change a frame count or width, update `frames` in `src/data/site.ts` to match.
 
-A range that is shorter than the frame count in seconds plays in slow motion as you scroll. For example, 10 s spread over 200 frames runs at half speed. A longer range runs faster.
-
-If you use a different frame count, update `frames.count` and `frames.mobileCount` in `site.js`.
+The autoplay pace is set in `PLAN` in `src/components/film/AutoPlay.tsx` (seconds per stretch of the film).
 
 Current footage: shot 1 is `DJI_0203` 00:25–00:48. Shot 2 is `DJI_0199` 00:10–00:20.
 

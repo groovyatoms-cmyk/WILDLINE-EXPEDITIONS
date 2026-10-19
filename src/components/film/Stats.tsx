@@ -13,7 +13,8 @@ export default function Stats({ store }: { store: Store }) {
     if (root.current) root.current.style.opacity = String(clamp01((p - (stats.at - 0.03)) / 0.03) * (1 - o))
     stats.items.forEach((s, i) => {
       const el = nums.current[i]
-      if (el) el.textContent = Math.round(s.value * (1 - (1 - k) ** 3)).toLocaleString('en-US')
+      const text = Math.round(s.value * (1 - (1 - k) ** 3)).toLocaleString('en-US')
+      if (el && el.textContent !== text) el.textContent = text
     })
   })
   return (
