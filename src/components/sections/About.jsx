@@ -6,13 +6,13 @@ export default function About({ to }) {
   return (
     <Section id="about" className="about" title={about.headline} to={to}>
       <div className="about-body">
-        {(to ? about.body.slice(0, 1) : about.body).map((p) => <p key={p}>{p}</p>)}
+        {about.body.map((p) => <p key={p}>{p}</p>)}
       </div>
-      {!to && <dl className="about-stats">
+      <dl className="about-stats">
         {about.highlights.map(([v, k], i) => (
           <Reveal key={k} index={i}><dd className="display">{v}</dd><dt className="mono">{k}</dt></Reveal>
         ))}
-      </dl>}
+      </dl>
     </Section>
   )
 }
