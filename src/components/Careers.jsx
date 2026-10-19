@@ -8,13 +8,13 @@ const ICONS = {
   camera: <><path d="M3 8h4l2-3h6l2 3h4v12H3z" /><circle cx="12" cy="13.5" r="3.5" /></>,
 }
 
-export default function Careers() {
+export default function Careers({ to }) {
   return (
     <section id="careers" className="section careers" aria-labelledby="careers-h">
       <h2 id="careers-h" className="display careers-head">{careers.headline}</h2>
       <p className="careers-intro">{careers.intro}</p>
       <ul className="roles">
-        {careers.roles.map((r) => (
+        {(to ? careers.roles.slice(0, 2) : careers.roles).map((r) => (
           <li key={r.title}>
             <svg className="role-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{ICONS[r.icon]}</svg>
             <h3 className="display">{r.title}</h3>
@@ -24,6 +24,7 @@ export default function Careers() {
           </li>
         ))}
       </ul>
+      {to && <a className="pill pill-line section-more" href={to}>VIEW MORE →</a>}
     </section>
   )
 }

@@ -635,6 +635,40 @@ p {
   justify-self: start;
   margin-top: 0.6rem;
 }
+.page {
+  min-height: 100vh;
+}
+.section-more {
+  position: absolute; /* top-right corner of the section, above its content */
+  top: calc(22vh - 3rem);
+  right: 4vw;
+  /* theme: slanted orange block like the panels and menu, display type */
+  border: 0;
+  border-radius: 0;
+  padding: 0.9rem 2.2rem;
+  background: var(--sand);
+  color: var(--bg);
+  font: 400 1.1rem/1 var(--display);
+  letter-spacing: 0.06em;
+  clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+  transition: background 0.2s, transform 0.2s;
+}
+.section-more:hover {
+  background: var(--white);
+}
+.about .section-more {
+  top: calc(12vh - 3rem);
+}
+@media (max-width: 768px) {
+  /* phone: the fixed corner title owns the top, so the button goes below the content */
+  .section-more,
+  .about .section-more {
+    position: static;
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin-top: 2rem;
+  }
+}
 .cookie {
   position: fixed;
   left: 4vw;

@@ -141,10 +141,10 @@ export const join = {
 }
 
 export const menuLinks = [
-  { label: 'Expeditions', href: '#expeditions' },
-  { label: 'About Us', href: '#about' },
-  { label: 'Our Core Team', href: '#team' },
-  { label: 'Careers', href: '#careers' },
-  { label: 'Join', href: '#join' },
+  { label: 'Expeditions', href: '/expeditions' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Our Core Team', href: '/team' },
+  { label: 'Careers', href: '/careers' },
+  { label: 'Join', href: '/join' },
   { label: 'Contact', href: '#contact' },
 ]

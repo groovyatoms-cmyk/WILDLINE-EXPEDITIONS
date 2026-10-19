@@ -1,11 +1,11 @@
 import { team } from '../data/site.js'
 
-export default function Team() {
+export default function Team({ to }) {
   return (
     <section id="team" className="section team" aria-labelledby="team-h">
       <h2 id="team-h" className="display team-head">{team.headline}</h2>
       <ul className="members">
-        {team.members.map((m) => (
+        {(to ? team.members.slice(0, 3) : team.members).map((m) => (
           <li key={m.name}>
             {m.photo
               ? <img className="member-photo" src={`${import.meta.env.BASE_URL}${m.photo}`} alt={m.name} loading="lazy" />
@@ -16,6 +16,7 @@ export default function Team() {
           </li>
         ))}
       </ul>
+      {to && <a className="pill pill-line section-more" href={to}>VIEW MORE →</a>}
     </section>
   )
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { menuLinks } from '../data/site.js'
+import { openEnquire } from './Enquire.jsx'
 
 export default function Menu() {
   const [open, setOpen] = useState(false)
@@ -13,9 +14,9 @@ export default function Menu() {
   return (
     <>
       <nav className="nav" aria-label="Primary">
-        <a className="mono nav-menu" href="#" onClick={() => setOpen(false)}>HOME</a>
+        <a className="mono nav-menu" href="/" onClick={() => setOpen(false)}>HOME</a>
         <button className="mono nav-menu" aria-expanded={open} aria-controls="menu" onClick={() => setOpen(!open)}>{open ? 'CLOSE' : 'MENU'}</button>
-        <button className="pill pill-rust nav-book" onClick={() => { setOpen(false); dispatchEvent(new Event('open-enquire')) }}>BOOK NOW</button>
+        <button className="pill pill-rust nav-book" onClick={() => { setOpen(false); openEnquire() }}>BOOK NOW</button>
       </nav>
       <div id="menu" className={`menu${open ? ' open' : ''}`} {...(open ? {} : { inert: '' })}>
         <ul>
