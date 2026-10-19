@@ -6,7 +6,7 @@ import Reveal from '@/components/ui/Reveal'
 
 export default function Crew({ to }: { to?: string }) {
   return (
-    <Section id="crew" className="crew" title={crew.headline} to={to}>
+    <Section id="crew" className="crew" title={crew.headline} to={to} heading="h2">
       <dl className="mono specs">
         {crew.specs.map(([k, v], i) => (
           <Reveal key={k} index={i}><dt>{k}</dt><dd>{v}</dd></Reveal>

@@ -90,7 +90,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
           )
           : <CornerTitle text={site.name} compact />}
       >
-        <h1 className="sr-only">{site.fullName} —{site.tagline}</h1>
+        {isHome && <h1 className="sr-only">{site.fullName} — {site.tagline}</h1>}
         <motion.div key={pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.45 }}>
           {isHome ? <Home store={store} shots={shots} filmRef={filmRef} tagRef={tagRef} /> : children}
         </motion.div>
