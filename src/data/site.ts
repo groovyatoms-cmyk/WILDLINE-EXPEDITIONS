@@ -18,26 +18,40 @@ export const frames = { count: 200, mobileCount: 100, w: 1920, mw: 1080 }
 export const film = { heightVh: 1200, shot1End: 0.45, shot2Start: 0.55, shot2End: 0.9 }
 
 export const chapters = {
-  start: 'THE WIDELINE',
+  start: 'THE WILDLINE',
   run: 'THE RUN',
   valley: 'INTO THE VALLEY',
   basin: 'ROUTE SPITI',
+  // optional additions, in route order
+  pass: 'KUNZUM PASS',
+  lake: 'CHANDRATAL',
+  village: 'ROOF OF THE WORLD',
+  end: 'THE LONG WAY HOME',
 }
 
 export const bigLines = [
-  { at: 0.1, text: 'LEAVE THE TARMAC.' },
+  { at: 0.05, text: 'NO ROAD. NO PROBLEM.' },
+  { at: 0.1,  text: 'LEAVE THE TARMAC.' },
+  { at: 0.17, text: 'AIR DOWN. GEAR UP.' },
   { at: 0.25, text: 'CROSS THE PASS.' },
-  { at: 0.4, text: 'FIND THE EDGE.' },
-  { at: 0.8, text: 'WE DRIVE TOGETHER.' },
+  { at: 0.32, text: 'THE TRAIL DECIDES.' },
+  { at: 0.4,  text: 'FIND THE EDGE.' },
+  // { at: 0.47, text: 'MUD IS A LANGUAGE.' },
+  { at: 0.56, text: 'BUILT FOR THE LONG WAY.' },
+  { at: 0.74,  text: 'WE DRIVE TOGETHER.' },
+  { at: 0.8,  text: 'THE EXPEDITION BEGINS.' },
 ]
 
 export const stats = {
   at: 0.65,
   items: [
-    { value: 48000, label: 'KM' },
-    { value: 32, label: 'PASSES' },
+    { value: 48000, label: 'KM DRIVEN' },
+    { value: 32, label: 'PASSES CROSSED' },
     { value: 5360, label: 'M HIGHEST CAMP' },
-    { value: 120, label: 'CONVOYS' },
+    { value: 120, label: 'CONVOYS LED' },
+    // optional additions
+    { value: 14, label: 'EXPEDITIONS A YEAR' },
+    { value: 0, label: 'PAVED ROADS' },
   ],
 }
 

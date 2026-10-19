@@ -23,7 +23,7 @@ export default function Footer() {
         ))}
         <span className="mono">{site.copyright}</span>
       </nav>
-      <div className="wordmark display" aria-hidden="true">{site.name}</div>
+      <div className="wordmark display" aria-hidden="true" data-text={site.name} />
     </footer>
   )
 }

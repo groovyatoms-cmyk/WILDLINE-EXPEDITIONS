@@ -44,19 +44,26 @@ async function decode(shot: number, i: number, total: number, mobile: boolean) {
 }
 
 // Decodes a shot in small parallel batches into the caller-owned `out` array (filled as it goes).
-export async function loadShot(shot: 1 | 2, out: ImageBitmap[], onProgress: (done: number) => void = () => {}) {
+const idle = () => new Promise<void>((r) => ('requestIdleCallback' in window ? requestIdleCallback(() => r(), { timeout: 300 }) : setTimeout(r, 0)))
+
+// The first `eagerShare` of the frames load flat out (the preloader waits for them); the rest trickle in 4 at a time
+// whenever the browser is idle, so decoding never blocks scrolling or input.
+export async function loadShot(shot: 1 | 2, out: ImageBitmap[], onProgress: (done: number) => void = () => {}, eagerShare = 0) {
   const mobile = isMobile()
   const total = mobile ? cfg.mobileCount : cfg.count
   out.length = total
   let done = 0
-  const BATCH = 8
-  for (let s = 0; s < total; s += BATCH) {
+  const eager = Math.ceil(total * eagerShare)
+  for (let s = 0; s < total; ) {
+    const batch = s < eager ? 16 : 4
+    if (s >= eager) await idle()
     await Promise.all(
-      Array.from({ length: Math.min(BATCH, total - s) }, async (_, k) => {
+      Array.from({ length: Math.min(batch, total - s) }, async (_, k) => {
         out[s + k] = await decode(shot, s + k, total, mobile)
         onProgress(++done / total)
       }),
     )
+    s += batch
   }
   return out
 }

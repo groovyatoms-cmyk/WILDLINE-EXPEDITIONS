@@ -1,29 +1,35 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { animate, motion, useMotionValue, useMotionValueEvent, useReducedMotion } from 'framer-motion'
+import { useEffect, useState, type MutableRefObject } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
 
 const EASE = [0.7, 0, 0.2, 1] as const
 const FULL = 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
 const WIPED = 'polygon(0 0, 0 0, -25% 100%, -25% 100%)'
 
-export default function Preloader({ progress, onDone }: { progress: number; onDone: () => void }) {
+// `progress` is a ref (0–1) written by the loader: a state value would re-render the whole app for every decoded frame.
+export default function Preloader({ progress, onDone }: { progress: MutableRefObject<number>; onDone: () => void }) {
   const [wipe, setWipe] = useState(false)
   const [n, setN] = useState(0)
   const skip = useReducedMotion()
-  const count = useMotionValue(0)
-  useMotionValueEvent(count, 'change', (v) => setN(Math.round(v)))
-
-  // Glide to the real decode progress; 100 is only reached once decoding is done.
+  // Eases the counter toward the real progress every frame (smooth, never overshoots, always finishes).
   useEffect(() => {
-    const c = animate(count, progress * 100, { duration: skip ? 0 : 0.8, ease: 'easeOut' })
-    return c.stop
-  }, [progress, count, skip])
+    let v = 0
+    let raf = 0
+    const tick = () => {
+      const t = progress.current * 100
+      v = skip ? t : Math.min(t, v + Math.max((t - v) * 0.2, 0.6))
+      setN(Math.round(v))
+      if (v < 100) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [skip, progress])
 
   useEffect(() => {
     if (n < 100) return
-    const a = setTimeout(() => setWipe(true), 350)
-    const b = setTimeout(onDone, 1250)
+    const a = setTimeout(() => setWipe(true), 100)
+    const b = setTimeout(onDone, 750)
     return () => { clearTimeout(a); clearTimeout(b) }
   }, [n, onDone])
 
@@ -34,9 +40,9 @@ export default function Preloader({ progress, onDone }: { progress: number; onDo
       aria-label={`Loading ${n} percent`}
       initial={false}
       animate={{ clipPath: wipe ? WIPED : FULL }}
-      transition={{ duration: skip ? 0.5 : 0.9, ease: EASE }}
+      transition={{ duration: skip ? 0.3 : 0.6, ease: EASE }}
     >
-      <div className="preloader-count display">{String(n).padStart(3, '0')}<span className="preloader-pct">%</span></div>
+      <div className="preloader-count display">{n}<span className="preloader-pct">%</span></div>
       <div className="mono preloader-label">WILDLINE — LOADING ROUTE</div>
     </motion.div>
   )

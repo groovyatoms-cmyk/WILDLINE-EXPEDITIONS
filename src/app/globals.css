@@ -8,8 +8,8 @@
   --stone: #5e6052; /* muted text and rules */
   --on-accent: #0b0d10; /* text on orange blocks */
   --scrim: rgba(0, 0, 0, 0.6);
-  --display: "Anton", "Bebas Neue", Impact, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --display: var(--font-anton), "Anton", "Bebas Neue", Impact, sans-serif;
+  --mono: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
   --slant: -14deg;
   color-scheme: dark;
 }
@@ -44,7 +44,7 @@ body {
   background: var(--bg);
   color: var(--white);
   font:
-    400 16px/1.5 "Inter",
+    400 16px/1.5 var(--font-inter), "Inter",
     system-ui,
     sans-serif;
   overflow-x: clip;
@@ -594,7 +594,7 @@ p {
   padding: 0.6rem 0;
   color: var(--white);
   font:
-    400 16px "Inter",
+    400 16px var(--font-inter), "Inter",
     sans-serif;
   text-transform: none;
   border-radius: 0;
@@ -636,6 +636,10 @@ p {
 }
 .footer-links .mono {
   margin-left: auto; /* copyright to the far right */
+  color: #8a8d7c; /* lighter than --stone: small text needs 4.5:1 contrast */
+}
+:root[data-theme='light'] .footer-links .mono {
+  color: var(--stone); /* already 4.9:1 on the light background */
 }
 @media (max-width: 768px) {
   .footer-links .mono {
@@ -823,6 +827,9 @@ p {
 .cookie-actions {
   display: flex;
   gap: 0.8rem;
+}
+.wordmark::before {
+  content: attr(data-text); /* pseudo-element: decorative, so it is not a text-contrast target */
 }
 .wordmark {
   font-size: 27.5vw;

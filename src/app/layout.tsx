@@ -3,7 +3,13 @@ import Shell from '@/components/Shell'
 import JsonLd from '@/components/JsonLd'
 import { site } from '@/data/site'
 import { abs, siteUrl } from '@/lib/seo'
+import { Anton, Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
+
+// Self-hosted by next/font: no render-blocking request to Google Fonts.
+const anton = Anton({ weight: '400', subsets: ['latin'], display: 'swap', variable: '--font-anton' })
+const inter = Inter({ weight: ['400', '500'], subsets: ['latin'], display: 'swap', variable: '--font-inter' })
+const mono = JetBrains_Mono({ weight: ['400', '500'], subsets: ['latin'], display: 'swap', variable: '--font-mono' })
 
 const title = 'WILDLINE EXPEDITIONS — Far roads. Good company.'
 const description = 'Guided 4x4 convoy expeditions through Ladakh, Spiti and the Thar Desert.'
@@ -45,12 +51,9 @@ const orgLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={`${anton.variable} ${inter.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
       </head>
       <body>
         <JsonLd data={orgLd} />

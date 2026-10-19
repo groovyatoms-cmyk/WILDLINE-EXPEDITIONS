@@ -12,9 +12,14 @@ import Preloader from '@/components/ui/Preloader'
 import PublicLayout from '@/layout/PublicLayout'
 import Home from '@/components/Home'
 
-const top = (id: string) => document.getElementById(id)?.getBoundingClientRect().top ?? Infinity
+// Page offset of the Expeditions section, cached: reading layout on every scroll frame forces reflows.
+let expeditionsTop = Infinity
+const measureExpeditions = () => {
+  const el = document.getElementById('expeditions')
+  expeditionsTop = el ? el.getBoundingClientRect().top + scrollY : Infinity
+}
 
-const pastFilm = () => top('expeditions') < innerHeight * 0.5
+const pastFilm = () => expeditionsTop - scrollY < innerHeight * 0.5
 
 function chapterFor(p: number) {
   if (pastFilm()) return site.name // below the film the header is just the logo name
@@ -23,6 +28,18 @@ function chapterFor(p: number) {
   if (p < film.shot2Start) return chapters.valley
   return chapters.basin
 }
+
+// Frame requests start only after the first contentful paint, so they never compete with the page itself.
+const afterFirstPaint = () => new Promise<void>((resolve) => {
+  const timer = setTimeout(resolve, 1500) // shortcut: paint never reported (old browsers), so start anyway
+  try {
+    new PerformanceObserver((_, o) => { o.disconnect(); clearTimeout(timer); setTimeout(resolve, 0) }).observe({ type: 'largest-contentful-paint', buffered: true })
+  } catch { clearTimeout(timer); resolve() }
+})
+
+// The preloader only waits for the first slice of shot 1; the rest of the frames decode behind the page
+// (the film picks the nearest decoded frame, so an early scroll still shows a picture).
+const PRELOAD_SHARE = 0.25
 
 // Client shell for every route: preloader, header, footer, overlays. The home route
 // (pathname "/") is drawn here because the scroll film shares state with the header.
@@ -33,7 +50,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
   const filmRef = useRef<HTMLElement>(null)
   const tagRef = useRef<HTMLParagraphElement>(null)
   const shots = useRef<Shots>({ 1: [], 2: [] })
-  const [progress, setProgress] = useState(0)
+  const progress = useRef(0)
   const [ready, setReady] = useState(false)
   const [chapter, setChapter] = useState<string>(chapters.start)
   const [compact, setCompact] = useState(false)
@@ -51,12 +68,28 @@ export default function Shell({ children }: { children: React.ReactNode }) {
     return () => document.removeEventListener('click', click)
   }, [router])
 
-  // Shot one blocks the preloader; shot two decodes in the background.
+  useEffect(() => {
+    if (!isHome) return
+    measureExpeditions()
+    const ro = new ResizeObserver(measureExpeditions)
+    ro.observe(document.body)
+    return () => ro.disconnect()
+  }, [isHome])
+
+  // The preloader waits for the first slice of shot one; the rest decodes quietly in the background.
   useEffect(() => {
     history.scrollRestoration = 'manual'
     scrollTo(0, 0)
-    loadShot(1, shots.current[1], setProgress).then(() => loadShot(2, shots.current[2]))
-  }, [])
+    afterFirstPaint().then(() => loadShot(1, shots.current[1], (p) => { progress.current = Math.min(1, p / PRELOAD_SHARE) }, PRELOAD_SHARE))
+    // Shot two is only needed past ~half the film, so it starts once the visitor begins scrolling.
+    const wake = (p: number) => {
+      if (p < 0.05) return
+      store.subs.delete(wake)
+      loadShot(2, shots.current[2])
+    }
+    store.subs.add(wake)
+    return () => { store.subs.delete(wake) }
+  }, [store])
 
   useEffect(() => {
     document.documentElement.style.overflow = ready ? '' : 'hidden'
