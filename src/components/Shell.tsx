@@ -83,11 +83,13 @@ export default function Shell({ children }: { children: React.ReactNode }) {
     let l1: ReturnType<typeof createLoader> | undefined
     let l2: ReturnType<typeof createLoader> | undefined
     let preloaded = 0
+    // The scroll loop only notifies when progress changes, so a frame arriving while the visitor sits still must repaint the canvas itself.
+    const redraw = () => store.subs.forEach((fn) => fn(store.p))
     const sync = (p: number) => {
       const { f1, f2 } = timeline(p)
       l1?.update(f1 * (frameTotal(1) - 1))
       if (p > 0.15) {
-        l2 ??= createLoader(2, shots.current[2])
+        l2 ??= createLoader(2, shots.current[2], redraw)
         l2.update(f2 * (frameTotal(2) - 1))
         l2.loadAnchors()
       }
@@ -95,6 +97,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
     afterFirstPaint().then(() => {
       l1 = createLoader(1, shots.current[1], (i) => {
         if (i < PRELOAD_FRAMES) progress.current = ++preloaded / PRELOAD_FRAMES
+        redraw()
       })
       sync(store.p)
       l1.loadAnchors()

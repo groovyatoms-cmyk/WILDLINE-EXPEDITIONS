@@ -181,15 +181,15 @@ Frames are numbered WebP files, `0001.webp` upward. Each shot has its own frame 
 | Shot | Source (clip range)           | Desktop        | Mobile        |
 | ---- | ----------------------------- | -------------- | ------------- |
 | 1    | `DJI_0203` 00:25 to 00:48     | 600 frames     | 300 frames    |
-| 2    | `DJI_0199` 00:10 to 00:20     | 200 frames     | 100 frames    |
+| 2    | `DJI_0199` whole clip (15 s)  | 300 frames     | 150 frames    |
 
 Desktop frames are 1920px wide and mobile frames 1080px. Aim for 20 to 30 frames per second of footage; fewer looks like a slideshow. Set `fps` to `frames ÷ seconds`. [ffmpeg](https://ffmpeg.org) must be installed. These commands produced the current frames:
 
 ```bash
 ffmpeg -ss 00:00:25 -to 00:00:48 -i DJI_0203.MOV -vf "fps=600/23,scale=1920:-2:flags=lanczos" -c:v libwebp -quality 60 -compression_level 6 -preset photo public/frames/shot1/%04d.webp
 ffmpeg -ss 00:00:25 -to 00:00:48 -i DJI_0203.MOV -vf "fps=300/23,scale=1080:-2:flags=lanczos" -c:v libwebp -quality 65 -compression_level 6 -preset photo public/frames/shot1m/%04d.webp
-ffmpeg -ss 00:00:10 -to 00:00:20 -i DJI_0199.MOV -vf "fps=200/10,scale=1920:-2:flags=lanczos" -c:v libwebp -quality 65 -compression_level 6 -preset photo public/frames/shot2/%04d.webp
-ffmpeg -ss 00:00:10 -to 00:00:20 -i DJI_0199.MOV -vf "fps=100/10,scale=1080:-2:flags=lanczos" -c:v libwebp -quality 70 -compression_level 6 -preset photo public/frames/shot2m/%04d.webp
+ffmpeg -i DJI_0199.MOV -vf "fps=300/14.96,scale=1920:-2:flags=lanczos" -c:v libwebp -frames:v 300 -quality 65 -compression_level 6 -preset photo public/frames/shot2/%04d.webp
+ffmpeg -i DJI_0199.MOV -vf "fps=150/14.96,scale=1080:-2:flags=lanczos" -c:v libwebp -frames:v 150 -quality 70 -compression_level 6 -preset photo public/frames/shot2m/%04d.webp
 ```
 
 If you change a frame count or width, update `frames` in `site.ts` to match. If you change the clip length, revisit `PLAN` in `AutoPlay.tsx` so the pace still suits the footage.

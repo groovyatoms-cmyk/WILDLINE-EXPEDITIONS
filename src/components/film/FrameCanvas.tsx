@@ -44,11 +44,12 @@ export default function FrameCanvas({ store, shots }: { store: Store; shots: Ref
       size.current = { w: innerWidth * dpr, h: innerHeight * dpr, dpr }
       ref.current.width = size.current.w
       ref.current.height = size.current.h
+      store.subs.forEach((fn) => fn(store.p)) // resizing clears the canvas: repaint at once
     }
     fit()
     addEventListener('resize', fit)
     return () => removeEventListener('resize', fit)
-  }, [])
+  }, [store])
 
   useProgress(store, (p) => {
     const canvas = ref.current
