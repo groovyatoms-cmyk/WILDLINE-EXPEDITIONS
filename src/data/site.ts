@@ -20,7 +20,7 @@ export const film = { heightVh: 1200, shot1End: 0.45, shot2Start: 0.55, shot2End
 export const chapters = {
   start: 'THE WILDLINE',
   run: 'THE RUN',
-  valley: 'INTO THE VALLEY',
+  valley: "NO MAN'S LAND",
   basin: 'ROUTE SPITI',
   // optional additions, in route order
   pass: 'KUNZUM PASS',
