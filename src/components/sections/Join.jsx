@@ -19,8 +19,21 @@ export default function Join({ to }) {
           )
         })}
       </ul>
-      {!to && <p className="mono join-includes">INCLUDED: {join.includes.join(' · ')}</p>}
-      {!to && <p className="mono join-note">{join.note}</p>}
+      {<p className="mono join-includes">INCLUDED: {join.includes.join(' · ')}</p>}
+      {<p className="mono join-includes">NOT INCLUDED: {join.excludes.join(' · ')}</p>}
+      {(
+        <ol className="dates mono">
+          {join.steps.map(([h, p], i) => (
+            <Reveal as="li" key={h} index={i}><span>{h}</span><span>{p}</span></Reveal>
+          ))}
+        </ol>
+      )}
+      {(
+        <ul className="join-note mono">
+          {join.policy.map((p) => <li key={p}>{p}</li>)}
+        </ul>
+      )}
+      {<p className="mono join-note">{join.note}</p>}
       <div className="cta">
         <Button variant="rust" href={wa()} target="_blank">WHATSAPP US</Button>
         <Button onClick={openEnquire} aria-haspopup="dialog">ENQUIRE</Button>

@@ -961,3 +961,11 @@ p {
     font-size: 15vw;
   }
 }
+
+.detail-hero { width: 100%; max-height: 50vh; object-fit: cover; margin-bottom: 1.5rem; }
+.detail-list { padding-left: 1.2rem; list-style: disc; }
+.expedition-detail .label { margin-top: 1.5rem; }
+.detail-days { list-style: none; padding: 0; display: grid; gap: 1rem; }
+.detail-days li { border-top: 1px solid currentColor; padding-top: .8rem; }
+.detail-faq { display: grid; gap: 1rem; }
+.detail-faq dd { margin: .3rem 0 0; }

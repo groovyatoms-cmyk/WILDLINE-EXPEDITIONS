@@ -9,6 +9,7 @@ import Preloader from '@/components/ui/Preloader.jsx'
 import PublicLayout from '@/layout/PublicLayout.jsx'
 import Home from '@/pages/Home.jsx'
 import { pages } from '@/pages/index.jsx'
+import ExpeditionDetailPage from '@/pages/ExpeditionDetailPage.jsx'
 
 const top = (id) => document.getElementById(id)?.getBoundingClientRect().top ?? Infinity
 
@@ -35,7 +36,7 @@ export default function App() {
   const [compact, setCompact] = useState(false)
   const store = useScrollProgress(filmRef)
   const [page, setPage] = useState(readPage)
-  const Page = Object.hasOwn(pages, page) ? pages[page] : null
+  const Page = Object.hasOwn(pages, page) ? pages[page] : /^expeditions\/[^/]+$/.test(page) ? ExpeditionDetailPage : null
 
   useEffect(() => {
     const go = () => { setPage(readPage()); scrollTo(0, 0) }

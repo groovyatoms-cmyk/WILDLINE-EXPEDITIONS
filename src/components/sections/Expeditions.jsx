@@ -1,4 +1,4 @@
-import { trips } from '@/data/site.js'
+import { trips, tripSlug } from '@/data/site.js'
 import Section from '@/components/ui/Section.jsx'
 import Reveal from '@/components/ui/Reveal.jsx'
 
@@ -9,7 +9,7 @@ export default function Expeditions({ to }) {
       <ul>
         {(to ? trips.slice(0, 3) : trips).map((t, i) => (
           <Reveal as="li" key={t.name} index={i}>
-            <a className="trip" href="/join">
+            <a className="trip" href={`/expeditions/${tripSlug(t)}`}>
               <img src={`${import.meta.env.BASE_URL}${t.still}`} alt={t.alt_text} loading="lazy" onError={(e) => (e.currentTarget.style.display = 'none')} />
               <span className="display trip-name">{t.name}</span>
               <span className="mono trip-meta">

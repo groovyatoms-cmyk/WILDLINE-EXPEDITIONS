@@ -1,4 +1,5 @@
 import AboutPage from './AboutPage.jsx'
+import ContactPage from './ContactPage.jsx'
 import CareersPage from './CareersPage.jsx'
 import ExpeditionsPage from './ExpeditionsPage.jsx'
 import JoinPage from './JoinPage.jsx'
@@ -12,6 +13,7 @@ export const pages = {
   team: TeamPage,
   careers: CareersPage,
   join: JoinPage,
+  contact: ContactPage,
   privacy: () => <LegalPage docKey="privacy" />,
   terms: () => <LegalPage docKey="terms" />,
   refund: () => <LegalPage docKey="refund" />,

@@ -75,6 +75,10 @@ export const crew = {
     ['STAYS', 'Camps, homestays and guesthouses chosen for the route, hot meals included'],
     ['FUEL + RANGE', 'Fuel caches and jerry cans for stretches with no pumps'],
     ['BRIEFING', 'Pre-trip route, gear and driving briefing for every guest'],
+    ['EVACUATION', 'Emergency evacuation plan and nearest-hospital map for every day of the route'],
+    ['VEHICLE CHECK', 'Daily pre-drive inspection of tyres, fluids and brakes on every car'],
+    ['WEATHER CALLS', 'Route-closure and weather decisions made by the lead, never by the schedule'],
+    ['DRIVING SUPPORT', 'Crew coaching on water crossings, loose gravel and steep descents'],
   ],
 }
 
@@ -86,6 +90,9 @@ export const about = {
     'Every route is scouted by our own crew before the season opens. We know which bridge is out, which pass closes by noon, and which village has the best chai. That local knowledge is what turns a drive into an expedition.',
     'Our guests are drivers, photographers, first-timers and families. You do not need to be an expert behind the wheel. You need to be curious, ready for long days, and happy to share a campfire.',
     'We travel light on the land: no littering, no off-track driving, local stays and local guides wherever we go, so the places we love are still there for the next convoy.',
+    'Safety is not an add-on. Every convoy runs with a lead and a sweep vehicle, daily vehicle checks, sat phone and VHF comms, oxygen above 4,500 m, and an evacuation plan agreed before we roll out.',
+    'We keep groups small on purpose. Eight vehicles means everyone gets a briefing, a seat at the fire, and a crew member who knows their name. Nobody is a number on a manifest.',
+    'The season decides the route, not the other way round. We run Ladakh, Spiti and Kashmir in summer, the North East in the shoulder months, and Rajasthan, Kutch and the Western Ghats in winter, so there is a convoy for almost every month.',
   ],
   highlights: [
     ['2016', 'FIRST CONVOY'],
@@ -132,6 +139,19 @@ export const join = {
     { date: '06 DEC 2026', trip: 'KUTCH EXPEDITION', seats: 7 },
   ],
   includes: ['4x4 + driver-guide', 'Permits', 'Stays + meals', 'Recovery crew', 'Oxygen + first aid'],
+  excludes: ['Flights and train fares to the start point', 'Personal insurance', 'Fuel for personal vehicles on self-drive trips', 'Alcohol and personal expenses'],
+  steps: [
+    ['01 ENQUIRE', 'Message us on WhatsApp or use the enquiry form with your preferred trip and dates.'],
+    ['02 CONFIRM', 'We share the itinerary and cost. Your seat is held once the deposit is paid.'],
+    ['03 PREPARE', 'Send ID for permits. We send the packing list and book your pre-trip briefing call.'],
+    ['04 ROLL OUT', 'Meet the crew at the start point, get the driving briefing, and the convoy leaves.'],
+  ],
+  policy: [
+    'Group size is capped at 8 vehicles per convoy.',
+    'Guests should be 18+ or travel with a guardian. Children are welcome on lower-altitude routes.',
+    'A basic fitness level is needed for high-altitude routes. Tell us about any medical condition when you book.',
+    'Departures can change or reroute for weather and road closures. Safety calls are made by the lead.',
+  ],
   note: 'Seats confirm with a deposit. Free date change up to 30 days before departure.',
 }
 
@@ -141,5 +161,115 @@ export const menuLinks = [
   { label: 'Our Core Team', href: '/team' },
   { label: 'Careers', href: '/careers' },
   { label: 'Join', href: '/join' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Contact', href: '/contact' },
+]
+
+// Placeholder office details: replace with the real address, phone and hours.
+export const contact = {
+  headline: 'CONTACT US',
+  intro: 'Questions about a route, dates or gear? Reach the crew any way you like. We reply within one working day.',
+  channels: [
+    { icon: 'whatsapp', title: 'WHATSAPP', desc: 'Fastest way to reach us. Send a message any time.' },
+    { icon: 'mail', title: 'EMAIL', desc: 'Itineraries, group bookings and press.' },
+    { icon: 'phone', title: 'CALL', desc: 'Mon–Sat, 10:00–18:00 IST.' },
+    { icon: 'map', title: 'OFFICE', desc: 'WILDLINE Expeditions, Leh, Ladakh 194101. Visits by appointment.' },
+  ],
+}
+
+export const tripSlug = (t) => t.name.split(' ')[0].toLowerCase()
+
+// Placeholder detail copy per expedition (key = first word of the trip name, lowercase): verify routes and stops with the crew.
+export const tripDetails = {
+  ladakh: { level: 'HARD', route: ['Leh', 'Khardung La', 'Nubra Valley', 'Pangong Tso', 'Tso Moriri', 'Leh'], overview: 'Our flagship run across the highest motorable passes in the world. Long days, thin air and landscapes that do not look real.', highlights: ['Khardung La and Chang La crossings', 'Camp by Pangong Tso', 'Nubra dunes and double-humped camels', 'Monasteries of Hemis and Thiksey'] },
+  spiti: { level: 'HARD', route: ['Shimla', 'Kalpa', 'Kaza', 'Chandratal', 'Manali'], overview: 'The cold desert circuit: cliff-edge roads, ancient monasteries and a night beside a high-altitude lake.', highlights: ['Key and Kibber villages', 'Chandratal lake camp', 'Kunzum Pass', 'Dhankar and Tabo monasteries'] },
+  arunachal: { level: 'MODERATE', route: ['Guwahati', 'Bomdila', 'Sela Pass', 'Tawang', 'Dirang', 'Guwahati'], overview: 'Forest roads, rope bridges and the road to Tawang over Sela Pass, through the least-travelled corner of the Himalaya.', highlights: ['Sela Pass crossing', 'Tawang Monastery', 'Madhuri Lake', 'Homestays with local families'] },
+  sikkim: { level: 'MODERATE', route: ['Gangtok', 'Tsomgo Lake', 'Nathu La', 'Lachen', 'Gurudongmar', 'Gangtok'], overview: 'Steep green valleys, border passes and a push to one of the highest lakes in the world.', highlights: ['Nathu La border pass', 'Gurudongmar Lake', 'Tsomgo Lake', 'Yumthang Valley'] },
+  kashmir: { level: 'MODERATE', route: ['Srinagar', 'Sonamarg', 'Zojila', 'Kargil', 'Srinagar'], overview: 'Alpine meadows, the Zojila road and the long climb out of the valley into the high desert.', highlights: ['Zojila Pass', 'Dal Lake and Srinagar old city', 'Sonamarg meadows', 'Drass, the second-coldest inhabited place'] },
+  uttarakhand: { level: 'MODERATE', route: ['Dehradun', 'Chopta', 'Joshimath', 'Mana', 'Auli', 'Dehradun'], overview: 'Himalayan foothills, river valleys and pilgrim roads, with a push to the last village before the Tibet border.', highlights: ['Mana, the last village', 'Chopta meadows', 'Auli ridge views', 'Alaknanda river gorge'] },
+  rajasthan: { level: 'EASY', route: ['Jaipur', 'Jodhpur', 'Jaisalmer', 'Sam dunes', 'Jaipur'], overview: 'Forts, desert tracks and a dune camp under a clear sky. Our gentlest route and a good first convoy.', highlights: ['Dune camp with a fire', 'Jaisalmer Fort', 'Mehrangarh Fort', 'Village stops on desert tracks'] },
+  kutch: { level: 'EASY', route: ['Bhuj', 'Dholavira', 'White Rann', 'Khavda', 'Bhuj'], overview: 'A flat white horizon, craft villages and an open-sky camp on the salt desert.', highlights: ['White Rann at sunset', 'Dholavira Harappan site', 'Craft villages of Khavda', 'Full-moon salt desert drive'] },
+  meghalaya: { level: 'EASY', route: ['Guwahati', 'Shillong', 'Cherrapunji', 'Dawki', 'Guwahati'], overview: 'Wet forest roads, living root bridges and crystal rivers in the abode of the clouds.', highlights: ['Living root bridges', 'Dawki river', 'Cherrapunji waterfalls', 'Mawlynnong village'] },
+  western: { level: 'EASY', route: ['Mumbai', 'Mahabaleshwar', 'Coorg', 'Munnar', 'Kochi'], overview: 'Misty ghat roads, tea estates and forest tracks down the length of the Western Ghats.', highlights: ['Misty ghat sections', 'Tea and coffee estates', 'Forest tracks in Coorg', 'Munnar hills'] },
+}
+
+// Placeholder day-by-day plans (key = tripSlug): [day range, title, what happens]. Verify with the crew.
+export const tripItinerary = {
+  ladakh: [
+    ['DAY 1–2', 'ARRIVE LEH', 'Airport pickup, briefing, vehicle check. Two full rest days to acclimatise at 3,500 m.'],
+    ['DAY 3', 'LEH TO NUBRA VALLEY', 'Over Khardung La (5,359 m) to the Nubra dunes. Camp in the valley.'],
+    ['DAY 4–5', 'NUBRA TO PANGONG TSO', 'Via Shyok river and Agham route to the lake. Two nights lakeside.'],
+    ['DAY 6–7', 'PANGONG TO TSO MORIRI', 'Chang La and the high plateau of Changthang. Wildlife stops, camp by the lake.'],
+    ['DAY 8–9', 'TSO MORIRI TO LEH', 'Remote Mahe route, hot springs and monastery visits on the way back.'],
+    ['DAY 10–12', 'RESERVE + FAREWELL', 'Buffer days for weather, Hemis and Thiksey monasteries, farewell dinner, departure.'],
+  ],
+  spiti: [
+    ['DAY 1', 'SHIMLA TO KALPA', 'Foothills to the Kinnaur apple belt. Views of Kinner Kailash.'],
+    ['DAY 2–3', 'KALPA TO KAZA', 'Cliff-edge roads past Nako lake and Tabo monastery into the cold desert.'],
+    ['DAY 4–5', 'KAZA LOOP', 'Key, Kibber, Langza and Hikkim. Highest post office and fossil village.'],
+    ['DAY 6', 'KAZA TO CHANDRATAL', 'Over Kunzum Pass (4,590 m). Camp beside the lake.'],
+    ['DAY 7–9', 'CHANDRATAL TO MANALI', 'Batal, Rohtang and Atal Tunnel. Farewell dinner in Manali.'],
+  ],
+  arunachal: [
+    ['DAY 1', 'GUWAHATI TO BOMDILA', 'Cross into Arunachal, permit checks, drive up through forest.'],
+    ['DAY 2–3', 'BOMDILA TO DIRANG', 'Apple orchards, hot springs and Sherpa villages.'],
+    ['DAY 4–5', 'SELA PASS TO TAWANG', 'Over Sela (4,170 m), Jaswant Garh, Nuranang falls and into Tawang.'],
+    ['DAY 6–7', 'TAWANG', 'Tawang Monastery, Madhuri Lake and Bum La viewpoint.'],
+    ['DAY 8–11', 'RETURN VIA ZEMITHANG', 'Slow return on a different road, village homestays, Guwahati farewell.'],
+  ],
+  sikkim: [
+    ['DAY 1', 'ARRIVE GANGTOK', 'Briefing, permits, local market walk.'],
+    ['DAY 2', 'TSOMGO AND NATHU LA', 'Frozen-lake altitude and the Indo-China border pass (4,310 m).'],
+    ['DAY 3–4', 'GANGTOK TO LACHEN', 'North Sikkim road, waterfalls and the Teesta gorge.'],
+    ['DAY 5', 'GURUDONGMAR LAKE', 'Pre-dawn drive to 5,100 m. Back to Lachen for the night.'],
+    ['DAY 6–8', 'YUMTHANG AND RETURN', 'Valley of Flowers, hot springs, return to Gangtok and farewell.'],
+  ],
+  kashmir: [
+    ['DAY 1–2', 'SRINAGAR', 'Dal Lake shikara, old city, Mughal gardens. Acclimatise.'],
+    ['DAY 3', 'SONAMARG', 'Meadows, Thajiwas glacier and Sindh river.'],
+    ['DAY 4–5', 'ZOJILA TO KARGIL', 'Crossing Zojila (3,530 m), Drass and the Kargil memorial.'],
+    ['DAY 6–7', 'KARGIL TO SURU VALLEY', 'Rangdum monastery and Suru valley peaks.'],
+    ['DAY 8–9', 'RETURN TO SRINAGAR', 'Back over Zojila, farewell dinner.'],
+  ],
+  uttarakhand: [
+    ['DAY 1', 'DEHRADUN TO RISHIKESH', 'Briefing, Ganga aarti, overnight on the river.'],
+    ['DAY 2–3', 'CHOPTA', 'Rudraprayag, Ukhimath and the Chopta meadows. Tungnath trek optional.'],
+    ['DAY 4', 'JOSHIMATH', 'Alaknanda gorge road and Karnaprayag.'],
+    ['DAY 5', 'MANA VILLAGE', 'Badrinath and the last village before the Tibet border.'],
+    ['DAY 6–7', 'AULI AND RETURN', 'Ridge views of Nanda Devi, descend to Dehradun.'],
+  ],
+  rajasthan: [
+    ['DAY 1', 'JAIPUR', 'Arrive, briefing, Amber Fort at sunset.'],
+    ['DAY 2', 'JAIPUR TO JODHPUR', 'Village stops, Mehrangarh Fort and the blue city.'],
+    ['DAY 3', 'JODHPUR TO JAISALMER', 'Desert highway, Jaisalmer Fort walk.'],
+    ['DAY 4', 'SAM DUNES', 'Dune bashing, camel ride, campfire and dinner under the stars.'],
+    ['DAY 5–6', 'RETURN TO JAIPUR', 'Slow return on desert tracks, farewell dinner.'],
+  ],
+  kutch: [
+    ['DAY 1', 'ARRIVE BHUJ', 'Briefing, Aina Mahal and the old town.'],
+    ['DAY 2', 'DHOLAVIRA', 'Harappan site, fossil park and the Great Rann edge.'],
+    ['DAY 3', 'WHITE RANN', 'Salt desert drive, sunset and an open-sky camp.'],
+    ['DAY 4', 'KHAVDA AND NIRONA', 'Craft villages: bandhani, rogan art and copper bells.'],
+    ['DAY 5', 'RETURN TO BHUJ', 'Farewell and departure.'],
+  ],
+  meghalaya: [
+    ['DAY 1', 'GUWAHATI TO SHILLONG', 'Cross into the hills, Umiam lake stop.'],
+    ['DAY 2', 'SHILLONG', 'Elephant Falls, Shillong Peak and Don Bosco museum.'],
+    ['DAY 3', 'CHERRAPUNJI', 'Nohkalikai falls and double-decker root bridge trek.'],
+    ['DAY 4', 'MAWLYNNONG AND DAWKI', 'Cleanest village in Asia and the glass-clear Umngot river.'],
+    ['DAY 5–6', 'RETURN TO GUWAHATI', 'Cave stop at Mawsmai, farewell dinner.'],
+  ],
+  western: [
+    ['DAY 1', 'MUMBAI TO MAHABALESHWAR', 'Briefing, ghat climb, strawberry farms.'],
+    ['DAY 2–3', 'MAHABALESHWAR TO COORG', 'Forest roads, coffee estates and Namdroling monastery.'],
+    ['DAY 4–5', 'COORG TO MUNNAR', 'Wayanad ghat sections, spice plantations.'],
+    ['DAY 6', 'MUNNAR', 'Tea estates, Eravikulam park, sunrise at Top Station.'],
+    ['DAY 7', 'MUNNAR TO KOCHI', 'Descend to the coast, farewell dinner.'],
+  ],
+}
+
+export const tripFaq = [
+  ['Do I need to bring my own vehicle?', 'No. The 4x4 and driver-guide are included. Self-drive options can be arranged on request.'],
+  ['Is there a fitness requirement?', 'Hard routes need a basic fitness level. We build rest days in and carry oxygen above 4,500 m.'],
+  ['What should I pack?', 'Layers, a warm jacket, sunglasses, sunscreen, personal medicines and a power bank. We send a full list after booking.'],
+  ['Can I get a refund if I cancel?', 'See our refund policy page. Date changes are free up to 30 days before departure.'],
 ]
