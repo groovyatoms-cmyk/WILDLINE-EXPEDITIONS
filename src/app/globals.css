@@ -1122,3 +1122,12 @@ p {
 @keyframes rec-blink { 50% { opacity: 0.15; } }
 @media (prefers-reduced-motion: reduce) { .rec-dot { animation: none; } }
 @media (max-width: 768px) { .rec { right: 28px; bottom: 30px; } }
+
+/* phones, home page: the nav sits centred over the hero film and slides back to the right once the visitor
+   scrolls past it to the other sections (Shell removes body.on-film at that point) */
+@media (max-width: 768px) {
+  .nav { transition: right 0.4s ease, transform 0.4s ease; }
+  body.on-film .nav { right: 50%; transform: translate(50%, -50%); width: max-content; } /* shrink-to-fit would squeeze the row into the left half */
+  .nav .nav-book { white-space: nowrap; }
+}
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) { .nav { transition: none; } }

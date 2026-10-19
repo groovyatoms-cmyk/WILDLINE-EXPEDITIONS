@@ -70,8 +70,9 @@ export default function FrameCanvas({ store, shots }: { store: Store; shots: Ref
     // Shot 1 to shot 2 is one move, not a cut: shot 1 keeps pushing in while it dissolves, shot 2 arrives from the
     // same push and settles, and the blur above peaks in the middle so the two read as one continuous camera move.
     const e = t * t * (3 - 2 * t) // smoothstep
-    drawBlend(ctx, shots.current![1], pos1, W, H, 1, 1 + 0.4 * e)
-    if (t > 0) drawBlend(ctx, shots.current![2], pos2, W, H, e, 1.4 - 0.4 * e)
+    const push = still ? 0 : 0.4 // reduced motion: plain crossfade, no zoom
+    drawBlend(ctx, shots.current![1], pos1, W, H, 1, 1 + push * e)
+    if (t > 0) drawBlend(ctx, shots.current![2], pos2, W, H, e, 1 + push * (1 - e))
   })
 
   return <canvas ref={ref} className="frame-canvas" role="img" aria-label="Aerial drone footage: a convoy of 4x4s running a Himalayan road, then a high-altitude lake basin with a parked camp" />
