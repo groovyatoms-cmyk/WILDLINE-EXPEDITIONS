@@ -1,8 +1,6 @@
-import { ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
-import Button from './Button.jsx'
 
-// Shared shell for every content section: heading, optional "view more" link, body.
+// Shared shell for every content section: heading (a link to the full page when `to` is set), body.
 // `to` also means "home preview": the caller shows a short version of its content.
 export default function Section({ id, className = '', title, to, children }) {
   return (
@@ -15,8 +13,7 @@ export default function Section({ id, className = '', title, to, children }) {
       viewport={{ once: true, amount: 0.08 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
     >
-      <h2 id={`${id}-h`} className="display section-head">{title}</h2>
-      {to && <Button className="section-more" href={to}>VIEW MORE <ArrowRight size={18} aria-hidden="true" /></Button>}
+      <h2 id={`${id}-h`} className="display section-head">{to ? <a href={to}>{title}</a> : title}</h2>
       {children}
     </motion.section>
   )

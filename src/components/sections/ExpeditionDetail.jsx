@@ -2,6 +2,7 @@ import { join, tripDetails, tripFaq, tripItinerary, tripSlug, trips } from '@/da
 import { openEnquire, wa } from '@/lib/enquire.js'
 import Section from '@/components/ui/Section.jsx'
 import Button from '@/components/ui/Button.jsx'
+import ShimmerImg from '@/components/ui/ShimmerImg.jsx'
 
 export default function ExpeditionDetail({ slug }) {
   const t = trips.find((x) => tripSlug(x) === slug)
@@ -11,7 +12,7 @@ export default function ExpeditionDetail({ slug }) {
   const departures = join.dates.filter((x) => x.trip === t.name)
   return (
     <Section id="expedition" className="expedition-detail" title={t.name}>
-      <img className="detail-hero" src={`${import.meta.env.BASE_URL}${t.still}`} alt={t.alt_text} />
+      <ShimmerImg className="detail-hero" src={`${import.meta.env.BASE_URL}${t.still}`} alt={t.alt_text} />
       <p className="mono trip-meta">
         <span>{t.days} days</span><span>{t.alt}</span><span>{t.season}</span><span>from {t.price}</span>{d && <span>{d.level}</span>}
       </p>
