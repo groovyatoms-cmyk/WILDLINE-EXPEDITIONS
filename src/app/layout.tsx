@@ -3,13 +3,12 @@ import Shell from '@/components/Shell'
 import JsonLd from '@/components/JsonLd'
 import { site } from '@/data/site'
 import { abs, siteUrl } from '@/lib/seo'
-import { Anton, Inter, JetBrains_Mono } from 'next/font/google'
+import { Bebas_Neue, Poppins } from 'next/font/google'
 import './globals.css'
 
 // Self-hosted by next/font: no render-blocking request to Google Fonts.
-const anton = Anton({ weight: '400', subsets: ['latin'], display: 'swap', variable: '--font-anton' })
-const inter = Inter({ weight: ['400', '500'], subsets: ['latin'], display: 'swap', variable: '--font-inter' })
-const mono = JetBrains_Mono({ weight: ['400', '500'], subsets: ['latin'], display: 'swap', variable: '--font-mono' })
+const display = Bebas_Neue({ weight: '400', subsets: ['latin'], display: 'swap', variable: '--font-display' })
+const body = Poppins({ weight: ['400', '500'], subsets: ['latin'], display: 'swap', variable: '--font-body' })
 
 const title = 'WILDLINE EXPEDITIONS — Far roads. Good company.'
 const description = 'Guided 4x4 convoy expeditions through Ladakh, Spiti and the Thar Desert.'
@@ -51,7 +50,7 @@ const orgLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${anton.variable} ${inter.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>

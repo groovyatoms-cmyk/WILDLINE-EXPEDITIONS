@@ -38,8 +38,8 @@ export const bigLines = [
   { at: 0.4,  text: 'FIND THE EDGE.' },
   // { at: 0.47, text: 'MUD IS A LANGUAGE.' },
   { at: 0.56, text: 'BUILT FOR THE LONG WAY.' },
-  { at: 0.74,  text: 'WE DRIVE TOGETHER.' },
-  { at: 0.8,  text: 'THE EXPEDITION BEGINS.' },
+  { at: 0.78,  text: 'WE DRIVE TOGETHER.' },
+  { at: 0.90,  text: 'THE EXPEDITION BEGINS.' },
 ]
 
 export const stats = {

@@ -8,7 +8,7 @@ export default function About({ to }: { to?: string }) {
   return (
     <Section id="about" className="about" title={about.headline} to={to}>
       <div className="about-body">
-        {about.body.map((p) => <p key={p}>{p}</p>)}
+        {(to ? about.body.slice(0, 2) : about.body).map((p) => <p key={p}>{p}</p>)}
       </div>
       <dl className="about-stats">
         {about.highlights.map(([v, k], i) => (

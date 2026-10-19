@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { House, Menu, X } from 'lucide-react'
 import { menuLinks } from '@/data/site'
 import { legal } from '@/data/legal'
 import { openEnquire } from '@/lib/enquire'
@@ -26,8 +27,8 @@ export default function Header() {
     <>
       <div className="header-bar" aria-hidden="true" />
       <nav className="nav" aria-label="Primary">
-        <a className="mono nav-menu" href="/" onClick={() => setOpen(false)}>HOME</a>
-        <button className="mono nav-menu" aria-expanded={open} aria-controls="menu" onClick={() => setOpen(!open)}>{open ? 'CLOSE' : 'MENU'}</button>
+        <a className="mono nav-menu" href="/" aria-label="Home" onClick={() => setOpen(false)}><House size={18} aria-hidden="true" /></a>
+        <button className="mono nav-menu" aria-expanded={open} aria-controls="menu" aria-label={open ? 'Close menu' : 'Open menu'} onClick={() => setOpen(!open)}>{open ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}</button>
         <Button variant="rust" className="nav-book" onClick={() => { setOpen(false); openEnquire() }}>BOOK NOW</Button>
         <ThemeToggle />
       </nav>

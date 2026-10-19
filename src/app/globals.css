@@ -8,8 +8,8 @@
   --stone: #5e6052; /* muted text and rules */
   --on-accent: #0b0d10; /* text on orange blocks */
   --scrim: rgba(0, 0, 0, 0.6);
-  --display: var(--font-anton), "Anton", "Bebas Neue", Impact, sans-serif;
-  --mono: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
+  --display: var(--font-display), "Bebas Neue", Impact, sans-serif;
+  --mono: var(--font-body), "Poppins", system-ui, sans-serif; /* labels and small caps text use the body font too */
   --slant: -14deg;
   color-scheme: dark;
 }
@@ -44,7 +44,7 @@ body {
   background: var(--bg);
   color: var(--white);
   font:
-    400 16px/1.5 var(--font-inter), "Inter",
+    400 16px/1.5 var(--font-body), "Poppins",
     system-ui,
     sans-serif;
   overflow-x: clip;
@@ -594,7 +594,7 @@ p {
   padding: 0.6rem 0;
   color: var(--white);
   font:
-    400 16px var(--font-inter), "Inter",
+    400 16px var(--font-body), "Poppins",
     sans-serif;
   text-transform: none;
   border-radius: 0;
