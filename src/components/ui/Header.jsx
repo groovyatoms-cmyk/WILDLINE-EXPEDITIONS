@@ -8,6 +8,12 @@ import ThemeToggle from './ThemeToggle.jsx'
 export default function Header() {
   const [open, setOpen] = useState(false)
 
+  // Lock page scroll behind the open menu.
+  useEffect(() => {
+    document.documentElement.style.overflow = open ? 'hidden' : ''
+    return () => { document.documentElement.style.overflow = '' }
+  }, [open])
+
   useEffect(() => {
     const esc = (e) => e.key === 'Escape' && setOpen(false)
     addEventListener('keydown', esc)

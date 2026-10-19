@@ -24,14 +24,14 @@ export default function Join({ to }) {
         {<p className="mono join-includes">INCLUDED: {join.includes.join(' · ')}</p>}
         {<p className="mono join-includes">NOT INCLUDED: {join.excludes.join(' · ')}</p>}
         {(
-          <ol className="dates mono">
+          <ol className="dates steps mono">
             {join.steps.map(([h, p], i) => (
               <Reveal as="li" key={h} index={i}><span>{h}</span><span>{p}</span></Reveal>
             ))}
           </ol>
         )}
         {(
-          <ul className="join-note mono">
+          <ul className="join-note join-policy mono">
             {join.policy.map((p) => <li key={p}>{p}</li>)}
           </ul>
         )}

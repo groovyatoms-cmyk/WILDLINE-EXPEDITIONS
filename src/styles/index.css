@@ -974,3 +974,83 @@ p {
 .faq-item summary { cursor: pointer; }
 .faq-item p { margin: .6rem 0 0; }
 .faq .label { margin-top: 1.5rem; }
+
+/* mobile: no hover, so trip photos always show as cards */
+@media (max-width: 768px) {
+  .expeditions ul { /* swipeable row, same pattern as the team cards */
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    margin-inline: -4vw;
+    padding: 0 4vw 1rem;
+    scroll-padding-inline: 4vw;
+    -webkit-overflow-scrolling: touch;
+  }
+  .expeditions li { flex: 0 0 80%; scroll-snap-align: start; }
+  .expeditions li:last-child .trip { border-bottom: 0; }
+  .trip {
+    min-height: 13rem;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    padding: 1.2rem;
+    border: 1px solid var(--stone);
+    border-radius: 0.6rem;
+    isolation: isolate;
+  }
+  .trip img {
+    clip-path: none;
+    opacity: 0.55;
+    z-index: -2;
+  }
+  .trip::before { /* darkens the photo so the text stays readable */
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to top, var(--bg) 8%, transparent 80%);
+  }
+  .trip-name { font-size: 10vw; line-height: 1; }
+  .trip { min-height: 16rem; }
+  .trip-meta { display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; white-space: normal; }
+}
+
+/* Join page: how-it-works steps and booking rules */
+.dates.steps { padding: 0; list-style: none; margin: 2rem 0; }
+.dates.steps li { flex-direction: column; gap: 0.3rem; }
+.dates.steps li span:first-child { color: var(--sand); }
+.dates.steps li span:last-child { color: inherit; }
+.join-policy { padding-left: 1.1rem; list-style: disc; display: grid; gap: 0.6rem; margin: 2rem 0 1.5rem; }
+.join-includes { line-height: 1.7; }
+
+@media (max-width: 768px) {
+  .crew .section-head { font-size: 10.5vw; overflow-wrap: anywhere; }
+  .about { gap: 1.5rem; }
+  .about-body { gap: 1.1rem; font-size: 1.05rem; }
+}
+
+/* detail + FAQ pages: tighter labels, soft hero */
+.expedition-detail .label, .faq .label { margin-bottom: 0.8rem; }
+.detail-hero { border-radius: 0.6rem; }
+.expedition-detail .trip-meta { display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; text-align: left; margin-bottom: 1rem; }
+.detail-faq { margin-bottom: 1.5rem; }
+
+@media (max-width: 768px) {
+  .member-photo { aspect-ratio: 1 / 1; }
+  .careers-intro { font-size: 1.05rem; }
+}
+
+/* phone menu: side padding, no wrapping, no sideways scroll, tidier policy row */
+@media (max-width: 768px) {
+  .menu { overflow-x: hidden; }
+  .menu ul { width: 100%; padding: 5.5rem 6vw 1.5rem; }
+  .menu li { transform: none; }
+  .menu a { font-size: min(11.5vw, 8vh); white-space: nowrap; padding: 0.18em 0; }
+  .menu-legal { gap: 0.7rem 1.4rem; padding: 0 6vw 1.8rem; justify-content: flex-start; }
+}
+@media (max-width: 768px) {
+  .menu { align-content: center; }
+  .menu ul { margin: 0; padding-top: 4.5rem; }
+  .menu-legal { align-content: flex-start; justify-content: flex-start; padding-top: 1.5rem; }
+}
