@@ -3,3 +3,7 @@ dist
 .playwright-mcp
 
 .vercel
+
+.next
+next-env.d.ts
+*.tsbuildinfo
