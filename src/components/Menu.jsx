@@ -15,7 +15,7 @@ export default function Menu() {
       <nav className="nav" aria-label="Primary">
         <a className="mono nav-menu" href="#" onClick={() => setOpen(false)}>HOME</a>
         <button className="mono nav-menu" aria-expanded={open} aria-controls="menu" onClick={() => setOpen(!open)}>{open ? 'CLOSE' : 'MENU'}</button>
-        <a className="pill pill-rust nav-book" href="#join">BOOK NOW</a>
+        <button className="pill pill-rust nav-book" onClick={() => { setOpen(false); dispatchEvent(new Event('open-enquire')) }}>BOOK NOW</button>
       </nav>
       <div id="menu" className={`menu${open ? ' open' : ''}`} {...(open ? {} : { inert: '' })}>
         <ul>

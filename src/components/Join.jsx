@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { join, site, trips } from '../data/site.js'
 
@@ -6,6 +6,13 @@ const wa = (text = '') => `https://wa.me/${site.whatsapp}${text ? `?text=${encod
 
 export default function Join() {
   const [open, setOpen] = useState(false)
+
+  // The nav BOOK NOW button opens this panel from anywhere on the page.
+  useEffect(() => {
+    const show = () => setOpen(true)
+    addEventListener('open-enquire', show)
+    return () => removeEventListener('open-enquire', show)
+  }, [])
 
   // No backend: the enquiry is handed to WhatsApp, prefilled.
   const submit = (e) => {
