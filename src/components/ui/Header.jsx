@@ -35,6 +35,7 @@ export default function Header() {
           {Object.values(legal).map((d) => (
             <a key={d.path} href={d.path} onClick={() => setOpen(false)}>{d.title}</a>
           ))}
+          <a href="/faq" onClick={() => setOpen(false)}>FAQ</a>
         </nav>
       </div>
     </>

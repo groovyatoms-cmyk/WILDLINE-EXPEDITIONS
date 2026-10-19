@@ -160,7 +160,6 @@ export const menuLinks = [
   { label: 'About Us', href: '/about' },
   { label: 'Our Core Team', href: '/team' },
   { label: 'Careers', href: '/careers' },
-  { label: 'Join', href: '/join' },
   { label: 'Contact', href: '/contact' },
 ]
 
@@ -273,3 +272,32 @@ export const tripFaq = [
   ['What should I pack?', 'Layers, a warm jacket, sunglasses, sunscreen, personal medicines and a power bank. We send a full list after booking.'],
   ['Can I get a refund if I cancel?', 'See our refund policy page. Date changes are free up to 30 days before departure.'],
 ]
+
+// Placeholder answers: verify each against real policy.
+export const faq = {
+  headline: 'FAQ',
+  intro: 'Everything people ask before they book. Missing something? Message us.',
+  groups: [
+    { title: 'BOOKING', items: [
+      ['How do I book a seat?', 'Message us on WhatsApp or use the enquiry form. We share the itinerary and cost, and your seat is held once the deposit is paid.'],
+      ['How many people are on a convoy?', 'Maximum 8 vehicles per convoy, so every guest gets proper attention from the crew.'],
+      ['Can I change my dates?', 'Yes. Date changes are free up to 30 days before departure.'],
+      ['What is the cancellation and refund policy?', 'See the Refund policy page for the full terms.'],
+    ] },
+    { title: 'THE DRIVE', items: [
+      ['Do I need to bring my own vehicle?', 'No. The 4x4 and driver-guide are included. Self-drive options can be arranged on request.'],
+      ['Do I need 4x4 driving experience?', 'No. You need to be curious and ready for long days. The crew briefs you before every route.'],
+      ['What if a road is closed or the weather turns?', 'The lead makes the call and reroutes or holds a day. Safety always comes before the schedule.'],
+    ] },
+    { title: 'SAFETY + HEALTH', items: [
+      ['How do you handle altitude sickness?', 'Routes include rest days and gradual altitude gain. Crew are wilderness-first-aid trained and we carry oxygen above 4,500 m.'],
+      ['Is there phone network on the route?', 'Often not. Every convoy carries a sat phone and VHF radios.'],
+      ['Is it suitable for children and seniors?', 'Easy routes such as Rajasthan and Kutch suit most ages. Tell us about any medical condition when you book.'],
+    ] },
+    { title: 'PACKING + STAYS', items: [
+      ['What should I pack?', 'Layers, a warm jacket, sunglasses, sunscreen, personal medicines and a power bank. We send a full list after booking.'],
+      ['Where do we stay?', 'Camps, homestays and guesthouses chosen for each route. Hot meals are included.'],
+      ['Who arranges permits?', 'We do. Send your ID after booking and Inner Line and protected-area permits are handled before you leave.'],
+    ] },
+  ],
+}
