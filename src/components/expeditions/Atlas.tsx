@@ -38,7 +38,7 @@ const CITIES: [string, number, number][] = [
 ]
 
 export default function Atlas({ month = null }: { month?: number | null }) {
-  const { t: tr, money } = usePrefs()
+  const { money } = usePrefs()
   const slugs = trips.map(tripSlug)
   const [slug, setSlug] = useState('ladakh')
   const i = slugs.indexOf(slug)
@@ -125,9 +125,9 @@ export default function Atlas({ month = null }: { month?: number | null }) {
           </div>
           <h3 className="display">{t.name}</h3>
           <p className="mono atlas-meta">
-            <span>{tr('{n} days', { n: t.days })}</span>
+            <span>{t.days} days</span>
             <span>{t.season}</span>
-            <span>{tr('from {price}', { price: money(t.price) })}</span>
+            <span>from {money(t.price)}</span>
             {d && <span>{d.level}</span>}
           </p>
           {d && <p className="atlas-overview">{d.overview}</p>}

@@ -22,7 +22,7 @@ const find = (slug: string) => {
 }
 const days = (s: string) => s.replace('DAY ', 'Day ')
 const metres = (t: { alt: string }) => parseInt(t.alt.replace(/,/g, ''), 10)
-const spec = (k: string) => crew.specs.find(([n]) => n === k)?.[1] ?? ''
+const spec = (k: string) => crew.specs.find(([n]) => n.toLowerCase() === k.toLowerCase())?.[1] ?? ''
 const answer = (q: string) => faq.groups.flatMap((g) => g.items).find(([x]) => x === q)?.[1] ?? ''
 const DATE = '2026-10-20'
 

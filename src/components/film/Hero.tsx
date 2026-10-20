@@ -3,7 +3,6 @@
 import { useEffect, useState, type RefObject } from 'react'
 import { ArrowLeft, ArrowRight, ArrowUp, Play } from 'lucide-react'
 import { trips } from '@/data/site'
-import { usePrefs } from '@/lib/prefs'
 import { read, write } from '@/lib/storage'
 import { useUpcoming } from '@/lib/upcoming'
 
@@ -11,7 +10,6 @@ import { useUpcoming } from '@/lib/upcoming'
 export default function Hero({ heroRef }: { heroRef: RefObject<HTMLDivElement | null> }) {
   const { list, mounted } = useUpcoming()
   const next = list[0]
-  const { t, lang } = usePrefs()
   const [asked, setAsked] = useState(false) // the cookie banner has been answered
   const [played, setPlayed] = useState(true) // the how-to hint shows on a visitor's first visit only: hidden until storage says it is new
   useEffect(() => {
@@ -48,48 +46,42 @@ export default function Hero({ heroRef }: { heroRef: RefObject<HTMLDivElement | 
   return (
     <div ref={heroRef} className="hero">
       <div className="hero-copy">
-        <p className="hero-eyebrow">{t('Guided 4x4 convoys since 2016')}</p>
+        <p className="hero-eyebrow">Guided 4x4 convoys since 2016</p>
         <h1 className="hero-h1 display">
           <span className="hl">
-            <span>{t('Beyond the')}</span>
+            <span>Beyond the</span>
           </span>
           <span className="hl">
             <span>
-              {lang === 'en' ? (
-                <>
-                  <em>last</em> road.
-                </>
-              ) : (
-                <em>{t('last road.')}</em>
-              )}
+              <em>last</em> road.
             </span>
           </span>
           <span className="sr-only"> — 4x4 Expeditions in India</span>
         </h1>
         <p className="hero-sub">
-          {t('Small, guided convoys through Ladakh, Spiti, Uttarakhand and Arunachal. Eight vehicles. One pace. Everyone comes back.')}
+          Small, guided convoys through Ladakh, Spiti, Uttarakhand and Arunachal. Eight vehicles. One pace. Everyone comes back.
         </p>
         <div className="hero-cta">
           <a className="pill pill-rust" href="/expeditions">
-            {t('Explore expeditions')} <ArrowRight size={16} aria-hidden="true" />
+            Explore expeditions <ArrowRight size={16} aria-hidden="true" />
           </a>
           <button type="button" className={`pill pill-glass${played ? '' : ' pulse'}`} onClick={play}>
-            <Play size={14} aria-hidden="true" /> {t('Watch the film')}
+            <Play size={14} aria-hidden="true" /> Watch the film
           </button>
           {!played && asked && (
             <span className="hint mono" aria-hidden="true">
               <ArrowLeft className="hint-side" size={16} />
-              <ArrowUp className="hint-up" size={16} /> {t('Press play, the road scrolls for you')}
+              <ArrowUp className="hint-up" size={16} /> Press play, the road scrolls for you
             </span>
           )}
         </div>
       </div>
       {mounted && next && (
         <a className="hero-card" href="/join">
-          <span className="mono">{t('Next convoy')}</span>
+          <span className="mono">Next convoy</span>
           <strong className="display">{trip ? trip.name.replace(' Expedition', '') : next.trip}</strong>
           <span className="hero-card-meta">
-            {next.date} · {t('{n} seats left', { n: next.seats })} <ArrowRight size={14} aria-hidden="true" />
+            {next.date} · {next.seats} seats left <ArrowRight size={14} aria-hidden="true" />
           </span>
         </a>
       )}

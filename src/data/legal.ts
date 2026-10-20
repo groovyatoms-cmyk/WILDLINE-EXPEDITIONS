@@ -133,7 +133,7 @@ export const legal = {
       ['What are cookies', 'Small files a website stores in your browser. Similar technologies, such as local storage, work the same way.'],
       [
         'What we use today',
-        'Only what the site needs to work: your cookie choice and your language and currency picks, all kept in your browser. They are not sent to us or to any third party.',
+        'Only what the site needs to work: your cookie choice and your currency pick, all kept in your browser. They are not sent to us or to any third party.',
       ],
       [
         'Device ID',

@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Cookie } from 'lucide-react'
 import { confetti } from '@/lib/confetti'
-import { usePrefs } from '@/lib/prefs'
 import { identify } from '@/lib/deviceId'
 import { read, write } from '@/lib/storage'
 import Button from '@/components/ui/Button'
@@ -14,7 +13,6 @@ const KEY = 'cookie-consent'
 // The site sets no cookies yet; the choice is stored so analytics can honour it later.
 export default function CookieBanner() {
   // undefined until mounted: localStorage is unavailable on the server and the banner must not flash for returning visitors.
-  const { t } = usePrefs()
   const [choice, setChoice] = useState<string | null | undefined>(undefined)
   useEffect(() => {
     const saved = read(KEY)
@@ -46,18 +44,16 @@ export default function CookieBanner() {
             <Cookie size={28} strokeWidth={1.5} />
           </span>
           <div className="cookie-copy">
-            <h2 className="display">{t('Trail snacks?')}</h2>
+            <h2 className="display">Trail snacks?</h2>
             <p className="mono">
-              {t(
-                'Only the essentials ride in this convoy: your choice and nothing else. Say yes and we may add a little analytics to see what works.',
-              )}{' '}
-              <a href="/cookies">{t('Read our Cookies Policy')}</a>
+              Only the essentials ride in this convoy: your choice and nothing else. Say yes and we may add a little analytics to see what
+              works. See our <a href="/cookies">Cookies Policy</a>.
             </p>
           </div>
           <div className="cookie-actions">
-            <Button onClick={() => pick('declined')}>{t('Decline')}</Button>
+            <Button onClick={() => pick('declined')}>Decline</Button>
             <Button variant="rust" onClick={() => pick('accepted')}>
-              {t('Accept')}
+              Accept
             </Button>
           </div>
         </motion.div>

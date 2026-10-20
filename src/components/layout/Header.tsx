@@ -5,7 +5,6 @@ import { Menu, X } from 'lucide-react'
 import { menuLinks } from '@/data/site'
 import { legal } from '@/data/legal'
 import { openEnquire } from '@/lib/enquire'
-import { usePrefs } from '@/lib/prefs'
 import Button from '@/components/ui/Button'
 import PrefsMenu from '@/components/layout/PrefsMenu'
 
@@ -21,7 +20,6 @@ const PRIMARY = [
 
 export default function Header() {
   const [open, setOpen] = useState(false)
-  const { t } = usePrefs()
 
   // Lock page scroll behind the open menu.
   useEffect(() => {
@@ -43,7 +41,7 @@ export default function Header() {
       <nav className="nav-links" aria-label="Primary">
         {PRIMARY.map((l) => (
           <a key={l.label} href={l.href}>
-            {t(l.label)}
+            {l.label}
           </a>
         ))}
       </nav>
@@ -56,7 +54,7 @@ export default function Header() {
             openEnquire()
           }}
         >
-          {t('Reserve a seat')}
+          Reserve a seat
         </Button>
         <PrefsMenu />
         <button
@@ -74,7 +72,7 @@ export default function Header() {
           {menuLinks.map((l, i) => (
             <li key={l.label} style={{ '--i': i } as React.CSSProperties}>
               <a className="display" href={l.href} onClick={() => setOpen(false)}>
-                {t(l.label)}
+                {l.label}
               </a>
             </li>
           ))}
@@ -86,7 +84,7 @@ export default function Header() {
             </a>
           ))}
           <a href="/faq" onClick={() => setOpen(false)}>
-            {t('FAQ')}
+            FAQ
           </a>
         </nav>
       </div>
