@@ -85,3 +85,11 @@ describe('helpers', () => {
   })
   it('inSeason is false for unreadable text', () => expect(inSeason('all year', 3)).toBe(false))
 })
+
+describe('altitude profile', () => {
+  it('parses every trip stop altitude', () => {
+    Object.values(tripDetails).forEach((d) =>
+      d?.stops?.forEach(([, a]) => expect(Number.isNaN(parseInt(a.replace(/[^\d]/g, ''), 10))).toBe(false)),
+    )
+  })
+})

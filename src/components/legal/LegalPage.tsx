@@ -7,6 +7,7 @@ export default function LegalPage({ docKey }: { docKey: keyof typeof legal }) {
   return (
     <div className="page">
       <Section id={docKey} className="legal" title={doc.title}>
+        <p className="mono legal-updated">Last updated {doc.updated}</p>
         {doc.sections.map(([heading, text]) => (
           <div key={heading} className="legal-block">
             <h3 className="mono">{heading}</h3>

@@ -9,7 +9,7 @@ describe('seo', () => {
   it('lists every page, trip and legal doc in the sitemap exactly once', () => {
     const urls = sitemap().map((e) => e.url)
     expect(new Set(urls).size).toBe(urls.length)
-    expect(urls).toHaveLength(10 + POSTS.length + trips.length + Object.keys(legal).length)
+    expect(urls).toHaveLength(13 + POSTS.length + trips.length + Object.keys(legal).length)
     expect(urls).toContain(abs('/expeditions/ladakh'))
   })
   it('points robots at the sitemap', () => expect(robots().sitemap).toBe(abs('/sitemap.xml')))

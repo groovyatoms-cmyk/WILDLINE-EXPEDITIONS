@@ -13,6 +13,7 @@ const PRIMARY = [
   { label: 'Safety', href: '/safety' },
   { label: 'Crew', href: '/team' },
   { label: 'Convoys', href: '/join' },
+  { label: 'Gallery', href: '/gallery' },
   { label: 'Blog', href: '/blog' },
 ]
 

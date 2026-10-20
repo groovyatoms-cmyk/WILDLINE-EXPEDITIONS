@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import ExpeditionDetail from '@/components/expeditions/ExpeditionDetail'
 import JsonLd from '@/components/ui/JsonLd'
-import { site, tripDetails, tripSlug, trips } from '@/data/site'
+import { site, tripDetails, tripFaq, tripSlug, trips } from '@/data/site'
 import { abs, pageMeta } from '@/lib/seo'
 
 type Props = { params: Promise<{ slug: string }> }
@@ -59,6 +59,11 @@ export default async function Page({ params }: Props) {
         { '@type': 'ListItem', position: 2, name: 'Expeditions', item: abs('/expeditions') },
         { '@type': 'ListItem', position: 3, name: t.name, item: abs(`/expeditions/${slug}`) },
       ],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: tripFaq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
     },
   ]
   return (

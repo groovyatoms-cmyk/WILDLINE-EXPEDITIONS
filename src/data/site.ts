@@ -344,6 +344,7 @@ export const menuLinks = [
   { label: 'Expeditions', href: '/expeditions' },
   { label: 'Safety', href: '/safety' },
   { label: 'Convoys', href: '/join' },
+  { label: 'Gallery', href: '/gallery' },
   { label: 'Blog', href: '/blog' },
   { label: 'Our core team', href: '/team' },
   { label: 'About us', href: '/about' },
@@ -691,6 +692,16 @@ export const faq = {
         ['How many people are on a convoy?', 'Maximum 8 vehicles per convoy, so every guest gets proper attention from the crew.'],
         ['Can I change my dates?', 'Yes. Date changes are free up to 30 days before departure.'],
         ['What is the cancellation and refund policy?', 'See the Refund policy page for the full terms.'],
+        [
+          'What is included in the price?',
+          'The 4x4 and driver-guide, permits, stays and meals, the recovery crew, and oxygen and first aid. Prices are per person.',
+        ],
+        [
+          'What is not included?',
+          'Flights and train fares to the start point, personal insurance, alcohol and personal expenses, and fuel for personal vehicles on self-drive trips.',
+        ],
+        ['Can I join alone?', 'Yes. Seats are sold per person, so solo guests join the convoy and travel with the group.'],
+        ['What is the minimum age?', 'Guests should be 18+ or travel with a guardian. Children are welcome on lower-altitude routes.'],
       ],
     },
     {
@@ -714,6 +725,14 @@ export const faq = {
           'How do you handle altitude sickness?',
           'Routes include rest days and gradual altitude gain. Crew are wilderness-first-aid trained and we carry oxygen above 4,500 m.',
         ],
+        [
+          'How fit do I need to be?',
+          'You travel by vehicle, so no special fitness is needed on low-altitude routes. High-altitude routes need a basic fitness level and a few days to adjust, which the itinerary builds in.',
+        ],
+        [
+          'What happens in an emergency?',
+          'Every convoy has a lead and a sweep vehicle, a sat phone, VHF radios, oxygen and first aid. The lead decides whether to treat on the spot, descend or arrange evacuation. Good evacuation insurance is your responsibility.',
+        ],
         ['Is there phone network on the route?', 'Often not. Every convoy carries a sat phone and VHF radios.'],
         [
           'Is it suitable for children and seniors?',
@@ -727,6 +746,10 @@ export const faq = {
         [
           'What should I pack?',
           'Layers, a warm jacket, sunglasses, sunscreen, personal medicines and a power bank. We send a full list after booking.',
+        ],
+        [
+          'When is the best time to go?',
+          'It depends on the route: Ladakh and Spiti run in summer, Rajasthan and Kutch in the cooler months, and Winter Spiti in the snow. The season for each trip is on its page.',
         ],
         ['Where do we stay?', 'Camps, homestays and guesthouses chosen for each route. Hot meals are included.'],
         [

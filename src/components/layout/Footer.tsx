@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { ArrowUp, Mail, Phone } from 'lucide-react'
 import { contact, menuLinks, site, trips, tripSlug } from '@/data/site'
 import { legal } from '@/data/legal'
+import { reviews } from '@/data/reviews'
 import { wa } from '@/lib/enquire'
 import ScrollWords from '@/components/ui/ScrollWords'
 import { Facebook, Instagram, Youtube } from '@/components/ui/BrandIcons'
@@ -69,6 +70,9 @@ export default function Footer() {
             </a>
           ))}
           <a href="/faq">FAQ</a>
+          <a href="/packing">Packing list</a>
+          <a href="/permits">Permits</a>
+          {reviews.length > 0 && <a href="/reviews">Reviews</a>}
         </nav>
         <nav aria-label="Policies">
           <h2 className="mono">Policies</h2>

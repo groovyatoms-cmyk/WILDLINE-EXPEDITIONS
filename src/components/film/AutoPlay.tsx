@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useState, type RefObject } from 'react'
-import { Pause, Play } from 'lucide-react'
+import { Pause, Play, Video } from 'lucide-react'
 import { film } from '@/data/site'
 import type { Shots } from '@/lib/frames'
+import { useProgress, type Store } from '@/hooks/useScrollProgress'
 import { isPresent } from '@/lib/guard'
-import { frameTotal, timeline } from '@/lib/timeline'
+import { frameNo, frameTotal, timeline } from '@/lib/timeline'
 
 // Seconds to play each stretch of the film: [from, to, seconds]. Shot 1 is 44 s of footage and plays in
 // about real time, so the convoy moves like video instead of in slow motion; shot 2 gets a little longer for its text.
@@ -21,11 +22,29 @@ const rate = (p: number) => {
   return (b - a) / sec
 }
 
-// Play/pause button for the hero film. It only plays when the visitor presses play: the page then scrolls at a
-// steady pace (the film's own easing smooths it) and a camera-style REC badge shows. Any wheel, touch or key press
+const SHOW_FROM = 10 // the button appears from this frame of shot 1
+
+// Play/pause button for the hero film: it appears from frame 10 of shot 1. Playback starts from it or from "Watch the film" (Hero sends `film:play`); the REC badge shows only while it plays. The page then scrolls at a
+// steady pace (the film's own easing smooths it) with the badge on. Any wheel, touch or key press
 // hands control back and the badge goes away.
-export default function AutoPlay({ filmRef, shots }: { filmRef: RefObject<HTMLElement | null>; shots: RefObject<Shots> }) {
+export default function AutoPlay({
+  filmRef,
+  shots,
+  store,
+}: {
+  filmRef: RefObject<HTMLElement | null>
+  shots: RefObject<Shots>
+  store: Store
+}) {
   const [playing, setPlaying] = useState(false)
+  const [shown, setShown] = useState(false)
+  useProgress(store, (p) => setShown(p < 1 && frameNo(timeline(p).f1, 1) >= SHOW_FROM))
+
+  useEffect(() => {
+    const start = () => setPlaying(true)
+    addEventListener('film:play', start)
+    return () => removeEventListener('film:play', start)
+  }, [])
 
   useEffect(() => {
     if (!playing) return
@@ -76,19 +95,27 @@ export default function AutoPlay({ filmRef, shots }: { filmRef: RefObject<HTMLEl
 
   return (
     <>
-      <button
-        type="button"
-        className="autoplay"
-        aria-label={playing ? 'Pause the film' : 'Play the film'}
-        aria-pressed={playing}
-        onClick={() => setPlaying((p) => !p)}
-      >
-        {playing ? <Pause size={30} aria-hidden="true" /> : <Play size={30} aria-hidden="true" />}
-      </button>
+      {shown && (
+        <button
+          type="button"
+          className="autoplay"
+          aria-label={playing ? 'Pause the film' : 'Play the film'}
+          aria-pressed={playing}
+          onClick={() => setPlaying((v) => !v)}
+        >
+          {playing ? (
+            <Pause size={20} fill="currentColor" strokeWidth={0} aria-hidden="true" />
+          ) : (
+            <Play size={20} fill="currentColor" strokeWidth={0} aria-hidden="true" />
+          )}
+        </button>
+      )}
       {playing && (
         <p className="rec mono" aria-hidden="true">
           <i className="rec-dot" />
-          REC 4K/25FPS ISO 100
+          REC
+          <Video size={14} aria-hidden="true" />
+          4K/25FPS, ISO 100, f/1.8
         </p>
       )}
     </>

@@ -29,6 +29,7 @@ export default async function Page({ params }: Props) {
       description: p.description,
       image: abs(`/${p.cover}`),
       datePublished: p.date,
+      dateModified: p.date,
       author: { '@type': 'Organization', name: site.fullName },
       publisher: { '@type': 'Organization', name: site.fullName, logo: { '@type': 'ImageObject', url: abs('/icon.svg') } },
       mainEntityOfPage: abs(`/blog/${slug}`),

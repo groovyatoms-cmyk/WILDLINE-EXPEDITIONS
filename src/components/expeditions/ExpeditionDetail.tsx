@@ -6,6 +6,7 @@ import { openEnquire, wa } from '@/lib/enquire'
 import Section from '@/components/ui/Section'
 import Button from '@/components/ui/Button'
 import Reveal from '@/components/ui/Reveal'
+import Profile from '@/components/expeditions/Profile'
 import ShimmerImg from '@/components/ui/ShimmerImg'
 
 const LEVELS = ['Easy', 'Moderate', 'Hard', 'Extreme']
@@ -84,6 +85,7 @@ export default function ExpeditionDetail({ slug }: { slug: string }) {
                   </li>
                 ))}
               </ol>
+              <Profile stops={d.stops} />
             </>
           )}
           <h2 className="detail-h display">Highlights</h2>

@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { pageMeta } from '@/lib/seo'
 import About from '@/components/about/About'
 import How from '@/components/safety/How'
-import Gallery from '@/components/about/Gallery'
 
 export const metadata: Metadata = pageMeta(
   'About us',
@@ -15,7 +14,6 @@ export default function Page() {
     <div className="page">
       <About />
       <How />
-      <Gallery />
     </div>
   )
 }

@@ -23,8 +23,7 @@ export default function Hero({ heroRef }: { heroRef: RefObject<HTMLDivElement | 
     return () => removeEventListener('pointermove', move)
   }, [heroRef])
 
-  // The film's own play button is hidden; this one starts it.
-  const play = () => document.querySelector<HTMLButtonElement>('.autoplay')?.click()
+  const play = () => dispatchEvent(new Event('film:play'))
 
   return (
     <div ref={heroRef} className="hero">

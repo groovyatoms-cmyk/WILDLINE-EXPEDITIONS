@@ -3,6 +3,7 @@ import type { Store } from '@/hooks/useScrollProgress'
 import type { Shots } from '@/lib/frames'
 import { bigLines, film } from '@/data/site'
 import dynamic from 'next/dynamic'
+import Reviews from '@/components/about/Reviews'
 import About from '@/components/about/About'
 import SectionSkeleton from '@/components/ui/SectionSkeleton'
 import AutoPlay from '@/components/film/AutoPlay'
@@ -60,7 +61,7 @@ export default function Home({ store, shots, filmRef, heroRef }: HomeProps) {
             <BigLine key={l.text} store={store} {...l} />
           ))}
           <Stats store={store} />
-          <AutoPlay filmRef={filmRef} shots={shots} />
+          <AutoPlay filmRef={filmRef} shots={shots} store={store} />
         </div>
       </section>
       <About to="/about" />
@@ -68,7 +69,8 @@ export default function Home({ store, shots, filmRef, heroRef }: HomeProps) {
       <ConvoyCockpit to="/safety" />
       <BlogPreview to="/blog" />
       <How to="/safety" />
-      <Gallery to="/about" />
+      <Gallery to="/gallery" />
+      <Reviews to="/about" />
       <Team to="/team" />
       <Join to="/join" />
       <Faq to="/faq" />
