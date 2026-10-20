@@ -14,3 +14,11 @@ export const write = (key: string, value: string) => {
     /* nothing to remember in this browser */
   }
 }
+
+export const clear = (key: string) => {
+  try {
+    localStorage.removeItem(key)
+  } catch {
+    /* nothing stored in this browser */
+  }
+}

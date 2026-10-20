@@ -34,6 +34,10 @@ export const legal = {
         'We keep booking records for as long as needed for safety, accounting and legal reasons. Ask us to access, correct or delete your data by email.',
       ],
       [
+        'Device ID',
+        'If you accept cookies, we create an anonymous device ID from browser and device traits. It stays in your browser and is not made for visitors who decline.',
+      ],
+      [
         'Identity documents',
         'We ask for a copy of your ID only to arrange Inner Line and protected-area permits. We use it for that and nothing else, share it only with the permit authority or agent, and delete our copy after the trip unless the law requires us to keep it.',
       ],
@@ -129,7 +133,11 @@ export const legal = {
       ['What are cookies', 'Small files a website stores in your browser. Similar technologies, such as local storage, work the same way.'],
       [
         'What we use today',
-        'Only what the site needs to work: your cookie choice and your light or dark theme, both kept in your browser. They are not sent to us or to any third party.',
+        'Only what the site needs to work: your cookie choice and your language and currency picks, all kept in your browser. They are not sent to us or to any third party.',
+      ],
+      [
+        'Device ID',
+        'Only if you accept: we create an anonymous device ID from your browser and device traits with FingerprintJS, an open-source library, and keep it in your browser to recognise a returning device. If you decline, it is not created and any stored one is deleted.',
       ],
       [
         'Analytics and marketing',
@@ -137,7 +145,7 @@ export const legal = {
       ],
       [
         'Third-party content',
-        'Fonts load from Google Fonts. Links to Facebook, Instagram, YouTube and WhatsApp open on those services, which set their own cookies under their own policies.',
+        'When you pick a currency other than rupees, your browser asks the free Frankfurter exchange-rate service (api.frankfurter.dev) for the day’s rates. Links to Facebook, Instagram, YouTube and WhatsApp open on those services, which set their own cookies under their own policies.',
       ],
       [
         'Your choices',

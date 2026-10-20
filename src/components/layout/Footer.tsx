@@ -5,6 +5,7 @@ import { ArrowUp, Mail, Phone } from 'lucide-react'
 import { contact, menuLinks, site, trips, tripSlug } from '@/data/site'
 import { legal } from '@/data/legal'
 import { reviews } from '@/data/reviews'
+import { usePrefs } from '@/lib/prefs'
 import { wa } from '@/lib/enquire'
 import ScrollWords from '@/components/ui/ScrollWords'
 import { Facebook, Instagram, Youtube } from '@/components/ui/BrandIcons'
@@ -34,6 +35,7 @@ function LehTime() {
 }
 
 export default function Footer() {
+  const { t } = usePrefs()
   return (
     <footer id="contact" className="footer">
       <div className="ribbon" aria-hidden="true">
@@ -55,7 +57,7 @@ export default function Footer() {
 
       <div className="footer-cols">
         <nav aria-label="Expeditions">
-          <h2 className="mono">Expeditions</h2>
+          <h2 className="mono">{t('Expeditions')}</h2>
           {trips.slice(0, 6).map((t) => (
             <a key={t.name} href={`/expeditions/${tripSlug(t)}`}>
               {t.name}
@@ -66,16 +68,16 @@ export default function Footer() {
           <h2 className="mono">Wildline</h2>
           {menuLinks.map((l) => (
             <a key={l.label} href={l.href}>
-              {l.label}
+              {t(l.label)}
             </a>
           ))}
-          <a href="/faq">FAQ</a>
-          <a href="/packing">Packing list</a>
-          <a href="/permits">Permits</a>
+          <a href="/faq">{t('FAQ')}</a>
+          <a href="/packing">{t('Packing list')}</a>
+          <a href="/permits">{t('Permits')}</a>
           {reviews.length > 0 && <a href="/reviews">Reviews</a>}
         </nav>
         <nav aria-label="Policies">
-          <h2 className="mono">Policies</h2>
+          <h2 className="mono">{t('Policies')}</h2>
           {Object.values(legal).map((d) => (
             <a key={d.path} href={d.path}>
               {d.title}
@@ -83,12 +85,12 @@ export default function Footer() {
           ))}
         </nav>
         <address>
-          <h2 className="mono">Find us</h2>
+          <h2 className="mono">{t('Find us')}</h2>
           <p>{office}</p>
           <a href={`tel:+${site.whatsapp}`}>+{site.whatsapp}</a>
           <a href={`mailto:${site.email}`}>{site.email}</a>
           <a href={wa()} target="_blank" rel="noopener noreferrer">
-            WhatsApp us
+            {t('WhatsApp us')}
           </a>
         </address>
       </div>

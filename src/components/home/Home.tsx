@@ -13,27 +13,35 @@ import Hero from '@/components/film/Hero'
 import ScrollCue from '@/components/film/ScrollCue'
 import Stats from '@/components/film/Stats'
 
-// Skeleton heights are the real sections' heights on a 1280 px wide desktop, so nothing below jumps when a chunk arrives.
+// Skeleton heights are the real sections' heights on a 1280 px desktop and a 390 px phone, so nothing below jumps when a chunk arrives.
 // Everything below the film is split into its own chunk and loads as it is needed; the skeleton holds the section's height meanwhile.
 const ConvoyCockpit = dynamic(() => import('@/components/safety/ConvoyCockpit'), {
-  loading: () => <SectionSkeleton id="convoy" height={1166} blocks={2} />,
+  loading: () => <SectionSkeleton id="convoy" height={1166} mobile={1020} blocks={2} />,
 })
 const BlogPreview = dynamic(() => import('@/components/blog/BlogPreview'), {
-  loading: () => <SectionSkeleton id="blog" height={974} blocks={3} />,
+  loading: () => <SectionSkeleton id="blog" height={974} mobile={785} blocks={3} />,
 })
 const Enquiry = dynamic(() => import('@/components/contact/Enquiry'), {
-  loading: () => <SectionSkeleton id="enquiry" height={963} blocks={1} />,
+  loading: () => <SectionSkeleton id="enquiry" height={963} mobile={954} blocks={1} />,
 })
 const Expeditions = dynamic(() => import('@/components/expeditions/Expeditions'), {
-  loading: () => <SectionSkeleton id="expeditions" height={6316} blocks={4} />,
+  loading: () => <SectionSkeleton id="expeditions" height={6316} mobile={922} blocks={4} />,
 })
-const Faq = dynamic(() => import('@/components/contact/Faq'), { loading: () => <SectionSkeleton id="faq" height={1627} blocks={1} /> })
+const Faq = dynamic(() => import('@/components/contact/Faq'), {
+  loading: () => <SectionSkeleton id="faq" height={1627} mobile={2115} blocks={1} />,
+})
 const Gallery = dynamic(() => import('@/components/about/Gallery'), {
-  loading: () => <SectionSkeleton id="gallery" height={983} blocks={3} />,
+  loading: () => <SectionSkeleton id="gallery" height={983} mobile={724} blocks={3} />,
 })
-const How = dynamic(() => import('@/components/safety/How'), { loading: () => <SectionSkeleton id="how" height={2350} blocks={4} /> })
-const Join = dynamic(() => import('@/components/convoys/Join'), { loading: () => <SectionSkeleton id="join" height={1088} blocks={3} /> })
-const Team = dynamic(() => import('@/components/about/Team'), { loading: () => <SectionSkeleton id="team" height={1000} blocks={2} /> })
+const How = dynamic(() => import('@/components/safety/How'), {
+  loading: () => <SectionSkeleton id="how" height={2350} mobile={505} blocks={4} />,
+})
+const Join = dynamic(() => import('@/components/convoys/Join'), {
+  loading: () => <SectionSkeleton id="join" height={1088} mobile={856} blocks={3} />,
+})
+const Team = dynamic(() => import('@/components/about/Team'), {
+  loading: () => <SectionSkeleton id="team" height={1000} mobile={947} blocks={2} />,
+})
 
 // Home previews every section; each heading opens that section's own page, which carries the full version.
 type HomeProps = {

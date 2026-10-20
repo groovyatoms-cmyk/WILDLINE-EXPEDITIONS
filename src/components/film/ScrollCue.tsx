@@ -1,11 +1,13 @@
 'use client'
 
 import { useRef } from 'react'
+import { usePrefs } from '@/lib/prefs'
 import { useProgress, clamp01, type Store } from '@/hooks/useScrollProgress'
 
 // Mouse icon with a scrolling wheel, over a gold line that drips down the bottom of the hero until the visitor starts scrolling.
 export default function ScrollCue({ store }: { store: Store }) {
   const ref = useRef<HTMLDivElement>(null)
+  const { t } = usePrefs()
   useProgress(store, (p) => {
     if (ref.current) ref.current.style.opacity = String(1 - clamp01(p / 0.03))
   })
@@ -15,7 +17,7 @@ export default function ScrollCue({ store }: { store: Store }) {
         <i />
       </b>
       <i />
-      <span className="mono">Scroll</span>
+      <span className="mono">{t('Scroll')}</span>
     </div>
   )
 }

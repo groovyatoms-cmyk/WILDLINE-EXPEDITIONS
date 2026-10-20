@@ -5,12 +5,14 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { POSTS, readMinutes, type Post } from '@/data/blog'
 import { trips, tripSlug } from '@/data/site'
 import { openEnquire } from '@/lib/enquire'
+import { usePrefs } from '@/lib/prefs'
 import Button from '@/components/ui/Button'
 import ShimmerImg from '@/components/ui/ShimmerImg'
 import BlogCard from '@/components/blog/BlogCard'
 
 // One post: a reading-progress line, the cover, the text, then the route it leads to and two more notes.
 export default function BlogArticle({ p }: { p: Post }) {
+  const { money } = usePrefs()
   const bar = useRef<HTMLSpanElement>(null)
   const body = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -72,7 +74,7 @@ export default function BlogArticle({ p }: { p: Post }) {
         <h2 className="display">{t ? `Ready for the ${t.name.replace(' Expedition', '')} route?` : 'Planning a trip?'}</h2>
         <p>
           {t
-            ? `${t.days} days, up to ${t.alt}, ${t.season}, from ${t.price}.`
+            ? `${t.days} days, up to ${t.alt}, ${t.season}, from ${money(t.price)}.`
             : 'Tell us where and when, and we will point you to the routes that fit.'}
         </p>
         <div className="cta">

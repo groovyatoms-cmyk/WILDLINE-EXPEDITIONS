@@ -52,7 +52,12 @@ describe('SectionSkeleton', () => {
     const section = container.querySelector('section')
     expect(section).toHaveAttribute('id', 'faq')
     expect(section).toHaveAttribute('aria-busy', 'true')
-    expect(section).toHaveStyle({ minHeight: '800px' })
+    expect(section?.style.getPropertyValue('--h')).toBe('800px')
+    expect(section?.style.getPropertyValue('--hm')).toBe('800px') // a phone height defaults to the desktop one
     expect(container.querySelectorAll('.skeleton-block.shimmer')).toHaveLength(3)
+  })
+  it('takes a separate phone height', () => {
+    const { container } = render(<SectionSkeleton id="faq" height={1627} mobile={2115} />)
+    expect(container.querySelector('section')?.style.getPropertyValue('--hm')).toBe('2115px')
   })
 })

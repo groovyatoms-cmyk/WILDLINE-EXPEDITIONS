@@ -5,6 +5,7 @@ import { ArrowRight, Pause, Play, Video } from 'lucide-react'
 import { film } from '@/data/site'
 import type { Shots } from '@/lib/frames'
 import { useProgress, type Store } from '@/hooks/useScrollProgress'
+import { usePrefs } from '@/lib/prefs'
 import { read, write } from '@/lib/storage'
 import { isPresent } from '@/lib/guard'
 import { frameNo, frameTotal, timeline } from '@/lib/timeline'
@@ -38,6 +39,7 @@ export default function AutoPlay({
   store: Store
 }) {
   const [playing, setPlaying] = useState(false)
+  const { t } = usePrefs()
   const [shown, setShown] = useState(false)
   const [tip, setTip] = useState(false) // "pause anytime" hint, for the first seconds of playback
   useEffect(() => {
@@ -122,7 +124,7 @@ export default function AutoPlay({
       )}
       {shown && tip && (
         <span className="hint hint-pause mono" aria-hidden="true">
-          Pause anytime, or scroll to take over <ArrowRight size={16} />
+          {t('Pause anytime, or scroll to take over')} <ArrowRight size={16} />
         </span>
       )}
       {playing && (

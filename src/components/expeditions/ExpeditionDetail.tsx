@@ -3,6 +3,7 @@
 import { ArrowLeft, CalendarDays, Check, Clock, Gauge, Mountain, Sun, X, type LucideIcon } from 'lucide-react'
 import { join, tripDetails, tripFaq, tripItinerary, tripSlug, trips } from '@/data/site'
 import { openEnquire, wa } from '@/lib/enquire'
+import { usePrefs } from '@/lib/prefs'
 import Section from '@/components/ui/Section'
 import Button from '@/components/ui/Button'
 import Reveal from '@/components/ui/Reveal'
@@ -14,6 +15,7 @@ const LEVELS = ['Easy', 'Moderate', 'Hard', 'Extreme']
 // One expedition: a photographic opening with the four numbers that matter, the route as a trail, highlights, the day-by-day
 // timeline, what is and is not included, departures, questions, and a booking bar that stays in reach.
 export default function ExpeditionDetail({ slug }: { slug: string }) {
+  const { t: tr, money } = usePrefs()
   const t = trips.find((x) => tripSlug(x) === slug)
   if (!t)
     return (
@@ -29,7 +31,7 @@ export default function ExpeditionDetail({ slug }: { slug: string }) {
     [Clock, 'Length', `${t.days} days`],
     [Mountain, 'Highest point', t.alt],
     [Sun, 'Season', t.season],
-    [CalendarDays, 'From', `${t.price} per person`],
+    [CalendarDays, tr('From'), tr('{price} per person', { price: money(t.price) })],
   ]
   return (
     <Section id="expedition" className="expedition-detail" title={t.name}>
@@ -172,7 +174,7 @@ export default function ExpeditionDetail({ slug }: { slug: string }) {
         <div>
           <b className="display">{t.name}</b>
           <span className="mono">
-            {t.days} days · from {t.price}
+            {tr('{n} days', { n: t.days })} · {tr('from {price}', { price: money(t.price) })}
           </span>
         </div>
         <div className="cta">

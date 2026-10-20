@@ -5,7 +5,9 @@ import { Menu, X } from 'lucide-react'
 import { menuLinks } from '@/data/site'
 import { legal } from '@/data/legal'
 import { openEnquire } from '@/lib/enquire'
+import { usePrefs } from '@/lib/prefs'
 import Button from '@/components/ui/Button'
+import PrefsMenu from '@/components/layout/PrefsMenu'
 
 // Sections on the home page the centre links jump to.
 const PRIMARY = [
@@ -19,6 +21,7 @@ const PRIMARY = [
 
 export default function Header() {
   const [open, setOpen] = useState(false)
+  const { t } = usePrefs()
 
   // Lock page scroll behind the open menu.
   useEffect(() => {
@@ -40,7 +43,7 @@ export default function Header() {
       <nav className="nav-links" aria-label="Primary">
         {PRIMARY.map((l) => (
           <a key={l.label} href={l.href}>
-            {l.label}
+            {t(l.label)}
           </a>
         ))}
       </nav>
@@ -53,8 +56,9 @@ export default function Header() {
             openEnquire()
           }}
         >
-          Reserve a seat
+          {t('Reserve a seat')}
         </Button>
+        <PrefsMenu />
         <button
           className="nav-menu"
           aria-expanded={open}
@@ -62,7 +66,7 @@ export default function Header() {
           aria-label={open ? 'Close menu' : 'Open menu'}
           onClick={() => setOpen(!open)}
         >
-          {open ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+          {open ? <X size={24} strokeWidth={1.75} aria-hidden="true" /> : <Menu size={24} strokeWidth={1.75} aria-hidden="true" />}
         </button>
       </div>
       <div id="menu" className={`menu${open ? ' open' : ''}`} inert={!open}>
@@ -70,7 +74,7 @@ export default function Header() {
           {menuLinks.map((l, i) => (
             <li key={l.label} style={{ '--i': i } as React.CSSProperties}>
               <a className="display" href={l.href} onClick={() => setOpen(false)}>
-                {l.label}
+                {t(l.label)}
               </a>
             </li>
           ))}
@@ -82,7 +86,7 @@ export default function Header() {
             </a>
           ))}
           <a href="/faq" onClick={() => setOpen(false)}>
-            FAQ
+            {t('FAQ')}
           </a>
         </nav>
       </div>

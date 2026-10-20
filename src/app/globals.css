@@ -101,7 +101,7 @@ ul, ol, dl, dd { margin: 0; padding: 0; list-style: none; }
   .nav-links { display: none; }
 }
 .nav { position: fixed; top: calc(var(--bar) / 2); transform: translateY(-50%); right: 20px; z-index: 30; display: flex; align-items: center; gap: 0.35rem; color: var(--text); }
-.nav-menu { display: inline-grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: none; cursor: pointer; transition: background 0.2s var(--ease-out), transform 0.16s var(--ease-out); }
+.nav-menu { display: inline-grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: none; cursor: pointer; transition: background 0.2s var(--ease-out), transform 0.16s var(--ease-out); }
 .nav-menu:hover { background: color-mix(in srgb, var(--text) 12%, transparent); }
 .nav-menu:active { transform: scale(0.93); }
 .pill { display: inline-block; padding: 0.7rem 1.35rem; border-radius: 980px; border: 0; font: 500 0.9375rem/1.2 var(--font); letter-spacing: -0.01em; cursor: pointer; white-space: nowrap; transition: transform 0.16s var(--ease-out), background 0.2s var(--ease-out), filter 0.2s var(--ease-out); }
@@ -402,7 +402,7 @@ html[data-ready] .on-film .coords, html[data-ready] .corner-title .coords { anim
   .hero-card { min-width: 0; grid-template-columns: auto 1fr; align-items: center; gap: 0.15rem 0.75rem; padding: 0.7rem 1rem; border-radius: 16px; }
   .hero-card strong { font-size: 1rem; }
   .hero-card-meta { grid-column: 1 / -1; }
-  .corner-title { top: 12px; }
+  .corner-title { top: calc(var(--bar) / 2); transform: translateY(-50%); } /* coordinates are hidden on phones, so the wordmark centres on the same line as the buttons */
   .scroll-cue { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1276,7 +1276,7 @@ main + .footer, .footer { border-radius: 0; margin-top: 0; padding-top: 4rem; ba
   :root { --gutter: 18px; }
   .hero-h1 { font-size: 2.9rem; }
   .nav { right: 8px; }
-  .nav-menu { width: 36px; height: 36px; }
+  .nav-menu { width: 38px; height: 38px; }
 }
 @supports (height: 100dvh) {
   .stage, .drive-stage, .climb-stage { min-height: 0; }
@@ -1461,6 +1461,7 @@ button, a, summary { touch-action: manipulation; }
   .board li > :nth-child(6)::after { content: ' seats'; font: 500 0.78rem var(--font); color: var(--muted); margin-left: 0.4rem; }
   .board .flap i { font-size: 1rem; }
   .board li > :nth-child(1) .flap i { font-size: 1.25rem; }
+  .board li > :nth-child(2) .flap i { font-size: 0.85rem; } /* the longest route name must stay on one line */
 }
 @media (max-width: 1000px) {
   .board li::before { top: 6.6rem; }
@@ -1505,10 +1506,11 @@ button, a, summary { touch-action: manipulation; }
 }
 
 /* section skeleton: same padding as a real section, shimmering blocks where the content will be */
-.section-skeleton { display: grid; align-content: start; gap: 2rem; }
+.section-skeleton { display: grid; align-content: start; gap: 2rem; height: var(--h); overflow: hidden; }
 .skeleton-head { height: clamp(2.5rem, 6.4vw, 5.5rem); width: min(32rem, 70%); border-radius: 14px; }
 .skeleton-grid { display: grid; gap: 16px; }
 .skeleton-block { min-height: 22rem; border-radius: 28px; }
+@media (max-width: 768px) { .section-skeleton { height: var(--hm); } }
 @media (max-width: 700px) { .skeleton-grid { grid-template-columns: 1fr !important; } .skeleton-block { min-height: 14rem; } }
 
 /* bands far below the fold skip style and layout until they are near the viewport (none holds a pinned scene) */
@@ -1570,4 +1572,24 @@ button, a, summary { touch-action: manipulation; }
   .hero-cta .hint { width: 100%; justify-content: center; }
   .hint-side { display: none; }
   .hint .hint-up { display: block; animation-name: hint-nudge-up; }
+}
+
+/* --- language and currency pickers --- */
+.prefs { position: relative; display: flex; align-items: center; }
+.prefs-pop { position: absolute; top: calc(100% + 0.75rem); right: 0; z-index: 40; display: grid; min-width: 14rem; padding: 0.4rem; border-radius: 18px; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(24px) saturate(180%); border: 1px solid var(--line); box-shadow: 0 16px 50px rgba(0, 0, 0, 0.4); }
+.prefs-pop button { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.6rem 0.8rem; border: 0; border-radius: 12px; background: none; color: var(--text); font: inherit; font-size: 0.9rem; text-align: left; cursor: pointer; }
+.prefs-pop button:hover, .prefs-pop button[aria-selected='true'] { background: color-mix(in srgb, var(--text) 10%, transparent); }
+.prefs-pop button svg { color: var(--accent); }
+/* green dot marks the chosen row in each list */
+.prefs-pop .live-dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: #34c759; box-shadow: 0 0 8px #34c759; }
+.prefs-pop p { margin: 0.4rem 0.8rem 0.3rem; max-width: 14rem; color: var(--muted); font-size: 0.68rem; line-height: 1.4; }
+@media (max-width: 768px) { .prefs .nav-menu { width: 36px; } .prefs-pop { position: fixed; top: 64px; left: 16px; right: 16px; } }
+
+/* --- phones: touch targets of at least ~40px --- */
+@media (max-width: 768px) {
+  .footer-cols a { padding-block: 0.6rem; }
+  .footer-cols nav, .footer-cols address { gap: 0; }
+  .footer-links a { min-width: 40px; min-height: 40px; display: inline-grid; place-items: center; }
+  .nav .nav-book { padding: 0.7rem 0.9rem; }
+  .months button { min-height: 40px; }
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { usePrefs } from '@/lib/prefs'
 import { join, trips } from '@/data/site'
 import { openEnquire } from '@/lib/enquire'
 
@@ -43,6 +44,7 @@ const MON = (s: string) => s.split(' ').slice(0, 2).join(' ').toUpperCase()
 
 // The next departures as a station board: one row per convoy, flaps for date, route, length, price, status and seats.
 export default function DepartureBoard({ list }: { list: typeof join.dates }) {
+  const { money } = usePrefs()
   const ref = useRef<HTMLDivElement>(null)
   const [go, setGo] = useState(false)
   useEffect(() => {
@@ -85,7 +87,7 @@ export default function DepartureBoard({ list }: { list: typeof join.dates }) {
               <Flap text={MON(d.date)} go={go} delay={row} />
               <Flap text={route} go={go} delay={row + 60} />
               <Flap text={t ? `${String(t.days).padStart(2, '0')}D` : '--'} go={go} delay={row + 120} />
-              <Flap text={t ? t.price : '--'} go={go} delay={row + 180} />
+              <Flap text={t ? money(t.price) : '--'} go={go} delay={row + 180} />
               <span className="flap-status" data-s={status}>
                 <Flap text={status} go={go} delay={row + 240} />
               </span>

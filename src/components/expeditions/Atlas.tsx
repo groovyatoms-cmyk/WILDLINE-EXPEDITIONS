@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { tripDetails, tripPlace, tripSlug, trips } from '@/data/site'
 import { openEnquire } from '@/lib/enquire'
 import { inSeason } from '@/lib/season'
+import { usePrefs } from '@/lib/prefs'
 import Button from '@/components/ui/Button'
 import ShimmerImg from '@/components/ui/ShimmerImg'
 
@@ -37,6 +38,7 @@ const CITIES: [string, number, number][] = [
 ]
 
 export default function Atlas({ month = null }: { month?: number | null }) {
+  const { t: tr, money } = usePrefs()
   const slugs = trips.map(tripSlug)
   const [slug, setSlug] = useState('ladakh')
   const i = slugs.indexOf(slug)
@@ -123,9 +125,9 @@ export default function Atlas({ month = null }: { month?: number | null }) {
           </div>
           <h3 className="display">{t.name}</h3>
           <p className="mono atlas-meta">
-            <span>{t.days} days</span>
+            <span>{tr('{n} days', { n: t.days })}</span>
             <span>{t.season}</span>
-            <span>from {t.price}</span>
+            <span>{tr('from {price}', { price: money(t.price) })}</span>
             {d && <span>{d.level}</span>}
           </p>
           {d && <p className="atlas-overview">{d.overview}</p>}

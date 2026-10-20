@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import Shell from '@/components/layout/Shell'
+import { PrefsProvider } from '@/lib/prefs'
 import JsonLd from '@/components/ui/JsonLd'
 import { site } from '@/data/site'
 import { abs, siteUrl } from '@/lib/seo'
@@ -66,7 +67,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>{/* Dark only: the site has no theme switch. */}</head>
       <body>
         <JsonLd data={orgLd} />
-        <Shell>{children}</Shell>
+        <PrefsProvider>
+          <Shell>{children}</Shell>
+        </PrefsProvider>
       </body>
     </html>
   )
