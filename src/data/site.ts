@@ -299,13 +299,13 @@ export const careers = {
 export const join = {
   headline: 'Join the next convoy.',
   dates: [
+    { date: '25 Dec 2026', trip: 'Winter Frozen Spiti Expedition', seats: 4 },
     { date: '14 Jun 2026', trip: 'Ladakh Expedition', seats: 3 },
     { date: '02 Jul 2026', trip: 'Spiti Expedition', seats: 5 },
     { date: '20 Sep 2026', trip: 'Arunachal Expedition', seats: 4 },
     { date: '05 Oct 2026', trip: 'Sikkim Expedition', seats: 6 },
     { date: '11 Nov 2026', trip: 'Rajasthan Expedition', seats: 6 },
     { date: '06 Dec 2026', trip: 'Kutch Expedition', seats: 7 },
-    { date: '16 Jan 2027', trip: 'Winter Frozen Spiti Expedition', seats: 4 },
     { date: '12 Jul 2027', trip: 'Explore Zanskar Expedition', seats: 6 },
     { date: '14 Mar 2027', trip: 'Nepal Expedition', seats: 6 },
     { date: '06 Jun 2027', trip: 'Adi Kailash Expedition', seats: 5 },
