@@ -3,25 +3,29 @@
 import { useEffect, useState, type RefObject } from 'react'
 import { ArrowLeft, ArrowRight, ArrowUp, Play } from 'lucide-react'
 import { trips } from '@/data/site'
+import { read, write } from '@/lib/storage'
 import { useUpcoming } from '@/lib/upcoming'
 
 // Opening frame of the film: headline, one promise, two clear actions. Fades out as the film starts to move (Shell drives opacity).
 export default function Hero({ heroRef }: { heroRef: RefObject<HTMLDivElement | null> }) {
   const { list, mounted } = useUpcoming()
   const next = list[0]
+  const [asked, setAsked] = useState(false) // the cookie banner has been answered
   const [played, setPlayed] = useState(true) // the how-to hint shows on a visitor's first visit only: hidden until storage says it is new
   useEffect(() => {
-    try {
-      if (!localStorage.getItem('film-hint-seen')) setPlayed(false)
-    } catch {} // storage blocked: no hint, never a hint on every visit
+    if (!read('film-hint-seen')) setPlayed(false)
+    if (read('cookie-consent')) setAsked(true)
+    const answered = () => setAsked(true)
+    addEventListener('cookie-choice', answered)
     const done = () => {
       setPlayed(true)
-      try {
-        localStorage.setItem('film-hint-seen', '1')
-      } catch {}
+      write('film-hint-seen', '1')
     }
     addEventListener('film:play', done)
-    return () => removeEventListener('film:play', done)
+    return () => {
+      removeEventListener('film:play', done)
+      removeEventListener('cookie-choice', answered)
+    }
   }, [])
   const trip = trips.find((t) => t.name === next?.trip)
 
@@ -64,7 +68,7 @@ export default function Hero({ heroRef }: { heroRef: RefObject<HTMLDivElement | 
           <button type="button" className={`pill pill-glass${played ? '' : ' pulse'}`} onClick={play}>
             <Play size={14} aria-hidden="true" /> Watch the film
           </button>
-          {!played && (
+          {!played && asked && (
             <span className="hint mono" aria-hidden="true">
               <ArrowLeft className="hint-side" size={16} />
               <ArrowUp className="hint-up" size={16} /> Press play, the road scrolls for you

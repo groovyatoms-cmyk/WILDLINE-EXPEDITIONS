@@ -118,6 +118,7 @@ export default function Enquiry({ to }: { to?: string }) {
                 data-missing={tried && miss.name ? '' : undefined}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                maxLength={80}
                 placeholder="your name"
                 aria-label="Your name"
                 autoComplete="name"
@@ -241,7 +242,7 @@ export default function Enquiry({ to }: { to?: string }) {
             </p>
             <label className="mad-note">
               Anything else we should know? (optional)
-              <textarea rows={2} value={note} onChange={(e) => setNote(e.target.value)} />
+              <textarea rows={2} maxLength={300} value={note} onChange={(e) => setNote(e.target.value)} />
             </label>
             {tried && anyMissing && (
               <p className="field-error" role="alert">

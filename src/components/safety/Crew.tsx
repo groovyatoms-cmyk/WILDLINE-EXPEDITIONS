@@ -6,7 +6,7 @@ import Section from '@/components/ui/Section'
 import Reveal from '@/components/ui/Reveal'
 
 // One thin lucide line icon per commitment; the lines draw themselves when the tile arrives.
-export const ICONS: Record<string, LucideIcon> = {
+const ICONS: Record<string, LucideIcon> = {
   'Lead + Sweep': Route,
   Recovery: Anchor,
   Comms: Radio,

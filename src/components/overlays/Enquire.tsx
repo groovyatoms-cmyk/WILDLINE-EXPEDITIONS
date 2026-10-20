@@ -21,8 +21,9 @@ export default function Enquire() {
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const f = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>
+    const size = Math.min(24, Math.max(1, parseInt(f.size ?? '', 10) || 1)) // the field limits it, but an edited form must not send junk
     window.open(
-      wa(`Hi WILDLINE EXPEDITIONS, I'm ${f.name} (${f.phone}). Enquiring about ${f.trip} for a group of ${f.size}.`),
+      wa(`Hi WILDLINE EXPEDITIONS, I'm ${f.name?.trim()} (${f.phone?.trim()}). Enquiring about ${f.trip} for a group of ${size}.`),
       '_blank',
       'noopener',
     )
@@ -37,7 +38,7 @@ export default function Enquire() {
           <h3 className="display">Enquire</h3>
           <label className="mono">
             Name
-            <input name="name" required autoComplete="name" />
+            <input name="name" required maxLength={80} autoComplete="name" />
           </label>
           <label className="mono">
             Phone

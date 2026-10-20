@@ -5,6 +5,7 @@ import { ArrowRight, Pause, Play, Video } from 'lucide-react'
 import { film } from '@/data/site'
 import type { Shots } from '@/lib/frames'
 import { useProgress, type Store } from '@/hooks/useScrollProgress'
+import { read, write } from '@/lib/storage'
 import { isPresent } from '@/lib/guard'
 import { frameNo, frameTotal, timeline } from '@/lib/timeline'
 
@@ -41,11 +42,8 @@ export default function AutoPlay({
   const [tip, setTip] = useState(false) // "pause anytime" hint, for the first seconds of playback
   useEffect(() => {
     if (!playing) return setTip(false)
-    let first = false
-    try {
-      first = !localStorage.getItem('film-tip-seen') // the pause tip shows on the first playback only
-      localStorage.setItem('film-tip-seen', '1')
-    } catch {}
+    const first = !read('film-tip-seen') // the pause tip shows on the first playback only
+    write('film-tip-seen', '1')
     setTip(first)
     const id = setTimeout(() => setTip(false), 5000)
     return () => clearTimeout(id)

@@ -20,6 +20,7 @@ export default function Gallery({ to }: { to?: string }) {
   const [only, setOnly] = useState<string | null>(null) // trip name, null = all
   const shown = only ? SHOTS.filter((t) => t.name === only) : SHOTS
   const n = shown.length
+  const cur = big === null ? undefined : shown[big] // undefined if the list shrank under an open lightbox
   const go = (d: number) => setBig((b) => (b === null ? b : (b + d + n) % n))
 
   useEffect(() => {
@@ -54,6 +55,7 @@ export default function Gallery({ to }: { to?: string }) {
     }
   }, [api, flow])
 
+  if (!SHOTS.length) return null
   return (
     <Section id="gallery" className="gallery" title="On the road" to={to}>
       <div className="flow-filter" role="group" aria-label="Filter by expedition">
@@ -123,11 +125,17 @@ export default function Gallery({ to }: { to?: string }) {
         onClick={(e) => e.target === e.currentTarget && setBig(null)}
         onKeyDown={(e) => (e.key === 'ArrowRight' ? go(1) : e.key === 'ArrowLeft' ? go(-1) : undefined)}
       >
-        {big !== null && (
+        {cur && (
           <figure>
-            <img src={`/${shown[big].still}`} alt={shown[big].altText} />
+            <ShimmerImg
+              ratio="16 / 10"
+              style={{ width: 'min(100%, calc((100dvh - 8rem) * 1.6))' }}
+              src={`/${cur.still}`}
+              alt={cur.altText}
+              loading="eager"
+            />
             <figcaption className="mono">
-              {shown[big].name.replace(' Expedition', '')} · {shown[big].alt}
+              {cur.name.replace(' Expedition', '')} · {cur.alt}
             </figcaption>
           </figure>
         )}

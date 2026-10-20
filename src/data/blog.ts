@@ -3,7 +3,7 @@ import { MONTHS, inSeason } from '@/lib/season'
 
 // Every post is assembled from the site's own data (routes, itineraries, seasons, crew commitments, FAQ), so what the blog says
 // can never drift from what the rest of the site says. Add a post by adding an entry to POSTS.
-export type Block = { t: 'h2' | 'p' | 'quote'; text: string } | { t: 'ul'; items: string[] }
+type Block = { t: 'h2' | 'p' | 'quote'; text: string } | { t: 'ul'; items: string[] }
 export type Post = {
   slug: string
   title: string

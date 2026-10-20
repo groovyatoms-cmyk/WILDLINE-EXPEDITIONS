@@ -44,6 +44,7 @@ export default function Atlas({ month = null }: { month?: number | null }) {
   const d = tripDetails[slug]
   const step = (n: number) => setSlug(slugs[(i + n + slugs.length) % slugs.length])
 
+  if (!t) return null // no trips in the data: nothing to map
   return (
     <div className="atlas">
       <div className="atlas-map">
