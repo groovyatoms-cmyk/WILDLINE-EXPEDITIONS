@@ -5,7 +5,13 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Button from '@/components/ui/Button'
 
 const KEY = 'cookie-consent'
-const read = (): string | null => { try { return localStorage.getItem(KEY) } catch { return null } }
+const read = (): string | null => {
+  try {
+    return localStorage.getItem(KEY)
+  } catch {
+    return null
+  }
+}
 
 // The site sets no cookies yet; the choice is stored so analytics can honour it later.
 export default function CookieBanner() {
@@ -14,7 +20,11 @@ export default function CookieBanner() {
   useEffect(() => setChoice(read()), [])
 
   const pick = (v: string) => {
-    try { localStorage.setItem(KEY, v) } catch { /* private mode: ask again next visit */ }
+    try {
+      localStorage.setItem(KEY, v)
+    } catch {
+      /* private mode: ask again next visit */
+    }
     setChoice(v)
   }
 
@@ -28,12 +38,16 @@ export default function CookieBanner() {
           initial={{ y: '120%' }}
           animate={{ y: 0 }}
           exit={{ y: '120%' }}
-          transition={{ duration: 0.5, ease: [0.7, 0, 0.2, 1] }}
+          transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
         >
-          <p className="mono">We use cookies to keep the site working and understand how it is used. See our <a href="/cookies">Cookies Policy</a>.</p>
+          <p className="mono">
+            We use cookies to keep the site working and understand how it is used. See our <a href="/cookies">Cookies Policy</a>.
+          </p>
           <div className="cookie-actions">
-            <Button onClick={() => pick('declined')}>DECLINE</Button>
-            <Button variant="rust" onClick={() => pick('accepted')}>ACCEPT</Button>
+            <Button onClick={() => pick('declined')}>Decline</Button>
+            <Button variant="rust" onClick={() => pick('accepted')}>
+              Accept
+            </Button>
           </div>
         </motion.div>
       )}

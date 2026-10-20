@@ -1,0 +1,13 @@
+.next
+node_modules
+coverage
+public
+*.css
+*.md
+package-lock.json
+.vercel
+.swc
+.agents
+.claude
+tsconfig.tsbuildinfo
+skills-lock.json

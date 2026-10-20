@@ -1,6 +1,6 @@
 import { film, frames } from '@/data/site'
 import { clamp01 } from '@/hooks/useScrollProgress'
-import { isMobile } from './frames'
+import { isMobile } from '@/lib/frames'
 
 export const frameTotal = (shot: 1 | 2) => (isMobile() ? frames[shot].mobileCount : frames[shot].count)
 

@@ -15,7 +15,10 @@ export default function CornerTitle({ text, compact, hidden, children }: Props) 
   const last = useRef(text)
 
   useEffect(() => {
-    if (reduced()) { last.current = text; return setShown(text) }
+    if (reduced()) {
+      last.current = text
+      return setShown(text)
+    }
     const chars = [...text]
     const prev = [...last.current]
     const flickers = chars.map(() => 4 + rand(3)) // 4–6 random glyphs per letter
@@ -26,7 +29,10 @@ export default function CornerTitle({ text, compact, hidden, children }: Props) 
       const out = chars.map((c, i) => {
         if (c === ' ') return ' '
         const s = (el - i * STAGGER) / STEP
-        if (s < 0) { done = false; return prev[i] ?? '' }
+        if (s < 0) {
+          done = false
+          return prev[i] ?? ''
+        }
         if (s >= flickers[i]) return c
         done = false
         return GLYPHS[rand(GLYPHS.length)]
@@ -41,8 +47,9 @@ export default function CornerTitle({ text, compact, hidden, children }: Props) 
   return (
     <div className={`corner-title${compact ? ' compact' : ''}${hidden ? ' hidden' : ''}`} aria-hidden={hidden || undefined}>
       <h2 className="display">
-        <span className="sr-only">{text}</span>
-        <span aria-hidden="true">{shown}</span>
+        <a href="/" aria-label={`${text} home`}>
+          <span aria-hidden="true">{shown}</span>
+        </a>
       </h2>
       {children}
     </div>

@@ -5,7 +5,11 @@ import { timeline } from '@/lib/timeline'
 import { wa } from '@/lib/enquire'
 
 describe('clamp01', () => {
-  it.each([[-1, 0], [0.4, 0.4], [7, 1]])('clamp01(%p) = %p', (x, want) => expect(clamp01(x)).toBe(want))
+  it.each([
+    [-1, 0],
+    [0.4, 0.4],
+    [7, 1],
+  ])('clamp01(%p) = %p', (x, want) => expect(clamp01(x)).toBe(want))
 })
 
 describe('timeline', () => {

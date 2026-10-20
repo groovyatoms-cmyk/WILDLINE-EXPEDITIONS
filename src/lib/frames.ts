@@ -19,7 +19,12 @@ function placeholder(shot: number, i: number, total: number) {
   g.fillStyle = grad
   g.fillRect(0, 0, 960, 540)
   g.strokeStyle = 'rgba(236,237,232,.12)'
-  for (let x = ((i * 6) % 80) - 80; x < 960; x += 80) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x + 140, 540); g.stroke() }
+  for (let x = ((i * 6) % 80) - 80; x < 960; x += 80) {
+    g.beginPath()
+    g.moveTo(x, 0)
+    g.lineTo(x + 140, 540)
+    g.stroke()
+  }
   g.fillStyle = 'rgba(236,237,232,.85)'
   g.font = '700 220px "JetBrains Mono", monospace'
   g.textAlign = 'center'
@@ -32,12 +37,18 @@ function placeholder(shot: number, i: number, total: number) {
 async function decode(shot: 1 | 2, i: number, total: number, mobile: boolean) {
   const dir = `frames/shot${shot}${mobile ? 'm' : ''}`
   // Cover-fit upscales when the window is taller than 16:9, so size for the larger edge.
-  const w = Math.round(Math.min(mobile ? cfg[shot].mw : cfg[shot].w, Math.max(window.innerWidth, (window.innerHeight * 16) / 9) * (window.devicePixelRatio || 1)))
+  const w = Math.round(
+    Math.min(
+      mobile ? cfg[shot].mw : cfg[shot].w,
+      Math.max(window.innerWidth, (window.innerHeight * 16) / 9) * (window.devicePixelRatio || 1),
+    ),
+  )
   try {
-    const res = await fetch(`/${dir}/${pad(i + 1)}.webp`)
+    // Only the first frames block the preloader; the rest must not compete with the page for bandwidth.
+    const res = await fetch(`/${dir}/${pad(i + 1)}.webp`, { priority: i < 8 ? 'high' : 'low' } as RequestInit)
     // Vite dev serves index.html for missing files, so check the type too.
     if (!res.ok || !res.headers.get('content-type')?.startsWith('image/')) throw 0
-    return await createImageBitmap(await res.blob(), { resizeWidth: w, resizeQuality: 'medium' })
+    return await createImageBitmap(await res.blob(), { resizeWidth: w, resizeQuality: 'low' })
   } catch {
     return placeholder(shot, i, total)
   }
@@ -47,9 +58,9 @@ async function decode(shot: 1 | 2, i: number, total: number, mobile: boolean) {
 // window around the playhead stays decoded, plus sparse "anchor" frames that give a picture while scrubbing fast.
 // `out` is the caller-owned sparse array the canvas draws from.
 const BEHIND = 12
-const AHEAD = 48
+const AHEAD = 24
 const ANCHOR = 30
-const CONCURRENCY = 4
+const CONCURRENCY = 3
 
 export function createLoader(shot: 1 | 2, out: ImageBitmap[], onLoaded: (i: number) => void = () => {}) {
   const mobile = isMobile()
@@ -74,14 +85,21 @@ export function createLoader(shot: 1 | 2, out: ImageBitmap[], onLoaded: (i: numb
       decode(shot, i, total, mobile).then((b) => {
         inflight.delete(i)
         active--
-        if (keep(i)) { out[i] = b; onLoaded(i) } else b.close() // the playhead moved on while it loaded
+        if (keep(i)) {
+          out[i] = b
+          onLoaded(i)
+        } else b.close() // the playhead moved on while it loaded
         pump()
       })
     }
   }
 
   const plan = () => {
-    for (let i = 0; i < total; i++) if (out[i] && !keep(i)) { out[i].close(); delete out[i] }
+    for (let i = 0; i < total; i++)
+      if (out[i] && !keep(i)) {
+        out[i].close()
+        delete out[i]
+      }
     queue.length = 0
     for (let d = 0; d <= AHEAD; d++) {
       if (want(center + d)) queue.push(center + d)

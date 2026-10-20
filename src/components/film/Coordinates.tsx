@@ -5,7 +5,8 @@ import { useProgress, type Store } from '@/hooks/useScrollProgress'
 import { route } from '@/data/site'
 
 const dm = (v: number, pos: string, neg: string) => {
-  const d = Math.floor(Math.abs(v)), m = Math.round((Math.abs(v) - d) * 60)
+  const d = Math.floor(Math.abs(v)),
+    m = Math.round((Math.abs(v) - d) * 60)
   return `${d}°${String(m).padStart(2, '0')}′${v >= 0 ? pos : neg}`
 }
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t

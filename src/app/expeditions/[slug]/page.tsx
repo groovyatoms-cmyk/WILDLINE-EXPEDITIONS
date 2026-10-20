@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import ExpeditionDetail from '@/components/sections/ExpeditionDetail'
-import JsonLd from '@/components/JsonLd'
+import ExpeditionDetail from '@/components/expeditions/ExpeditionDetail'
+import JsonLd from '@/components/ui/JsonLd'
 import { site, tripDetails, tripSlug, trips } from '@/data/site'
 import { abs, pageMeta } from '@/lib/seo'
 
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const d = tripDetails[slug]
   return pageMeta(
     t.name,
-    `${t.name}: ${t.days} days, up to ${t.alt}, ${t.season}, from ${t.price}. ${d?.overview ?? t.alt_text}`.slice(0, 300),
+    `${t.name}: ${t.days} days, up to ${t.alt}, ${t.season}, from ${t.price}. ${d?.overview ?? t.altText}`.slice(0, 300),
     `/expeditions/${slug}`,
     `/expeditions/${slug}/opengraph-image`,
   )
@@ -34,13 +34,22 @@ export default async function Page({ params }: Props) {
       '@context': 'https://schema.org',
       '@type': 'TouristTrip',
       name: t.name,
-      description: d?.overview ?? t.alt_text,
+      description: d?.overview ?? t.altText,
       url: abs(`/expeditions/${slug}`),
       image: abs(`/${t.still}`),
       touristType: 'Drivers, photographers and first-timers',
-      itinerary: d && { '@type': 'ItemList', itemListElement: d.route.map((name, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'Place', name } })) },
+      itinerary: d && {
+        '@type': 'ItemList',
+        itemListElement: d.route.map((name, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'Place', name } })),
+      },
       provider: { '@id': abs('/#org') },
-      offers: { '@type': 'Offer', priceCurrency: 'INR', price: t.price.replace(/[^\d]/g, ''), availability: 'https://schema.org/InStock', url: abs('/join') },
+      offers: {
+        '@type': 'Offer',
+        priceCurrency: 'INR',
+        price: t.price.replace(/[^\d]/g, ''),
+        availability: 'https://schema.org/InStock',
+        url: abs('/join'),
+      },
     },
     {
       '@context': 'https://schema.org',
@@ -54,7 +63,9 @@ export default async function Page({ params }: Props) {
   ]
   return (
     <div className="page">
-      {ld?.map((data, i) => <JsonLd key={i} data={data} />)}
+      {ld?.map((data, i) => (
+        <JsonLd key={i} data={data} />
+      ))}
       <ExpeditionDetail slug={slug} />
     </div>
   )

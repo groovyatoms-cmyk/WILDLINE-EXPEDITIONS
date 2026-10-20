@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import LegalPage from '@/components/sections/LegalPage'
+import LegalPage from '@/components/legal/LegalPage'
 import { legal } from '@/data/legal'
 import { pageMeta } from '@/lib/seo'
 

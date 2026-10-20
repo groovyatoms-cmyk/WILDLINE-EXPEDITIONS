@@ -11,13 +11,24 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   const { slug } = await params
   const t = trips.find((x) => tripSlug(x) === slug)
   return new ImageResponse(
-    (
-      <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 80, background: '#0B0D10', color: '#ff7a1a' }}>
-        <div style={{ fontSize: 110, fontWeight: 900, lineHeight: 1 }}>{t?.name ?? site.fullName}</div>
-        {t && <div style={{ fontSize: 44, color: '#ECEDE8', marginTop: 24 }}>{`${t.days} days · ${t.alt} · ${t.season} · from ${t.price}`}</div>}
-        <div style={{ fontSize: 32, color: '#8a8d88', marginTop: 24 }}>{site.fullName}</div>
-      </div>
-    ),
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        padding: 80,
+        background: '#0a0a0b',
+        color: '#F2A43A',
+      }}
+    >
+      <div style={{ fontSize: 110, fontWeight: 900, lineHeight: 1 }}>{t?.name ?? site.fullName}</div>
+      {t && (
+        <div style={{ fontSize: 44, color: '#ECEDE8', marginTop: 24 }}>{`${t.days} days · ${t.alt} · ${t.season} · from ${t.price}`}</div>
+      )}
+      <div style={{ fontSize: 32, color: '#8a8d88', marginTop: 24 }}>{site.fullName}</div>
+    </div>,
     size,
   )
 }

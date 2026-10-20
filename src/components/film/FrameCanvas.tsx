@@ -4,6 +4,7 @@ import { useEffect, useRef, type RefObject } from 'react'
 import { useProgress, type Store } from '@/hooks/useScrollProgress'
 import { timeline, frameTotal } from '@/lib/timeline'
 import { reduced, type Shots } from '@/lib/frames'
+import { isPresent } from '@/lib/guard'
 
 // Nearest decoded frame around index i (shot 2 may still be decoding).
 function pick(arr: ImageBitmap[], i: number) {
@@ -40,7 +41,7 @@ export default function FrameCanvas({ store, shots }: { store: Store; shots: Ref
   useEffect(() => {
     const fit = () => {
       if (!ref.current) return
-      const dpr = Math.min(window.devicePixelRatio || 1, 2) // capped: past 2x the extra pixels cost frame time with no visible gain
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5) // capped: past 1.5x the extra pixels cost frame time with no visible gain during playback
       size.current = { w: innerWidth * dpr, h: innerHeight * dpr, dpr }
       ref.current.width = size.current.w
       ref.current.height = size.current.h
@@ -63,18 +64,30 @@ export default function FrameCanvas({ store, shots }: { store: Store; shots: Ref
     const pos1 = still ? Math.floor(n1 / 2) : f1 * (n1 - 1)
     const pos2 = still ? Math.floor(n2 / 2) : f2 * (n2 - 1)
     // Blur peaks mid-transition and is gone at both ends (CSS filter: works in Safari too).
-    const blur = still ? 0 : Math.sin(Math.PI * t) * 7
+    const blur = still ? 0 : Math.sin(Math.PI * t) * 9
     canvas.style.filter = blur > 0.1 ? `blur(${blur.toFixed(1)}px)` : ''
     ctx.imageSmoothingQuality = 'high'
-    ctx.fillStyle = '#0B0D10'
+    ctx.fillStyle = '#0a0a0b'
     ctx.fillRect(0, 0, W, H)
-    // Shot 1 to shot 2 is one move, not a cut: shot 1 keeps pushing in while it dissolves, shot 2 arrives from the
-    // same push and settles, and the blur above peaks in the middle so the two read as one continuous camera move.
-    const e = t * t * (3 - 2 * t) // smoothstep
-    const push = still ? 0 : 0.4 // reduced motion: plain crossfade, no zoom
-    drawBlend(ctx, shots.current![1], pos1, W, H, 1, 1 + push * e)
-    if (t > 0) drawBlend(ctx, shots.current![2], pos2, W, H, e, 1 + push * (1 - e))
+    // Zoom-through: shot 1 accelerates into the lens, shot 2 starts at the same scale and settles out of it. Both
+    // scales are equal at t = 0.5, where the short dissolve happens, so the cut is hidden inside one continuous push.
+    const smooth = (x: number) => {
+      const k = Math.min(1, Math.max(0, x))
+      return k * k * (3 - 2 * k)
+    }
+    const push = still ? 0 : 0.45 // reduced motion: plain crossfade, no zoom
+    const loaded = shots.current
+    if (!isPresent(loaded)) return // the frame store is not attached yet
+    drawBlend(ctx, loaded[1], pos1, W, H, 1, 1 + push * t * t)
+    if (t > 0) drawBlend(ctx, loaded[2], pos2, W, H, smooth((t - 0.35) / 0.35), 1 + push * (1 - t) * (1 - t))
   })
 
-  return <canvas ref={ref} className="frame-canvas" role="img" aria-label="Aerial drone footage: a convoy of 4x4s running a Himalayan road, then a high-altitude lake basin with a parked camp" />
+  return (
+    <canvas
+      ref={ref}
+      className="frame-canvas"
+      role="img"
+      aria-label="Aerial drone footage: a convoy of 4x4s running a Himalayan road, then a high-altitude lake basin with a parked camp"
+    />
+  )
 }

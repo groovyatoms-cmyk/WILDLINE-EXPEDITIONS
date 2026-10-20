@@ -16,6 +16,11 @@ export default function BigLine({ store, at, text }: { store: Store; at: number;
     if (el.style.opacity === opacity) return // off-screen lines stay untouched: no style recalc per frame
     el.style.opacity = opacity
     el.style.transform = `translateY(${(1 - i) * 40 - o * 40}px)`
+    el.style.filter = `blur(${(1 - i + o) * 14}px)` // materialises out of focus, leaves the same way
   })
-  return <p ref={ref} className="display big-line" style={{ opacity: 0 }}>{text}</p>
+  return (
+    <p ref={ref} className="display big-line" style={{ opacity: 0 }}>
+      {text}
+    </p>
+  )
 }

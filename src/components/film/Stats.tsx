@@ -21,7 +21,15 @@ export default function Stats({ store }: { store: Store }) {
     <dl ref={root} className="stats" style={{ opacity: 0 }}>
       {stats.items.map((s, i) => (
         <div key={s.label}>
-          <dd className="display"><span ref={(el) => { nums.current[i] = el }}>0</span></dd>
+          <dd className="display">
+            <span
+              ref={(el) => {
+                nums.current[i] = el
+              }}
+            >
+              0
+            </span>
+          </dd>
           <dt className="mono">{s.label}</dt>
         </div>
       ))}
