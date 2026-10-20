@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, type RefObject } from 'react'
-import { Pause, Play, Video } from 'lucide-react'
+import { ArrowRight, Pause, Play, Video } from 'lucide-react'
 import { film } from '@/data/site'
 import type { Shots } from '@/lib/frames'
 import { useProgress, type Store } from '@/hooks/useScrollProgress'
@@ -38,6 +38,18 @@ export default function AutoPlay({
 }) {
   const [playing, setPlaying] = useState(false)
   const [shown, setShown] = useState(false)
+  const [tip, setTip] = useState(false) // "pause anytime" hint, for the first seconds of playback
+  useEffect(() => {
+    if (!playing) return setTip(false)
+    let first = false
+    try {
+      first = !localStorage.getItem('film-tip-seen') // the pause tip shows on the first playback only
+      localStorage.setItem('film-tip-seen', '1')
+    } catch {}
+    setTip(first)
+    const id = setTimeout(() => setTip(false), 5000)
+    return () => clearTimeout(id)
+  }, [playing])
   useProgress(store, (p) => setShown(p < 1 && frameNo(timeline(p).f1, 1) >= SHOW_FROM))
 
   useEffect(() => {
@@ -109,6 +121,11 @@ export default function AutoPlay({
             <Play size={20} fill="currentColor" strokeWidth={0} aria-hidden="true" />
           )}
         </button>
+      )}
+      {shown && tip && (
+        <span className="hint hint-pause mono" aria-hidden="true">
+          Pause anytime, or scroll to take over <ArrowRight size={16} />
+        </span>
       )}
       {playing && (
         <p className="rec mono" aria-hidden="true">

@@ -3,7 +3,7 @@
 import { useRef } from 'react'
 import { useProgress, clamp01, type Store } from '@/hooks/useScrollProgress'
 
-// Gold line that drips down the bottom of the hero until the visitor starts scrolling.
+// Mouse icon with a scrolling wheel, over a gold line that drips down the bottom of the hero until the visitor starts scrolling.
 export default function ScrollCue({ store }: { store: Store }) {
   const ref = useRef<HTMLDivElement>(null)
   useProgress(store, (p) => {
@@ -11,6 +11,9 @@ export default function ScrollCue({ store }: { store: Store }) {
   })
   return (
     <div ref={ref} className="scroll-cue" aria-hidden="true">
+      <b className="cue-mouse">
+        <i />
+      </b>
       <i />
       <span className="mono">Scroll</span>
     </div>

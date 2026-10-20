@@ -5,6 +5,8 @@ import Faq from '@/components/contact/Faq'
 import ExpeditionDetail from '@/components/expeditions/ExpeditionDetail'
 import Expeditions from '@/components/expeditions/Expeditions'
 import CookieBanner from '@/components/overlays/CookieBanner'
+
+jest.mock('@/lib/confetti', () => ({ confetti: jest.fn() })) // jsdom has no Element.animate
 import { faq, trips } from '@/data/site'
 
 describe('Button', () => {

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { Cookie } from 'lucide-react'
+import { confetti } from '@/lib/confetti'
 import Button from '@/components/ui/Button'
 
 const KEY = 'cookie-consent'
@@ -26,6 +28,7 @@ export default function CookieBanner() {
       /* private mode: ask again next visit */
     }
     setChoice(v)
+    if (v === 'accepted') confetti(28) // a few crumbs
   }
 
   return (
@@ -40,9 +43,16 @@ export default function CookieBanner() {
           exit={{ y: '120%' }}
           transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
         >
-          <p className="mono">
-            We use cookies to keep the site working and understand how it is used. See our <a href="/cookies">Cookies Policy</a>.
-          </p>
+          <span className="cookie-icon" aria-hidden="true">
+            <Cookie size={28} strokeWidth={1.5} />
+          </span>
+          <div className="cookie-copy">
+            <h2 className="display">Trail snacks?</h2>
+            <p className="mono">
+              Only the essentials ride in this convoy: your choice and nothing else. Say yes and we may add a little analytics to see what
+              works. See our <a href="/cookies">Cookies Policy</a>.
+            </p>
+          </div>
           <div className="cookie-actions">
             <Button onClick={() => pick('declined')}>Decline</Button>
             <Button variant="rust" onClick={() => pick('accepted')}>
