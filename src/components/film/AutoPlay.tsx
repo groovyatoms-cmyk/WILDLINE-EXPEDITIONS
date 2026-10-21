@@ -88,7 +88,7 @@ export default function AutoPlay({
         return
       } // wait for frames that have not arrived yet instead of showing a frozen picture
       const ramp = Math.min(1, (now - begin) / 1200) // ease into speed so playback never starts with a jolt
-      p = Math.min(1, p + rate(p) * ramp * ((now - last) / 1000))
+      p = Math.min(1, p + rate(p) * ramp * (Math.min(now - last, 50) / 1000))
       last = now
       scrollTo(0, p * span)
       if (p >= 1) return stop()

@@ -11,7 +11,8 @@ export function useScrollProgress(ref: RefObject<HTMLElement | null>, ease = 0.1
   useEffect(() => {
     let raf = 0,
       target = 0,
-      last = -1
+      last = -1,
+      prev = performance.now()
     // Geometry is cached and refreshed only when the page resizes: reading layout every frame forces a reflow.
     let top = 0,
       span = 0,
@@ -27,10 +28,13 @@ export function useScrollProgress(ref: RefObject<HTMLElement | null>, ease = 0.1
     measure()
     const ro = new ResizeObserver(measure)
     ro.observe(document.body)
-    const tick = () => {
+    const tick = (now: number) => {
       if (ref.current !== seen) measure() // the film mounted or unmounted with a route change
       target = span > 0 ? Math.min(1, Math.max(0, (window.scrollY - top) / span)) : 0
-      store.p += (target - store.p) * ease
+      // Ease per elapsed time, not per frame, so a 30 or 144 Hz display and a dropped frame all feel the same.
+      const k = 1 - Math.pow(1 - ease, Math.min(now - prev, 50) / 16.67)
+      prev = now
+      store.p += (target - store.p) * k
       if (Math.abs(target - store.p) < 0.00005) store.p = target
       if (store.p !== last) {
         // idle frames notify nobody

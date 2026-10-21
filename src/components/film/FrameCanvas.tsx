@@ -54,7 +54,7 @@ export default function FrameCanvas({ store, shots }: { store: Store; shots: Ref
 
   useProgress(store, (p) => {
     const canvas = ref.current
-    const ctx = canvas?.getContext('2d')
+    const ctx = canvas?.getContext('2d', { alpha: false }) // opaque canvas: cheaper compositing
     if (!canvas || !ctx) return
     const { w: W, h: H } = size.current
     const { t, f1, f2 } = timeline(p)
@@ -66,7 +66,7 @@ export default function FrameCanvas({ store, shots }: { store: Store; shots: Ref
     // Blur peaks mid-transition and is gone at both ends (CSS filter: works in Safari too).
     const blur = still ? 0 : Math.sin(Math.PI * t) * 9
     canvas.style.filter = blur > 0.1 ? `blur(${blur.toFixed(1)}px)` : ''
-    ctx.imageSmoothingQuality = 'high'
+    ctx.imageSmoothingQuality = 'low' // 'high' resamples every full-screen draw and was the main cost per frame
     ctx.fillStyle = '#0a0a0b'
     ctx.fillRect(0, 0, W, H)
     // Zoom-through: shot 1 accelerates into the lens, shot 2 starts at the same scale and settles out of it. Both
