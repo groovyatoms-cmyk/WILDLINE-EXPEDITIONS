@@ -2,14 +2,61 @@ import { frames as cfg } from '@/data/site'
 
 export type Shots = { 1: ImageBitmap[]; 2: ImageBitmap[] }
 
-export const isMobile = () => window.matchMedia('(max-width: 768px)').matches
+// Slow links get the lighter mobile frame set (half the frames, ~1/4 the bytes per second of film). Read once so
+// frame counts stay constant for the session; browsers without the Network Information API keep the full set.
+type Conn = { saveData?: boolean; effectiveType?: string; downlink?: number }
+let slow: boolean | undefined
+const slowLink = () => {
+  if (slow === undefined) {
+    const c = (navigator as Navigator & { connection?: Conn }).connection
+    slow = !!c && (!!c.saveData || /^(slow-)?[23]g$/.test(c.effectiveType ?? '') || (c.downlink ?? 99) < 5)
+  }
+  return slow
+}
+export const isMobile = () => window.matchMedia('(max-width: 768px)').matches || slowLink()
 export const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 const pad = (n: number) => String(n).padStart(4, '0')
 
+// Old Safari and Android WebViews lack OffscreenCanvas, createImageBitmap or its resize options. A plain canvas
+// element is a valid drawImage source and has the width/height the renderer reads, so it stands in for the bitmap.
+const canvasOf = (w: number, h: number) => {
+  if (typeof OffscreenCanvas !== 'undefined') return new OffscreenCanvas(w, h)
+  const c = document.createElement('canvas')
+  c.width = w
+  c.height = h
+  return c
+}
+const toBitmap = async (c: OffscreenCanvas | HTMLCanvasElement): Promise<ImageBitmap> =>
+  typeof createImageBitmap === 'function' ? createImageBitmap(c) : (Object.assign(c, { close() {} }) as unknown as ImageBitmap)
+
+async function decodeBlob(blob: Blob, w: number): Promise<ImageBitmap> {
+  if (typeof createImageBitmap === 'function') {
+    try {
+      return await createImageBitmap(blob, { resizeWidth: w, resizeQuality: 'low' })
+    } catch {
+      try {
+        return await createImageBitmap(blob) // options not supported
+      } catch {} // fall through to the <img> route
+    }
+  }
+  const url = URL.createObjectURL(blob)
+  try {
+    const img = new Image()
+    img.src = url
+    await new Promise((ok, no) => ((img.onload = ok), (img.onerror = no)))
+    const h = Math.round((img.naturalHeight * w) / img.naturalWidth)
+    const c = canvasOf(w, h) as HTMLCanvasElement
+    c.getContext('2d')!.drawImage(img, 0, 0, w, h)
+    return Object.assign(c, { close() {} }) as unknown as ImageBitmap
+  } finally {
+    URL.revokeObjectURL(url)
+  }
+}
+
 // Placeholder: gradient that shifts with frame number, number drawn on it.
 function placeholder(shot: number, i: number, total: number) {
-  const c = new OffscreenCanvas(960, 540)
+  const c = canvasOf(960, 540)
   const g = c.getContext('2d')!
   const t = i / (total - 1)
   const hue = shot === 1 ? 210 - t * 170 : 30 + t * 20 // cold dawn -> dust gold / warm dusk
@@ -31,7 +78,7 @@ function placeholder(shot: number, i: number, total: number) {
   g.fillText(pad(i + 1), 480, 320)
   g.font = '28px "JetBrains Mono", monospace'
   g.fillText(`SHOT ${shot} · PLACEHOLDER`, 480, 380)
-  return createImageBitmap(c)
+  return toBitmap(c)
 }
 
 async function decode(shot: 1 | 2, i: number, total: number, mobile: boolean) {
@@ -48,7 +95,7 @@ async function decode(shot: 1 | 2, i: number, total: number, mobile: boolean) {
     const res = await fetch(`/${dir}/${pad(i + 1)}.webp`, { priority: i < 8 ? 'high' : 'low' } as RequestInit)
     // Vite dev serves index.html for missing files, so check the type too.
     if (!res.ok || !res.headers.get('content-type')?.startsWith('image/')) throw 0
-    return await createImageBitmap(await res.blob(), { resizeWidth: w, resizeQuality: 'low' })
+    return await decodeBlob(await res.blob(), w)
   } catch {
     return placeholder(shot, i, total)
   }
@@ -82,7 +129,12 @@ export function createLoader(shot: 1 | 2, out: ImageBitmap[], onLoaded: (i: numb
       if (!want(i) || !keep(i)) continue
       active++
       inflight.add(i)
-      decode(shot, i, total, mobile).then((b) => {
+      decode(shot, i, total, mobile).catch(() => null).then((b) => {
+        if (!b) {
+          inflight.delete(i)
+          active--
+          return pump()
+        }
         inflight.delete(i)
         active--
         if (keep(i)) {

@@ -65,7 +65,7 @@ export default function FrameCanvas({ store, shots }: { store: Store; shots: Ref
     const pos2 = still ? Math.floor(n2 / 2) : f2 * (n2 - 1)
     // Blur peaks mid-transition and is gone at both ends (CSS filter: works in Safari too).
     const blur = still ? 0 : Math.sin(Math.PI * t) ** 2 * 3
-    canvas.style.filter = `contrast(1.1) saturate(1.06)${blur > 0.1 ? ` blur(${blur.toFixed(1)}px)` : ''}`
+    canvas.style.filter = blur > 0.1 ? `blur(${blur.toFixed(1)}px)` : ''
     ctx.imageSmoothingQuality = 'low' // 'high' resamples every full-screen draw and was the main cost per frame
     ctx.fillStyle = '#0a0a0b'
     ctx.fillRect(0, 0, W, H)

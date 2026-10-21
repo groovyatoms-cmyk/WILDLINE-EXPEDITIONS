@@ -65,14 +65,16 @@ export default function AutoPlay({
     const span0 = el0 ? el0.offsetHeight - innerHeight : 0
     let p = span0 > 0 ? Math.min(1, scrollY / span0) : 0
     const stop = () => setPlaying(false)
-    // True when the frames a little ahead of progress `at` are decoded (on a slow network playback pauses, never freezes).
+    // 0–1: how many of the frames a little ahead of progress `at` are decoded. On a slow network playback slows
+    // to match the supply and only waits at 0, so it keeps moving instead of freezing and then jumping.
     const buffered = (at: number) => {
       const { t, f1, f2 } = timeline(at)
       const ahead = (shot: 1 | 2, f: number) => {
         const n = frameTotal(shot)
-        return isPresent(shots.current?.[shot]?.[Math.min(n - 1, Math.round(f * (n - 1)) + 16)])
+        const have = [4, 8, 12, 16].filter((d) => isPresent(shots.current?.[shot]?.[Math.min(n - 1, Math.round(f * (n - 1)) + d)]))
+        return have.length / 4
       }
-      return (t >= 1 || ahead(1, f1)) && (t <= 0 || ahead(2, f2))
+      return Math.min(t >= 1 ? 1 : ahead(1, f1), t <= 0 ? 1 : ahead(2, f2))
     }
     // The button's own press toggles the state in onClick; stopping here too would make a tap on Pause restart playback.
     const interrupt = (e: Event) => {
@@ -82,13 +84,14 @@ export default function AutoPlay({
       const el = filmRef.current
       if (!el) return stop()
       const span = el.offsetHeight - innerHeight
-      if (!buffered(p)) {
+      const fill = buffered(p)
+      if (fill === 0) {
         last = now
         raf = requestAnimationFrame(tick)
         return
       } // wait for frames that have not arrived yet instead of showing a frozen picture
       const ramp = Math.min(1, (now - begin) / 1200) // ease into speed so playback never starts with a jolt
-      p = Math.min(1, p + rate(p) * ramp * (Math.min(now - last, 50) / 1000))
+      p = Math.min(1, p + rate(p) * ramp * Math.max(0.3, fill) * (Math.min(now - last, 50) / 1000))
       last = now
       scrollTo(0, p * span)
       if (p >= 1) return stop()
