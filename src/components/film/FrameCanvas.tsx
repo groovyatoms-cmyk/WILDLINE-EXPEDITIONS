@@ -64,8 +64,8 @@ export default function FrameCanvas({ store, shots }: { store: Store; shots: Ref
     const pos1 = still ? Math.floor(n1 / 2) : f1 * (n1 - 1)
     const pos2 = still ? Math.floor(n2 / 2) : f2 * (n2 - 1)
     // Blur peaks mid-transition and is gone at both ends (CSS filter: works in Safari too).
-    const blur = still ? 0 : Math.sin(Math.PI * t) * 9
-    canvas.style.filter = blur > 0.1 ? `blur(${blur.toFixed(1)}px)` : ''
+    const blur = still ? 0 : Math.sin(Math.PI * t) ** 2 * 3
+    canvas.style.filter = `contrast(1.1) saturate(1.06)${blur > 0.1 ? ` blur(${blur.toFixed(1)}px)` : ''}`
     ctx.imageSmoothingQuality = 'low' // 'high' resamples every full-screen draw and was the main cost per frame
     ctx.fillStyle = '#0a0a0b'
     ctx.fillRect(0, 0, W, H)
@@ -75,11 +75,12 @@ export default function FrameCanvas({ store, shots }: { store: Store; shots: Ref
       const k = Math.min(1, Math.max(0, x))
       return k * k * (3 - 2 * k)
     }
-    const push = still ? 0 : 0.45 // reduced motion: plain crossfade, no zoom
+    const push = still ? 0 : 0.3 // reduced motion: plain crossfade, no zoom
     const loaded = shots.current
     if (!isPresent(loaded)) return // the frame store is not attached yet
-    drawBlend(ctx, loaded[1], pos1, W, H, 1, 1 + push * t * t)
-    if (t > 0) drawBlend(ctx, loaded[2], pos2, W, H, smooth((t - 0.35) / 0.35), 1 + push * (1 - t) * (1 - t))
+    const e = smooth(t) // eased so the zoom starts and ends with no jerk
+    drawBlend(ctx, loaded[1], pos1, W, H, 1, 1 + push * e * e)
+    if (t > 0) drawBlend(ctx, loaded[2], pos2, W, H, smooth((t - 0.15) / 0.7), 1 + push * (1 - e) * (1 - e))
   })
 
   return (

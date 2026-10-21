@@ -60,6 +60,12 @@ ul, ol, dl, dd { margin: 0; padding: 0; list-style: none; }
 .stage { position: sticky; top: 0; height: 100vh; overflow: hidden; color: var(--text); }
 .frame-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .vignette { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, rgba(10, 10, 11, 0.6), transparent 35%), linear-gradient(to top right, rgba(10, 10, 11, 0.78), transparent 60%); }
+/* Cinematic look: teal shadows / amber highlights, deeper corners, moving film grain, slim letterbox bars. */
+.grade, .grain, .bars { position: absolute; inset: 0; pointer-events: none; }
+.grade { background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.55) 120%), linear-gradient(to bottom, rgba(0, 70, 90, 0.5), rgba(255, 140, 50, 0.4)); mix-blend-mode: soft-light; }
+.grain { opacity: 0.09; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"); animation: grain 0.6s steps(1) infinite; }
+@keyframes grain { 0% { background-position: 0 0; } 25% { background-position: -60px 40px; } 50% { background-position: 40px -80px; } 75% { background-position: -30px -20px; } }
+.bars { background: linear-gradient(#000, #000) top / 100% 4.5vh no-repeat, linear-gradient(#000, #000) bottom / 100% 4.5vh no-repeat; }
 .rec { position: absolute; left: var(--gutter); top: calc(var(--bar) + 1rem); z-index: 5; display: inline-flex; align-items: center; gap: 0.55rem; margin: 0; padding: 0.4rem 0.8rem; border-radius: 999px; background: rgba(10, 10, 11, 0.45); backdrop-filter: blur(14px); border: 1px solid var(--glass-line); color: #f5f5f7; font-size: 0.72rem; letter-spacing: 0.08em; pointer-events: none; }
 .rec-dot { width: 9px; height: 9px; border-radius: 50%; background: #ff3b30; box-shadow: 0 0 8px #ff3b30; animation: rec-blink 1.4s steps(1) infinite; }
 @keyframes rec-blink { 50% { opacity: 0.15; } }
@@ -271,7 +277,7 @@ ul, ol, dl, dd { margin: 0; padding: 0; list-style: none; }
   :root { --line: currentColor; --muted: var(--text); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .scroll-cue i, .shimmer, .rec-dot, .autoplay svg { animation: none; }
+  .scroll-cue i, .shimmer, .rec-dot, .autoplay svg, .grain { animation: none; }
   .scroll-cue .cue-mouse i { opacity: 1; }
   .hint svg, .pill-glass.pulse, .cookie-icon { animation: none; }
   .menu { transform: none; transition: opacity 0.2s ease, visibility 0s 0.2s; }

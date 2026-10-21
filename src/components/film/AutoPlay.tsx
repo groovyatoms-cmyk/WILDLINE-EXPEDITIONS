@@ -13,7 +13,7 @@ import { frameNo, frameTotal, timeline } from '@/lib/timeline'
 // about real time, so the convoy moves like video instead of in slow motion; shot 2 gets a little longer for its text.
 const PLAN: [number, number, number][] = [
   [0, film.shot1End, 44],
-  [film.shot1End, film.shot2Start, 2],
+  [film.shot1End, film.shot2Start, 3.5],
   [film.shot2Start, film.shot2End, 48],
   [film.shot2End, 1, 3],
 ]

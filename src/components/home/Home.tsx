@@ -64,6 +64,9 @@ export default function Home({ store, shots, filmRef, heroRef }: HomeProps) {
         <div className="stage">
           <FrameCanvas store={store} shots={shots} />
           <div className="vignette" />
+          <div className="grade" aria-hidden="true" />
+          <div className="grain" aria-hidden="true" />
+          <div className="bars" aria-hidden="true" />
           <Hero heroRef={heroRef} />
           <ScrollCue store={store} />
           {bigLines.map((l) => (
