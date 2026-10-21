@@ -32,6 +32,7 @@ export default function CookieBanner() {
     <AnimatePresence>
       {choice === null && (
         <motion.div
+          ref={(el) => document.documentElement.style.setProperty('--cookie-h', el ? `${el.offsetHeight + 16}px` : '0px')} // phones: lifts the play button above the banner
           className="cookie"
           role="dialog"
           aria-label="Cookie consent"

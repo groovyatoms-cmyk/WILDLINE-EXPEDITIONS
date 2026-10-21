@@ -256,7 +256,7 @@ ul, ol, dl, dd { margin: 0; padding: 0; list-style: none; }
   .stats { grid-template-columns: 1fr 1fr; bottom: 18vh; gap: 1.5rem 1rem; }
   .stats dd { font-size: clamp(2.2rem, 11vw, 3.2rem); }
   .scroll-cue { bottom: 18px; }
-  .autoplay { right: 14px; bottom: 18px; }
+  .autoplay { right: 14px; bottom: calc(18px + var(--cookie-h, 0px)); transition: bottom 0.3s var(--ease-out); } /* clear of the cookie banner */
   .trip { transform: none; }
   .trip-alt { font-size: 3.6rem; }
   .member-photo { aspect-ratio: 1 / 1; }
